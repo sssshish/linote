@@ -4,6 +4,7 @@ import { View, Text } from 'react-native';
 import { styles } from '../styles/styles';
 import { Layout } from '@ui-kitten/components';
 
+
 export const Wallet = () => {
     return (
         <Layout style={styles.megaWrap}>

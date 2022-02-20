@@ -40,3 +40,4 @@ export const editSvgBase = `<svg xmlns="http://www.w3.org/2000/svg" width="19" h
 </svg>`;
 
 export const getCustomSvg = ( svgCode, color ) => svgCode.replace( /{{color}}/g, color );
+

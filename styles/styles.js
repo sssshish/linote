@@ -11,12 +11,14 @@ const inputGlobalStyles = {
     fontFamily: customFontRegular
 };
 
-export const mainColor = '#B83B5E';
-export const secondColor = '#F08A5D';
+export const mainpink = 'rgb(184,59,94)'; //pink-red
+export const secondColor = 'rgb(143,155,179)'; //grey-blue
 export const thirdColor = '#6A2C70';
 export const fourthColor = '#EEECDA';
-export const fifthColor = '#F01641';
+export const fifthColor = 'rgb(50,81,184)'; //dark-blue
 export const sixthColor = '#3251B8';
+export const seventhColor = '#F08A5D';
+export const lightblue = 'rgb(209,220,255)'; //light blue
 
 const customFontRegular = 'Nunito-Regular';
 const customFontBold = 'Nunito-SemiBold';
@@ -59,7 +61,7 @@ export const styles = StyleSheet.create( {
         alignItems: 'center'
     },
     coloredTopContainer: {
-        backgroundColor: mainColor
+        backgroundColor: mainpink
     },
     listSearchWrapper: {
         marginBottom: 6
@@ -109,14 +111,14 @@ export const styles = StyleSheet.create( {
         top: 3
     },
     addBarLeft: {
-        backgroundColor: mainColor,
+        backgroundColor: mainpink,
         flex: 1.5,
         justifyContent: 'center',
         paddingLeft: 10,
         paddingBottom: 5
     },
     addBarRight: {
-        backgroundColor: mainColor,
+        backgroundColor: mainpink,
         flex: 18
     },
     addWordInput: {
@@ -217,12 +219,12 @@ export const styles = StyleSheet.create( {
         fontFamily: customFontRegular
     },
     titleText: {
-        color: mainColor,
+        color: mainpink,
         fontFamily: customFontBold,
         fontSize: 30
     },
     titleTextSmall: {
-        color: mainColor,
+        color: mainpink,
         fontFamily: customFontBold,
         fontSize: 24
     },
@@ -250,7 +252,7 @@ export const styles = StyleSheet.create( {
         height: screenHeight - 170
     },
     cardMasteredIconContainer: {
-        backgroundColor: mainColor,
+        backgroundColor: mainpink,
         position: 'absolute',
         bottom: 10,
         right: 10
@@ -260,7 +262,7 @@ export const styles = StyleSheet.create( {
     },
     wordCard: {
         marginBottom: 10,
-        backgroundColor: mainColor,
+        backgroundColor: mainpink,
         paddingTop: 10,
         paddingBottom: 10,
         borderRadius: 10
@@ -338,7 +340,7 @@ export const styles = StyleSheet.create( {
         fontFamily: customFontRegular
     },
     'typeOfWord--Noun': {
-        backgroundColor: mainColor
+        backgroundColor: mainpink
     },
     'typeOfWord--Verb': {
         backgroundColor: secondColor
@@ -372,7 +374,7 @@ export const styles = StyleSheet.create( {
     },
     singleCard: {},
     cardFrontAndBack: {
-        backgroundColor: mainColor,
+        backgroundColor: mainpink,
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
@@ -398,8 +400,8 @@ export const styles = StyleSheet.create( {
     ctaButton: {
         marginTop: 10,
         marginBottom: 10,
-        backgroundColor: mainColor,
-        borderColor: mainColor,
+        backgroundColor: mainpink,
+        borderColor: mainpink,
         fontFamily: customFontRegular
     },
     'ctaButton--smallWidth': {
@@ -469,7 +471,7 @@ export const styles = StyleSheet.create( {
         marginBottom: '2%'
     },
     singleDeck: {
-        backgroundColor: mainColor,
+        backgroundColor: mainpink,
         height: 140,
         flexBasis: '31%',
         flexDirection: 'column',
@@ -487,11 +489,11 @@ export const styles = StyleSheet.create( {
     addDeck: {
         backgroundColor: '#EAC3CF',
         borderStyle: 'dashed',
-        borderColor: mainColor,
+        borderColor: mainpink,
         borderWidth: 2
     },
     addDeckPlus: {
-        color: mainColor,
+        color: mainpink,
         textAlign: 'center',
         fontSize: 20
     },
@@ -512,7 +514,7 @@ export const styles = StyleSheet.create( {
     },
     createDeckCtaButton: {
         width: 170,
-        backgroundColor: mainColor
+        backgroundColor: mainpink
     },
     'createDeckCtaButton--Disabled': {
         backgroundColor: '#EAC4CE',
@@ -560,26 +562,26 @@ export const styles = StyleSheet.create( {
     challengeModeCardWrapper: {
         display: 'flex',
         flexDirection: 'row',
-        backgroundColor: mainColor
+        backgroundColor: mainpink
     },
     challengeModeCardLeftZone: {
         flexBasis: '60%',
-        backgroundColor: mainColor
+        backgroundColor: mainpink
     },
     challengeModeCardLeftZoneTop: {
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: mainColor
+        backgroundColor: mainpink
     },
     challengeModeCardLeftZoneBottom: {
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: mainColor,
+        backgroundColor: mainpink,
         marginTop: 8
     },
     challengeModeCardCenterZone: {
         flexBasis: '30%',
-        backgroundColor: mainColor,
+        backgroundColor: mainpink,
         justifyContent: 'center'
     },
     challengeModeCardPercentageText: {
@@ -589,7 +591,7 @@ export const styles = StyleSheet.create( {
     },
     challengeModeCardRightZone: {
         flexBasis: '10%',
-        backgroundColor: mainColor,
+        backgroundColor: mainpink,
         justifyContent: 'center',
         alignItems: 'flex-end'
     },

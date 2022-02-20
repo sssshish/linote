@@ -4,12 +4,11 @@ import { View, Text } from 'react-native';
 import { styles } from '../styles/styles';
 import { Layout } from '@ui-kitten/components';
 
-
 export const List = () => {
     return (
         <Layout style={styles.megaWrap}>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text>your word list here!</Text>
+                <Text>Your word list is empty!</Text>
             </View>
         </Layout>
     );
