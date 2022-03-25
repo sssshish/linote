@@ -1,12 +1,4 @@
-import React from 'react';
-import { View, TextInput } from 'react-native';
-import { secondColor, styles } from '../styles/styles';
-
-const MyTextInput = (props: any) => {
-    return (
-        <View
-            style={styles.addWordInput}>
-            <TextInput
+<TextInput
                 underlineColorAndroid='transparent'
                 placeholder={props.placeholder}
                 placeholderTextColor={secondColor}
@@ -21,8 +13,3 @@ const MyTextInput = (props: any) => {
                 value={props.value}
                 autoCorrect={false}
             />
-        </View>
-    );
-};
-
-export default MyTextInput;

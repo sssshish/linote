@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { fifthColor } from '../styles/styles';
+import { fifthColor } from '../myStyles/styles';
 
 const Mytext = (props: any) => {
     return <Text style={styles.text}>{props.text}</Text>;

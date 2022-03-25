@@ -12,16 +12,17 @@ import {
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { List } from './views/List';
-import { Wallet } from './views/Wallet';
-import { Quiz } from './views/Quiz';
-import { Settings } from './views/Settings';
-import { customTheme } from './utils/customTheme';
-import { fifthColor, lightblue, mainpink, styles } from './styles/styles';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+import { List } from './sectionList/List';
+import { Wallet } from './sectionCategory/Category';
+import { Quiz } from './sectionQuiz/Quiz';
+import { Settings } from './sectionInfo/Info';
+import { customTheme } from './myUtils/customTheme';
+import { fifthColor, lightblue, mainpink, white, black, styles } from './myStyles/styles';
 import AddWords from './views/AddWords';
 import { SvgXml } from 'react-native-svg';
-import { plusSvg, challengeSvgBase, walletSvgBase, infoSvgBase, getCustomSvg, cardsSvgBase } from './utils/customIcons';
+import { plusSvg, challengeSvgBase, walletSvgBase, infoSvgBase, getCustomSvg, cardsSvgBase } from './myUtils/customIcons';
+import ViewWord from './sectionList/ViewWord';
 
 //Database connection code starts here
 
@@ -37,8 +38,6 @@ const errorCallback = (error: any) => {
   console.log('DB connection error', error);
 };
 
-const db = SQLite.openDatabase({ name: 'dictionary.db', createFromLocation: 2 }, okCallback, errorCallback);
-
 const okDeletionCallback = () => {
   console.log('I deleted the database');
   SQLite.openDatabase({ name: 'dictionary.db', createFromLocation: 1 }, okCallback, errorCallback);
@@ -47,6 +46,8 @@ const okDeletionCallback = () => {
 const errorDeletionCallback = (error: any) => {
   console.log('Error while deleting DB', error);
 };
+
+const db = SQLite.openDatabase({ name: 'dictionary.db', createFromLocation: 2 }, okCallback, errorCallback);
 
 
 //Bottom Tabs
@@ -177,17 +178,6 @@ export default function App() {
     onMenuClick
   };
 
-  //code to create table
-  db.transaction((tx: any) => {
-
-    tx.executeSql('CREATE TABLE \'test\'(id INTEGER PRIMARY KEY, username TEXT NOT NULL);', [], (trans: any, results: any) => {
-      console.log('DB initialized and table created!');
-    },
-      (error: any) => {
-        console.log('Errors with DB initialization', error);
-      }
-    );
-  });
 
   return (
     <NavigationContainer ref={navigationRef}>
@@ -205,13 +195,15 @@ export default function App() {
           >
             <Tab.Screen
               name='List'
-              component={List}
+              component={ViewWord}
               options={{
                 tabBarLabel: 'List',
                 tabBarIcon: ListIcon,
                 tabBarAccessibilityLabel: 'List',
-                tabBarActiveBackgroundColor: lightblue
-
+                tabBarActiveBackgroundColor: lightblue,
+                headerStyle: styles.coloredTopContainer,
+                headerTintColor: white,
+                headerTitleStyle: styles.whiteTextBold
               }}
             />
             <Tab.Screen
@@ -221,16 +213,22 @@ export default function App() {
                 tabBarLabel: 'Wallet',
                 tabBarIcon: CardsIcon,
                 tabBarAccessibilityLabel: 'Wallet',
-                tabBarActiveBackgroundColor: lightblue
+                tabBarActiveBackgroundColor: lightblue,
+                headerStyle: styles.coloredTopContainer,
+                headerTintColor: white,
+                headerTitleStyle: styles.whiteTextBold
 
               }}
             />
             <Tab.Screen
-              name='AddWords'
+              name='New word'
               component={AddWords}
               options={{
                 tabBarIcon: PlusIcon,
-                tabBarHideOnKeyboard: true
+                tabBarHideOnKeyboard: true,
+                headerStyle: styles.coloredTopContainer,
+                headerTintColor: white,
+                headerTitleStyle: styles.whiteTextBold
               }}
             />
             <Tab.Screen
@@ -240,7 +238,10 @@ export default function App() {
                 tabBarLabel: 'Quiz',
                 tabBarIcon: PlayIcon,
                 tabBarAccessibilityLabel: 'Quiz',
-                tabBarActiveBackgroundColor: lightblue
+                tabBarActiveBackgroundColor: lightblue,
+                headerStyle: styles.coloredTopContainer,
+                headerTintColor: white,
+                headerTitleStyle: styles.whiteTextBold
               }}
             />
             <Tab.Screen
@@ -250,7 +251,10 @@ export default function App() {
                 tabBarLabel: 'Settings',
                 tabBarIcon: InfoIcon,
                 tabBarAccessibilityLabel: 'Settings',
-                tabBarActiveBackgroundColor: lightblue
+                tabBarActiveBackgroundColor: lightblue,
+                headerStyle: styles.coloredTopContainer,
+                headerTintColor: white,
+                headerTitleStyle: styles.whiteTextBold
               }}
             />
           </Tab.Navigator>

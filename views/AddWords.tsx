@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import {
@@ -8,32 +9,40 @@ import {
     SafeAreaView,
     Text
 } from 'react-native';
-import MyTextInput from '../components/MyTextInput';
-import Mybutton from '../components/MyButton';
-import { openDatabase } from 'react-native-sqlite-storage';
-import { styles } from '../styles/styles';
+import MyTextInput from '../myComponents/MyTextInput';
+import Mybutton from '../myComponents/MyButton';
+import { styles } from '../myStyles/styles';
+import { NavigationRouteContext } from '@react-navigation/native';
+import DropdownComponent from '../myComponents/Dropdown';
+import ViewWord from '../sectionList/ViewWord';
 
-const AddWords = ({ navigation: any }) => {
-    let [userName, setUserName] = useState('');
-    let [userContact, setUserContact] = useState('');
-    let [userAddress, setUserAddress] = useState('');
+const SQLite = require('react-native-sqlite-storage');
+
+const db = SQLite.openDatabase({ name: 'dictionary.db' });
+
+
+//{ navigation: any }
+
+const AddWords = () => {
+    let [word, setWord] = useState('');
+    let [translation, setTranslation] = useState('');
+    let [description, setDescription] = useState('');
 
     let register_word = () => {
-        console.log(userName, userContact, userAddress);
+        console.log(word, translation, description);
 
-        if (!userName) {
+        if (!word) {
             Alert.alert('Word cannot be empty.');
             return;
         }
-        if (!userContact) {
+        if (!translation) {
             Alert.alert('Translation cannot be empty.');
             return;
         }
-
-        var db = openDatabase({ name: 'dictionary.db' });
         db.transaction((tx: any) => {
-            tx.executeSql('INSERT INTO table_user (user_name, user_contact, user_address) VALUES (?,?,?)',
-                [userName, userContact, userAddress],
+            const test = 'tbletest';
+            tx.executeSql('INSERT INTO' + test + '(word, translation, description) VALUES (?,?,?)',
+                [word, translation, description],
                 (trans: any, results: { rowsAffected: number; }) => {
                     console.log('Results', results.rowsAffected);
                     if (results.rowsAffected > 0) {
@@ -42,8 +51,8 @@ const AddWords = ({ navigation: any }) => {
                             'You word has been added successfully',
                             [
                                 {
-                                    text: 'Ok',
-                                    onPress: () => navigation.navigate('HomeScreen')
+                                    text: 'Ok'
+                                    // onPress: () => navigation.navigate('List')
                                 }
                             ],
                             { cancelable: false }
@@ -55,37 +64,39 @@ const AddWords = ({ navigation: any }) => {
     };
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <View style={{ flex: 1, backgroundColor: 'white' }}>
+        <SafeAreaView style={styles.megaWrap}>
+            <View style={styles.megaWrap}>
                 <View style={{ flex: 1 }}>
                     <ScrollView keyboardShouldPersistTaps='handled'>
                         <KeyboardAvoidingView
                             behavior='padding'
                             style={{ flex: 1, justifyContent: 'space-between' }}>
                             <MyTextInput
-                                placeholder='Enter Word'
+                                label='Word'
                                 onChangeText={
-                                    (word: React.SetStateAction<string>) => setUserName(word)
+                                    (wrd: React.SetStateAction<string>) => setWord(word)
                                 }
-                                style={{ padding: 10 }}
                             />
+
                             <MyTextInput
-                                placeholder='Enter translation for word'
+                                label='Translation'
                                 onChangeText={
-                                    (translation: React.SetStateAction<string>) => setUserContact(translation)
+                                    (trns: React.SetStateAction<string>) => setTranslation(translation)
                                 }
-                                style={{ padding: 10 }}
                             />
+
+                            <DropdownComponent />
+
                             <MyTextInput
-                                placeholder='Enter Description/Comments'
+                                label='Description'
                                 onChangeText={
-                                    (comments: React.SetStateAction<string>) => setUserAddress(comments)
+                                    (desc: React.SetStateAction<string>) => setDescription(description)
                                 }
                                 maxLength={225}
                                 numberOfLines={5}
                                 multiline={true}
-                                style={{ textAlignVertical: 'top', padding: 10 }}
                             />
+
                             <Mybutton title='Submit' customClick={register_word} />
                         </KeyboardAvoidingView>
                     </ScrollView>

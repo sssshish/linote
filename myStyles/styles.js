@@ -13,12 +13,14 @@ const inputGlobalStyles = {
 
 export const mainpink = 'rgb(184,59,94)'; //pink-red
 export const secondColor = 'rgb(143,155,179)'; //grey-blue
-export const thirdColor = '#6A2C70';
-export const fourthColor = '#EEECDA';
+export const thirdColor = '#6A2C70'; //dark-purple
+export const fourthColor = '#EEECDA'; //light-green-yellowish-pale
 export const fifthColor = 'rgb(50,81,184)'; //dark-blue
-export const sixthColor = '#3251B8';
-export const seventhColor = '#F08A5D';
+export const sixthColor = '#3251B8'; //dark-blue
+export const seventhColor = '#F08A5D'; //medium-orange
 export const lightblue = 'rgb(209,220,255)'; //light blue
+export const black = 'rgb(0,0,0)'; 
+export const white = 'rgb(255,255,255)';
 
 const customFontRegular = 'Nunito-Regular';
 const customFontBold = 'Nunito-SemiBold';
@@ -26,6 +28,47 @@ const customFontBold = 'Nunito-SemiBold';
 const screenHeight = Dimensions.get( 'window' ).height;
 
 export const styles = StyleSheet.create( {
+
+    dropdown: {
+        margin: 16,
+        height: 50,
+        backgroundColor: 'white',
+        borderRadius: 12,
+        padding: 12,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 1
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 1.41,
+
+        elevation: 2
+    },
+    item: {
+        padding: 17,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    textItem: {
+        flex: 1,
+        fontSize: 16
+    },
+    placeholderStyle: {
+        fontSize: 16
+    },
+    selectedTextStyle: {
+        fontSize: 16
+    },
+    iconStyle: {
+        width: 20,
+        height: 20
+    },
+    inputSearchStyle: {
+        height: 40,
+        fontSize: 16
+    },
     topContainer: {
         paddingBottom: 10,
         justifyContent: 'flex-end'
@@ -123,7 +166,10 @@ export const styles = StyleSheet.create( {
     },
     addWordInput: {
         ...inputGlobalStyles,
-        borderRadius: 18
+        borderRadius: 18,
+        borderWidth:1,
+        padding:5,
+        borderColor:mainpink
     },
     searchResultsContainer: {
         paddingBottom: 80
@@ -169,7 +215,7 @@ export const styles = StyleSheet.create( {
     },
     text: {
         textAlign: 'center',
-        color: '#333',
+        color: '#fff',
         fontFamily: customFontRegular,
         fontSize: 16.5
     },
@@ -218,6 +264,11 @@ export const styles = StyleSheet.create( {
         color: '#fff',
         fontFamily: customFontRegular
     },
+    whiteTextBold: {
+        textAlign: 'center',
+        color: '#fff',
+        fontFamily: customFontBold
+    },
     titleText: {
         color: mainpink,
         fontFamily: customFontBold,
@@ -243,7 +294,8 @@ export const styles = StyleSheet.create( {
     icon: {
         width: 32,
         height: 32,
-        textAlign: 'center'
+        textAlign: 'center',
+        marginRight:5
     },
     cardsScrollView: {
         width: '91%',
@@ -422,11 +474,9 @@ export const styles = StyleSheet.create( {
         marginLeft: '5%'
     },
     infoContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        width: '91%',
-        marginLeft: '4.5%',
-        marginRight: '4.5%'
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     infoColOne: {
         flex: 1,
@@ -450,8 +500,10 @@ export const styles = StyleSheet.create( {
         marginRight: '4.5%'
     },
     iconImage: {
-        width: 100,
-        height: 100
+        flex: 1,
+        height: '100%',
+        width: '100%',
+        resizeMode: 'contain'
     },
     stackNavigatorWrapper: {
         width: '100%',
@@ -513,7 +565,14 @@ export const styles = StyleSheet.create( {
         alignItems: 'center'
     },
     createDeckCtaButton: {
-        width: 170,
+        borderWidth:1,
+        alignItems:'center',
+        justifyContent:'center',
+        paddingVertical: 12,
+        paddingHorizontal: 15,
+        borderRadius: 4,
+        margin:2,
+        width: '80%',
         backgroundColor: mainpink
     },
     'createDeckCtaButton--Disabled': {
