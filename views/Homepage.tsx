@@ -13,16 +13,16 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
-import { List } from './sectionList/List';
-import { Wallet } from './sectionCategory/Category';
-import { Quiz } from './sectionQuiz/Quiz';
-import { Settings } from './sectionInfo/Info';
-import { customTheme } from './myUtils/customTheme';
-import { fifthColor, lightblue, mainpink, white, black, styles } from './myStyles/styles';
-import AddWords from './views/AddWords';
+import { List } from '../sectionList/List';
+import { Wallet } from '../sectionCategory/Category';
+import { Quiz } from '../sectionQuiz/Quiz';
+import { Settings } from '../sectionInfo/Info';
+import { customTheme } from '../myUtils/customTheme';
+import { fifthColor, lightblue, mainpink, white, black, styles } from '../myStyles/styles';
+import AddWords from '../views/AddWords';
 import { SvgXml } from 'react-native-svg';
-import { plusSvg, challengeSvgBase, walletSvgBase, infoSvgBase, getCustomSvg, cardsSvgBase } from './myUtils/customIcons';
-import ViewWord from './sectionList/ViewWord';
+import { plusSvg, challengeSvgBase, walletSvgBase, infoSvgBase, getCustomSvg, cardsSvgBase } from '../myUtils/customIcons';
+import ViewWord from '../sectionList/ViewWord';
 
 //Database connection code starts here
 
