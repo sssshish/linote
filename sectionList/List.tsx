@@ -1,3 +1,9 @@
+/* List:
+    1. Search bar at top
+    2. All words in db with delete button at side/swipe which calls deleteWord()
+    3. Click event to call Viewword.tsx
+*/
+
 /* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 import { View, Text } from 'react-native';

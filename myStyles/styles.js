@@ -19,15 +19,21 @@ export const fifthColor = 'rgb(50,81,184)'; //dark-blue
 export const sixthColor = '#3251B8'; //dark-blue
 export const seventhColor = '#F08A5D'; //medium-orange
 export const lightblue = 'rgb(209,220,255)'; //light blue
-export const black = 'rgb(0,0,0)'; 
+export const black = 'rgb(0,0,0)';
 export const white = 'rgb(255,255,255)';
 
 const customFontRegular = 'Nunito-Regular';
 const customFontBold = 'Nunito-SemiBold';
 
-const screenHeight = Dimensions.get( 'window' ).height;
+const screenHeight = Dimensions.get('window').height;
 
-export const styles = StyleSheet.create( {
+export const styles = StyleSheet.create({
+
+    imgBackground: {
+        width: '100%',
+        height: '100%',
+        flex: 1
+    },
 
     dropdown: {
         margin: 16,
@@ -167,9 +173,9 @@ export const styles = StyleSheet.create( {
     addWordInput: {
         ...inputGlobalStyles,
         borderRadius: 18,
-        borderWidth:1,
-        padding:5,
-        borderColor:mainpink
+        borderWidth: 1,
+        padding: 5,
+        borderColor: mainpink
     },
     searchResultsContainer: {
         paddingBottom: 80
@@ -198,10 +204,10 @@ export const styles = StyleSheet.create( {
         justifyContent: 'center'
     },
     bottomZone: {
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        bottom: 0,
+        bottom: '20%',
         left: 0,
         right: 0,
         width: '100%'
@@ -295,7 +301,7 @@ export const styles = StyleSheet.create( {
         width: 32,
         height: 32,
         textAlign: 'center',
-        marginRight:5
+        marginRight: 5
     },
     cardsScrollView: {
         width: '91%',
@@ -556,22 +562,24 @@ export const styles = StyleSheet.create( {
     createDeckListContainer: {
         paddingBottom: 200
     },
-    createDeckCta: {
-        height: 200,
-        width: '100%',
-        position: 'absolute',
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-        bottom: 0,
-        alignItems: 'center'
+    inputDialog: {
+        height: '30%',
+        width: '90%',
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        alignItems: 'center',
+        justifyContent: 'center',
+        right: '5%',
+        left: '5%',
+        borderRadius: 20
     },
     createDeckCtaButton: {
-        borderWidth:1,
-        alignItems:'center',
-        justifyContent:'center',
+        borderWidth: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
         paddingVertical: 12,
         paddingHorizontal: 15,
         borderRadius: 4,
-        margin:2,
+        margin: 2,
         width: '80%',
         backgroundColor: mainpink
     },
@@ -683,4 +691,4 @@ export const styles = StyleSheet.create( {
         position: 'absolute',
         bottom: 48
     }
-} );
+});

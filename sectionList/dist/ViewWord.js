@@ -1,4 +1,5 @@
 "use strict";
+/*View one word info along with update data icon which calls UpdateWord.tsx */
 exports.__esModule = true;
 /* eslint-disable react-native/no-inline-styles */
 var react_1 = require("react");
@@ -36,6 +37,12 @@ var ViewWord = function () {
                 react_1["default"].createElement(react_native_1.View, { style: { marginLeft: 35, marginRight: 35, marginTop: 10 } },
                     react_1["default"].createElement(react_native_1.Text, null, "Word ID: "),
                     react_1["default"].createElement(react_native_1.Text, null, "Translation: "),
-                    react_1["default"].createElement(react_native_1.Text, null, "Word Type: "))))));
+                    react_1["default"].createElement(react_native_1.Text, null, "Word Type: "),
+                    react_1["default"].createElement(react_native_1.Text, null,
+                        "Translation: ",
+                        wordData.translation),
+                    react_1["default"].createElement(react_native_1.Text, null,
+                        "Comments: ",
+                        wordData.description))))));
 };
 exports["default"] = ViewWord;

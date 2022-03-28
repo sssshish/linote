@@ -1,3 +1,5 @@
+/*View one word info along with update data icon which calls UpdateWord.tsx */
+
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
 import { Text, View, SafeAreaView, Alert } from 'react-native';
@@ -54,9 +56,9 @@ const ViewWord = () => {
                         <Text>Word ID: </Text>
                         <Text>Translation: </Text>
                         <Text>Word Type: </Text>
-                        {/* <Text>Word: {wordData.word}</Text>
+                        {/* {/* <Text>Word: {wordData.word}</Text> */}
                         <Text>Translation: {wordData.translation}</Text>
-                        <Text>Comments: {wordData.description}</Text> */}
+                        <Text>Comments: {wordData.description}</Text>
                         {/* <Text>Word Type: {wordData.word_type}</Text>*/}
                     </View>
                 </View>

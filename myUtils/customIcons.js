@@ -1,4 +1,4 @@
-import { sixthColor } from '../styles/styles';
+import { sixthColor } from '../myStyles/styles';
 
 export const plusSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
 <g fill="none" fill-rule="evenodd">

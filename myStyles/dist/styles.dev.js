@@ -54,6 +54,11 @@ var customFontBold = 'Nunito-SemiBold';
 var screenHeight = _reactNative.Dimensions.get('window').height;
 
 var styles = _reactNative.StyleSheet.create({
+  imgBackground: {
+    width: '100%',
+    height: '100%',
+    flex: 1
+  },
   dropdown: {
     margin: 16,
     height: 50,
@@ -218,10 +223,10 @@ var styles = _reactNative.StyleSheet.create({
     justifyContent: 'center'
   },
   bottomZone: {
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 0,
+    bottom: '20%',
     left: 0,
     right: 0,
     width: '100%'
@@ -576,13 +581,15 @@ var styles = _reactNative.StyleSheet.create({
   createDeckListContainer: {
     paddingBottom: 200
   },
-  createDeckCta: {
-    height: 200,
-    width: '100%',
-    position: 'absolute',
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    bottom: 0,
-    alignItems: 'center'
+  inputDialog: {
+    height: '30%',
+    width: '90%',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: '5%',
+    left: '5%',
+    borderRadius: 20
   },
   createDeckCtaButton: {
     borderWidth: 1,

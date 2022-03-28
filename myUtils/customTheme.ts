@@ -1,5 +1,5 @@
 import * as eva from '@eva-design/eva';
-import { mainpink } from '../styles/styles';
+import { mainpink } from '../myStyles/styles';
 
 const colorOverrides = {
     'color-basic-100': '#FFFFFF',

@@ -1,5 +1,14 @@
+/*Notebook.tsx contains the template for all Notebooks:
+    1. Header (with Home icon which routes to App.tsx)
+    2. Bottom Tabs
+        2.1 List calls List.tsx (which will display all words)
+        2.2 Category calls Category.tsx (which will display all categories)
+        2.3 Quiz calls Quiz.tsx (which will display all quizes)
+        2.4 Info calls Info.tsx (which will display info on NB)
+        2.5 Plus icon calls Addwords.tsx (which will add new words to List and db)
+*/
+
 /* eslint-disable @typescript-eslint/no-unused-vars */
-//import statments start here
 import React, { useState } from 'react';
 import * as eva from '@eva-design/eva';
 import {
@@ -19,7 +28,7 @@ import { Quiz } from '../sectionQuiz/Quiz';
 import { Settings } from '../sectionInfo/Info';
 import { customTheme } from '../myUtils/customTheme';
 import { fifthColor, lightblue, mainpink, white, black, styles } from '../myStyles/styles';
-import AddWords from '../views/AddWords';
+import AddWords from './AddWords';
 import { SvgXml } from 'react-native-svg';
 import { plusSvg, challengeSvgBase, walletSvgBase, infoSvgBase, getCustomSvg, cardsSvgBase } from '../myUtils/customIcons';
 import ViewWord from '../sectionList/ViewWord';

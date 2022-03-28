@@ -1,3 +1,5 @@
+/*View and update info on your NB*/
+
 import * as React from 'react';
 import { View, Image } from 'react-native';
 import { IconProps, Icon, Layout } from '@ui-kitten/components';

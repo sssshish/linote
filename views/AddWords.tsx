@@ -1,3 +1,5 @@
+/*AddWords.tsx contains a form-like view to add new words in a Notebook*/
+
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
