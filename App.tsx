@@ -18,13 +18,15 @@ import {
   IconRegistry,
   Layout,
   Icon,
-  IconProps
+  IconProps,
+  Input,
+  StyleService
 } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { List } from './sectionList/List';
+import { List } from './sectionList/Words';
 import { Wallet } from './sectionCategory/Category';
 import { Quiz } from './sectionQuiz/Quiz';
 import { Settings } from './sectionInfo/Info';
@@ -40,6 +42,7 @@ import MyButton from './myComponents/dist/MyButton';
 import Mybutton from './myComponents/MyButton';
 import { Button, Modal, Portal, Provider, Text, TextInput } from 'react-native-paper';
 import MyTextInput from './myComponents/MyTextInput';
+import { FlatList, ScrollView } from 'react-native-gesture-handler';
 
 // const onMenuClick = (index: number) => {
 //   switch (index) {
@@ -82,9 +85,13 @@ export default () => {
 
   SplashScreen.hide();
 
-  const [visible, setVisible] = useState(false);
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
+  const [a, setA] = useState(false);
+  const showA = () => setA(true);
+  const hideA = () => setA(false);
+
+  const [b, setB] = useState(false);
+  const showB = () => setB(true);
+  const hideB = () => setB(false);
 
   return (
     <ImageBackground style={styles.imgBackground}
@@ -93,16 +100,30 @@ export default () => {
     >
       <Provider>
         <View style={styles.bottomZone}>
-          <Mybutton title='Create Notebook' customClick={showModal} />
+          <Mybutton title='Create Notebook' customClick={showA} />
           <Portal>
-            <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.inputDialog}>
+            <Modal visible={a} onDismiss={hideA} contentContainerStyle={styles.inputDialog}>
               <MyTextInput label='Enter Notebook Name' />
-              <Button mode='contained' onPress={CreateNB} style={styles.ctaButton}>
+              <Button mode='contained' onPress={CreateNB} style={styles.smallbutton}>
                 Create
               </Button>
             </Modal>
           </Portal>
-          <Mybutton title='Open Notebook' customClick={OpenNB} />
+          <Mybutton title='Open Notebook' customClick={showB} />
+          <Portal>
+            <Modal visible={b} onDismiss={hideB} contentContainerStyle={styles.bottomDialog}>
+              <Text style={styles.addWordInput}>Select a Notebook</Text>
+              <ScrollView>
+                <Text style={styles.searchResultsContainer}>Notebook 1</Text>
+                <Text style={styles.searchResultsContainer}>Notebook 1</Text>
+                <Text style={styles.searchResultsContainer}>Notebook 1</Text>
+                <Text style={styles.searchResultsContainer}>Notebook 1</Text>
+              </ScrollView>
+              <MyButton mode='contained' styles={styles.smallbutton}>
+                Select
+              </MyButton>
+            </Modal>
+          </Portal>
           <Mybutton title='About App' customClick={AboutApp} />
         </View>
       </Provider>

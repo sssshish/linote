@@ -455,7 +455,7 @@ export const styles = StyleSheet.create({
     instructionsTextExtraBlock: {
         marginTop: 0
     },
-    ctaButton: {
+    smallbutton: {
         marginTop: 10,
         marginBottom: 10,
         backgroundColor: mainpink,
@@ -571,6 +571,14 @@ export const styles = StyleSheet.create({
         right: '5%',
         left: '5%',
         borderRadius: 20
+    },
+    bottomDialog: {
+        height: 200,
+        width: '100%',
+        position: 'absolute',
+        backgroundColor: 'rgba(255, 255, 255, 0.93)',
+        bottom: 0,
+        alignItems: 'center'
     },
     createDeckCtaButton: {
         borderWidth: 1,

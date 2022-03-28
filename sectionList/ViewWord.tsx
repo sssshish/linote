@@ -43,6 +43,7 @@ const ViewWord = () => {
             <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center' }}>
                 <View style={{ flex: 1 }}>
                     <MyTextInput
+                        label='Enter Word id'
                         placeholder='Enter Word id'
                         onChangeText={
                             (inptWordId: React.SetStateAction<string>) => setInputWordId(inputWordId)
@@ -57,8 +58,8 @@ const ViewWord = () => {
                         <Text>Translation: </Text>
                         <Text>Word Type: </Text>
                         {/* {/* <Text>Word: {wordData.word}</Text> */}
-                        <Text>Translation: {wordData.translation}</Text>
-                        <Text>Comments: {wordData.description}</Text>
+                        {/* <Text>Translation: {wordData.translation}</Text>
+                        <Text>Comments: {wordData.description}</Text> */}
                         {/* <Text>Word Type: {wordData.word_type}</Text>*/}
                     </View>
                 </View>

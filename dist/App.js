@@ -39,9 +39,11 @@ const react_1 = __importStar(require("react"));
 const styles_1 = require("./myStyles/styles");
 const react_native_splash_screen_1 = __importDefault(require("react-native-splash-screen"));
 const react_native_1 = require("react-native");
-const MyButton_1 = __importDefault(require("./myComponents/MyButton"));
+const MyButton_1 = __importDefault(require("./myComponents/dist/MyButton"));
+const MyButton_2 = __importDefault(require("./myComponents/MyButton"));
 const react_native_paper_1 = require("react-native-paper");
 const MyTextInput_1 = __importDefault(require("./myComponents/MyTextInput"));
+const react_native_gesture_handler_1 = require("react-native-gesture-handler");
 // const onMenuClick = (index: number) => {
 //   switch (index) {
 //     case 0:
@@ -72,23 +74,40 @@ const AboutApp = () => {
 };
 exports.default = () => {
     react_native_splash_screen_1.default.hide();
-    const [visible, setVisible] = react_1.useState(false);
-    const showModal = () => setVisible(true);
-    const hideModal = () => setVisible(false);
+    const [a, setA] = react_1.useState(false);
+    const showA = () => setA(true);
+    const hideA = () => setA(false);
+    const [b, setB] = react_1.useState(false);
+    const showB = () => setB(true);
+    const hideB = () => setB(false);
     return (<react_native_1.ImageBackground style={styles_1.styles.imgBackground} resizeMode='contain' source={require('./assets/homepage.png')}>
       <react_native_paper_1.Provider>
         <react_native_1.View style={styles_1.styles.bottomZone}>
-          <MyButton_1.default title='Create Notebook' customClick={showModal}/>
+          <MyButton_2.default title='Create Notebook' customClick={showA}/>
           <react_native_paper_1.Portal>
-            <react_native_paper_1.Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles_1.styles.inputDialog}>
+            <react_native_paper_1.Modal visible={a} onDismiss={hideA} contentContainerStyle={styles_1.styles.inputDialog}>
               <MyTextInput_1.default label='Enter Notebook Name'/>
-              <react_native_paper_1.Button mode='contained' onPress={CreateNB} style={styles_1.styles.ctaButton}>
+              <react_native_paper_1.Button mode='contained' onPress={CreateNB} style={styles_1.styles.smallbutton}>
                 Create
               </react_native_paper_1.Button>
             </react_native_paper_1.Modal>
           </react_native_paper_1.Portal>
-          <MyButton_1.default title='Open Notebook' customClick={OpenNB}/>
-          <MyButton_1.default title='About App' customClick={AboutApp}/>
+          <MyButton_2.default title='Open Notebook' customClick={showB}/>
+          <react_native_paper_1.Portal>
+            <react_native_paper_1.Modal visible={b} onDismiss={hideB} contentContainerStyle={styles_1.styles.bottomDialog}>
+              <react_native_paper_1.Text style={styles_1.styles.addWordInput}>Select a Notebook</react_native_paper_1.Text>
+              <react_native_gesture_handler_1.ScrollView>
+                <react_native_paper_1.Text style={styles_1.styles.searchResultsContainer}>Notebook 1</react_native_paper_1.Text>
+                <react_native_paper_1.Text style={styles_1.styles.searchResultsContainer}>Notebook 1</react_native_paper_1.Text>
+                <react_native_paper_1.Text style={styles_1.styles.searchResultsContainer}>Notebook 1</react_native_paper_1.Text>
+                <react_native_paper_1.Text style={styles_1.styles.searchResultsContainer}>Notebook 1</react_native_paper_1.Text>
+              </react_native_gesture_handler_1.ScrollView>
+              <MyButton_1.default mode='contained' styles={styles_1.styles.smallbutton}>
+                Select
+              </MyButton_1.default>
+            </react_native_paper_1.Modal>
+          </react_native_paper_1.Portal>
+          <MyButton_2.default title='About App' customClick={AboutApp}/>
         </react_native_1.View>
       </react_native_paper_1.Provider>
     </react_native_1.ImageBackground>);

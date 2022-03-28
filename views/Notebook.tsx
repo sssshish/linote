@@ -22,7 +22,7 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
-import { List } from '../sectionList/List';
+import { List } from '../sectionList/Words';
 import { Wallet } from '../sectionCategory/Category';
 import { Quiz } from '../sectionQuiz/Quiz';
 import { Settings } from '../sectionInfo/Info';
