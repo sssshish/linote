@@ -10,6 +10,7 @@ var MyTextInput_1 = require("../myComponents/MyTextInput");
 var MyButton_1 = require("../myComponents/MyButton");
 var styles_1 = require("../myStyles/styles");
 var Dropdown_1 = require("../myComponents/Dropdown");
+// import ViewWord from '../sectionList/ViewWord';
 var SQLite = require('react-native-sqlite-storage');
 var db = SQLite.openDatabase({ name: 'dictionary.db' });
 //{ navigation: any }

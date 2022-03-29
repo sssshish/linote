@@ -22,8 +22,8 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
-import { List } from '../sectionList/Words';
-import { Wallet } from '../sectionCategory/Category';
+import { Words } from '../sectionList/Words';
+import { Category } from '../sectionCategory/Category';
 import { Quiz } from '../sectionQuiz/Quiz';
 import { Settings } from '../sectionInfo/Info';
 import { customTheme } from '../myUtils/customTheme';
@@ -31,7 +31,7 @@ import { fifthColor, lightblue, mainpink, white, black, styles } from '../myStyl
 import AddWords from './AddWords';
 import { SvgXml } from 'react-native-svg';
 import { plusSvg, challengeSvgBase, walletSvgBase, infoSvgBase, getCustomSvg, cardsSvgBase } from '../myUtils/customIcons';
-import ViewWord from '../sectionList/ViewWord';
+import { ViewWord } from '../sectionList/ViewWord';
 
 //Database connection code starts here
 
@@ -184,11 +184,11 @@ const Homepage = () => {
         switch (index) {
             case 0:
             default:
-                customNavigate('list');
+                customNavigate('words');
                 break;
 
             case 1:
-                customNavigate('wallet');
+                customNavigate('category');
                 break;
 
             case 2:
@@ -222,7 +222,7 @@ const Homepage = () => {
             <ApplicationProvider {...eva} theme={customTheme}>
                 <Layout style={styles.stackNavigatorWrapper} >
                     <Tab.Navigator
-                        initialRouteName='List'
+                        initialRouteName='Words'
                         screenOptions={{
                             tabBarActiveTintColor: mainpink,
                             tabBarInactiveTintColor: fifthColor,
@@ -231,8 +231,8 @@ const Homepage = () => {
                         }}
                     >
                         <Tab.Screen
-                            name='List'
-                            component={ViewWord}
+                            name='Words'
+                            component={Words}
                             options={{
                                 tabBarLabel: 'Words',
                                 tabBarIcon: WordsIcon,
@@ -245,11 +245,11 @@ const Homepage = () => {
                         />
                         <Tab.Screen
                             name='Wallet'
-                            component={Wallet}
+                            component={Category}
                             options={{
-                                tabBarLabel: 'Wallet',
+                                tabBarLabel: 'Category',
                                 tabBarIcon: CardsIcon,
-                                tabBarAccessibilityLabel: 'Wallet',
+                                tabBarAccessibilityLabel: 'Category',
                                 tabBarActiveBackgroundColor: lightblue,
                                 headerStyle: styles.coloredTopContainer,
                                 headerTintColor: white,

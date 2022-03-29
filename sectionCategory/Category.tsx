@@ -5,7 +5,7 @@ import { styles } from '../myStyles/styles';
 import { Layout } from '@ui-kitten/components';
 
 
-export const Wallet = () => {
+export const Category = () => {
     return (
         <Layout style={styles.megaWrap}>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

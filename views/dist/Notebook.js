@@ -28,6 +28,8 @@ var components_1 = require("@ui-kitten/components");
 var eva_icons_1 = require("@ui-kitten/eva-icons");
 var bottom_tabs_1 = require("@react-navigation/bottom-tabs");
 var native_1 = require("@react-navigation/native");
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+var Words_1 = require("../sectionList/Words");
 var Category_1 = require("../sectionCategory/Category");
 var Quiz_1 = require("../sectionQuiz/Quiz");
 var Info_1 = require("../sectionInfo/Info");
@@ -36,7 +38,6 @@ var styles_1 = require("../myStyles/styles");
 var AddWords_1 = require("./AddWords");
 var react_native_svg_1 = require("react-native-svg");
 var customIcons_1 = require("../myUtils/customIcons");
-var ViewWord_1 = require("../sectionList/ViewWord");
 //Database connection code starts here
 var DB_VERSION = '6.0.1';
 var SQLite = require('react-native-sqlite-storage');
@@ -107,10 +108,10 @@ var Homepage = function () {
         switch (index) {
             case 0:
             default:
-                customNavigate('list');
+                customNavigate('words');
                 break;
             case 1:
-                customNavigate('wallet');
+                customNavigate('category');
                 break;
             case 2:
                 customNavigate('add');
@@ -135,13 +136,13 @@ var Homepage = function () {
         react_1["default"].createElement(components_1.IconRegistry, { icons: eva_icons_1.EvaIconsPack }),
         react_1["default"].createElement(components_1.ApplicationProvider, __assign({}, eva, { theme: customTheme_1.customTheme }),
             react_1["default"].createElement(components_1.Layout, { style: styles_1.styles.stackNavigatorWrapper },
-                react_1["default"].createElement(Tab.Navigator, { initialRouteName: 'List', screenOptions: {
+                react_1["default"].createElement(Tab.Navigator, { initialRouteName: 'Words', screenOptions: {
                         tabBarActiveTintColor: styles_1.mainpink,
                         tabBarInactiveTintColor: styles_1.fifthColor,
                         tabBarShowLabel: false,
                         tabBarStyle: { position: 'absolute', height: 50 }
                     } },
-                    react_1["default"].createElement(Tab.Screen, { name: 'List', component: ViewWord_1["default"], options: {
+                    react_1["default"].createElement(Tab.Screen, { name: 'Words', component: Words_1.Words, options: {
                             tabBarLabel: 'Words',
                             tabBarIcon: WordsIcon,
                             tabBarAccessibilityLabel: 'Words',
@@ -150,10 +151,10 @@ var Homepage = function () {
                             headerTintColor: styles_1.white,
                             headerTitleStyle: styles_1.styles.whiteTextBold
                         } }),
-                    react_1["default"].createElement(Tab.Screen, { name: 'Wallet', component: Category_1.Wallet, options: {
-                            tabBarLabel: 'Wallet',
+                    react_1["default"].createElement(Tab.Screen, { name: 'Wallet', component: Category_1.Category, options: {
+                            tabBarLabel: 'Category',
                             tabBarIcon: CardsIcon,
-                            tabBarAccessibilityLabel: 'Wallet',
+                            tabBarAccessibilityLabel: 'Category',
                             tabBarActiveBackgroundColor: styles_1.lightblue,
                             headerStyle: styles_1.styles.coloredTopContainer,
                             headerTintColor: styles_1.white,

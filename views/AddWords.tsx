@@ -17,7 +17,7 @@ import Mybutton from '../myComponents/MyButton';
 import { styles } from '../myStyles/styles';
 import { NavigationRouteContext } from '@react-navigation/native';
 import DropdownComponent from '../myComponents/Dropdown';
-import ViewWord from '../sectionList/ViewWord';
+// import ViewWord from '../sectionList/ViewWord';
 
 const SQLite = require('react-native-sqlite-storage');
 
