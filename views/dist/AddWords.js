@@ -1,4 +1,5 @@
 "use strict";
+/* eslint-disable @typescript-eslint/no-shadow */
 /*AddWords.tsx contains a form-like view to add new words in a Notebook*/
 exports.__esModule = true;
 /* eslint-disable react-native/no-inline-styles */
@@ -26,9 +27,8 @@ var AddWords = function () {
             react_native_1.Alert.alert('Translation cannot be empty.');
             return;
         }
-        db.transaction(function (tx) {
-            var test = 'tbletest';
-            tx.executeSql('INSERT INTO' + test + '(word, translation, description) VALUES (?,?,?)', [word, translation, description], function (trans, results) {
+        db.transaction(function (tx, nbname) {
+            tx.executeSql('INSERT INTO' + nbname + '(word, translation, description) VALUES (?,?,?)', [word, translation, description], function (trans, results) {
                 console.log('Results', results.rowsAffected);
                 if (results.rowsAffected > 0) {
                     react_native_1.Alert.alert('Success', 'You word has been added successfully', [
@@ -49,10 +49,10 @@ var AddWords = function () {
             react_1["default"].createElement(react_native_1.View, { style: { flex: 1 } },
                 react_1["default"].createElement(react_native_1.ScrollView, { keyboardShouldPersistTaps: 'handled' },
                     react_1["default"].createElement(react_native_1.KeyboardAvoidingView, { behavior: 'padding', style: { flex: 1, justifyContent: 'space-between' } },
-                        react_1["default"].createElement(MyTextInput_1["default"], { label: 'Word', onChangeText: function (wrd) { return setWord(word); } }),
-                        react_1["default"].createElement(MyTextInput_1["default"], { label: 'Translation', onChangeText: function (trns) { return setTranslation(translation); } }),
+                        react_1["default"].createElement(MyTextInput_1["default"], { label: 'Word', onChangeText: function (word) { return setWord(word); } }),
+                        react_1["default"].createElement(MyTextInput_1["default"], { label: 'Translation', onChangeText: function (translation) { return setTranslation(translation); } }),
                         react_1["default"].createElement(Dropdown_1["default"], null),
-                        react_1["default"].createElement(MyTextInput_1["default"], { label: 'Description', onChangeText: function (desc) { return setDescription(description); }, maxLength: 225, numberOfLines: 5, multiline: true }),
+                        react_1["default"].createElement(MyTextInput_1["default"], { label: 'Description', onChangeText: function (description) { return setDescription(description); }, maxLength: 225, numberOfLines: 5, multiline: true }),
                         react_1["default"].createElement(MyButton_1["default"], { title: 'Submit', customClick: register_word })))))));
 };
 exports["default"] = AddWords;

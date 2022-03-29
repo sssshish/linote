@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /*AddWords.tsx contains a form-like view to add new words in a Notebook*/
 
 /* eslint-disable react-native/no-inline-styles */
@@ -41,9 +42,8 @@ const AddWords = () => {
             Alert.alert('Translation cannot be empty.');
             return;
         }
-        db.transaction((tx: any) => {
-            const test = 'tbletest';
-            tx.executeSql('INSERT INTO' + test + '(word, translation, description) VALUES (?,?,?)',
+        db.transaction((tx: any, nbname: String) => {
+            tx.executeSql('INSERT INTO' + nbname + '(word, translation, description) VALUES (?,?,?)',
                 [word, translation, description],
                 (trans: any, results: { rowsAffected: number; }) => {
                     console.log('Results', results.rowsAffected);
@@ -76,14 +76,14 @@ const AddWords = () => {
                             <MyTextInput
                                 label='Word'
                                 onChangeText={
-                                    (wrd: React.SetStateAction<string>) => setWord(word)
+                                    (word: React.SetStateAction<string>) => setWord(word)
                                 }
                             />
 
                             <MyTextInput
                                 label='Translation'
                                 onChangeText={
-                                    (trns: React.SetStateAction<string>) => setTranslation(translation)
+                                    (translation: React.SetStateAction<string>) => setTranslation(translation)
                                 }
                             />
 
@@ -92,7 +92,7 @@ const AddWords = () => {
                             <MyTextInput
                                 label='Description'
                                 onChangeText={
-                                    (desc: React.SetStateAction<string>) => setDescription(description)
+                                    (description: React.SetStateAction<string>) => setDescription(description)
                                 }
                                 maxLength={225}
                                 numberOfLines={5}

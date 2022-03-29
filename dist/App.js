@@ -44,35 +44,41 @@ const MyButton_2 = __importDefault(require("./myComponents/MyButton"));
 const react_native_paper_1 = require("react-native-paper");
 const MyTextInput_1 = __importDefault(require("./myComponents/MyTextInput"));
 const react_native_gesture_handler_1 = require("react-native-gesture-handler");
-// const onMenuClick = (index: number) => {
-//   switch (index) {
-//     case 0:
-//     default:
-//       customNavigate('list');
-//       break;
-//     case 1:
-//       customNavigate('training-mode');
-//       break;
-//     case 2:
-//       customNavigate('add');
-//       break;
-//     case 3:
-//       customNavigate('challenge-mode');
-//       break;
-//     case 4:
-//       customNavigate('info');
-//       break;
-//   }
-//   setSelectedIndex(index);
-//   setTapsCount(0);
-// };
-const CreateNB = () => {
+const DB_VERSION = '6.0.1';
+const SQLite = require('react-native-sqlite-storage');
+const okCallback = () => {
+    console.log('Connected to DB');
 };
-const OpenNB = () => {
+const errorCallback = (error) => {
+    console.log('DB connection error', error);
+};
+// const okDeletionCallback = () => {
+//   console.log('I deleted the database');
+//   SQLite.openDatabase({ name: 'linote.db', createFromLocation: 1 }, okCallback, errorCallback);
+// };
+// const errorDeletionCallback = (error: any) => {
+//   console.log('Error while deleting DB', error);
+// };
+const db = SQLite.openDatabase({ name: 'dictionary.db', createFromLocation: 2 }, okCallback, errorCallback);
+const openNB = (nbName) => {
+    if (!nbName) {
+        react_native_1.Alert.alert('Notebook doesn\'t exist. Please create a Notebook first.');
+        return;
+    }
 };
 const AboutApp = () => {
 };
 exports.default = () => {
+    let CreateNB = (nbName) => {
+        const query = 'CREATE TABLE IF NOT EXISTS ' + nbName + '(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL,word_type TEXT NOT NULL, morph_type TEXT, description TEXT);';
+        db.transaction((tx) => {
+            tx.executeSql(query, [], (trans, results) => {
+                console.log('Notebook created - ', nbName);
+            }, (error) => {
+                console.log('Error creating notebook', error);
+            });
+        });
+    };
     react_native_splash_screen_1.default.hide();
     const [a, setA] = react_1.useState(false);
     const showA = () => setA(true);
@@ -80,14 +86,15 @@ exports.default = () => {
     const [b, setB] = react_1.useState(false);
     const showB = () => setB(true);
     const hideB = () => setB(false);
+    const [nbName, setNBname] = react_1.useState('');
     return (<react_native_1.ImageBackground style={styles_1.styles.imgBackground} resizeMode='contain' source={require('./assets/homepage.png')}>
       <react_native_paper_1.Provider>
         <react_native_1.View style={styles_1.styles.bottomZone}>
           <MyButton_2.default title='Create Notebook' customClick={showA}/>
           <react_native_paper_1.Portal>
             <react_native_paper_1.Modal visible={a} onDismiss={hideA} contentContainerStyle={styles_1.styles.inputDialog}>
-              <MyTextInput_1.default label='Enter Notebook Name'/>
-              <react_native_paper_1.Button mode='contained' onPress={CreateNB} style={styles_1.styles.smallbutton}>
+              <MyTextInput_1.default label='Enter Notebook Name' onChangeText={(newnbName) => setNBname(newnbName)}/>
+              <react_native_paper_1.Button mode='contained' style={styles_1.styles.smallbutton} onPress={() => CreateNB(nbName)}>
                 Create
               </react_native_paper_1.Button>
             </react_native_paper_1.Modal>
@@ -97,12 +104,9 @@ exports.default = () => {
             <react_native_paper_1.Modal visible={b} onDismiss={hideB} contentContainerStyle={styles_1.styles.bottomDialog}>
               <react_native_paper_1.Text style={styles_1.styles.addWordInput}>Select a Notebook</react_native_paper_1.Text>
               <react_native_gesture_handler_1.ScrollView>
-                <react_native_paper_1.Text style={styles_1.styles.searchResultsContainer}>Notebook 1</react_native_paper_1.Text>
-                <react_native_paper_1.Text style={styles_1.styles.searchResultsContainer}>Notebook 1</react_native_paper_1.Text>
-                <react_native_paper_1.Text style={styles_1.styles.searchResultsContainer}>Notebook 1</react_native_paper_1.Text>
-                <react_native_paper_1.Text style={styles_1.styles.searchResultsContainer}>Notebook 1</react_native_paper_1.Text>
+                <react_native_paper_1.Text style={styles_1.styles.searchResultsContainer}>Notebook List displayed here</react_native_paper_1.Text>
               </react_native_gesture_handler_1.ScrollView>
-              <MyButton_1.default mode='contained' styles={styles_1.styles.smallbutton}>
+              <MyButton_1.default mode='contained' styles={[styles_1.styles.smallbutton, styles_1.styles.createDeckCtaButton]}>
                 Select
               </MyButton_1.default>
             </react_native_paper_1.Modal>

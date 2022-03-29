@@ -44,44 +44,55 @@ import { Button, Modal, Portal, Provider, Text, TextInput } from 'react-native-p
 import MyTextInput from './myComponents/MyTextInput';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 
-// const onMenuClick = (index: number) => {
-//   switch (index) {
-//     case 0:
-//     default:
-//       customNavigate('list');
-//       break;
 
-//     case 1:
-//       customNavigate('training-mode');
-//       break;
+const DB_VERSION = '6.0.1';
 
-//     case 2:
-//       customNavigate('add');
-//       break;
+const SQLite = require('react-native-sqlite-storage');
 
-//     case 3:
-//       customNavigate('challenge-mode');
-//       break;
+const okCallback = () => {
+  console.log('Connected to DB');
+};
 
-//     case 4:
-//       customNavigate('info');
-//       break;
-//   }
+const errorCallback = (error: any) => {
+  console.log('DB connection error', error);
+};
 
-//   setSelectedIndex(index);
-
-//   setTapsCount(0);
+// const okDeletionCallback = () => {
+//   console.log('I deleted the database');
+//   SQLite.openDatabase({ name: 'linote.db', createFromLocation: 1 }, okCallback, errorCallback);
 // };
 
-const CreateNB = () => { //P-1
-};
-const OpenNB = () => { //P-1
+// const errorDeletionCallback = (error: any) => {
+//   console.log('Error while deleting DB', error);
+// };
+
+const db = SQLite.openDatabase({ name: 'dictionary.db', createFromLocation: 2 }, okCallback, errorCallback);
+
+const openNB = (nbName: String) => {
+  if (!nbName) {
+    Alert.alert('Notebook doesn\'t exist. Please create a Notebook first.');
+    return;
+  }
 };
 
 const AboutApp = () => { //P-3
 };
 
 export default () => {
+
+  let CreateNB = (nbName: String) => {
+
+    const query = 'CREATE TABLE IF NOT EXISTS ' + nbName + '(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL,word_type TEXT NOT NULL, morph_type TEXT, description TEXT);';
+    db.transaction((tx: any) => {
+      tx.executeSql(query, [], (trans: any, results: any) => {
+        console.log('Notebook created - ', nbName);
+      },
+        (error: any) => {
+          console.log('Error creating notebook', error);
+        }
+      );
+    });
+  };
 
   SplashScreen.hide();
 
@@ -93,6 +104,8 @@ export default () => {
   const showB = () => setB(true);
   const hideB = () => setB(false);
 
+  const [nbName, setNBname] = useState('');
+
   return (
     <ImageBackground style={styles.imgBackground}
       resizeMode='contain'
@@ -103,8 +116,10 @@ export default () => {
           <Mybutton title='Create Notebook' customClick={showA} />
           <Portal>
             <Modal visible={a} onDismiss={hideA} contentContainerStyle={styles.inputDialog}>
-              <MyTextInput label='Enter Notebook Name' />
-              <Button mode='contained' onPress={CreateNB} style={styles.smallbutton}>
+              <MyTextInput
+                label='Enter Notebook Name'
+                onChangeText={(newnbName: React.SetStateAction<string>) => setNBname(newnbName)} />
+              <Button mode='contained' style={styles.smallbutton} onPress={() => CreateNB(nbName)}>
                 Create
               </Button>
             </Modal>
@@ -114,12 +129,9 @@ export default () => {
             <Modal visible={b} onDismiss={hideB} contentContainerStyle={styles.bottomDialog}>
               <Text style={styles.addWordInput}>Select a Notebook</Text>
               <ScrollView>
-                <Text style={styles.searchResultsContainer}>Notebook 1</Text>
-                <Text style={styles.searchResultsContainer}>Notebook 1</Text>
-                <Text style={styles.searchResultsContainer}>Notebook 1</Text>
-                <Text style={styles.searchResultsContainer}>Notebook 1</Text>
+                <Text style={styles.searchResultsContainer}>Notebook List displayed here</Text>
               </ScrollView>
-              <MyButton mode='contained' styles={styles.smallbutton}>
+              <MyButton mode='contained' styles={[styles.smallbutton, styles.createDeckCtaButton]}>
                 Select
               </MyButton>
             </Modal>

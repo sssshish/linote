@@ -61,10 +61,38 @@ const db = SQLite.openDatabase({ name: 'dictionary.db', createFromLocation: 2 },
 
 //Bottom Tabs
 const Tab = createBottomTabNavigator();
+// const onMenuClick = (index: number) => {
+//   switch (index) {
+//     case 0:
+//     default:
+//       customNavigate('list');
+//       break;
+
+//     case 1:
+//       customNavigate('training-mode');
+//       break;
+
+//     case 2:
+//       customNavigate('add');
+//       break;
+
+//     case 3:
+//       customNavigate('challenge-mode');
+//       break;
+
+//     case 4:
+//       customNavigate('info');
+//       break;
+//   }
+
+//   setSelectedIndex(index);
+
+//   setTapsCount(0);
+// };
 
 
 //Icons
-const ListIcon = (props: IconProps) => {
+const WordsIcon = (props: IconProps) => {
 
     return (
         <SvgXml
@@ -206,9 +234,9 @@ const Homepage = () => {
                             name='List'
                             component={ViewWord}
                             options={{
-                                tabBarLabel: 'List',
-                                tabBarIcon: ListIcon,
-                                tabBarAccessibilityLabel: 'List',
+                                tabBarLabel: 'Words',
+                                tabBarIcon: WordsIcon,
+                                tabBarAccessibilityLabel: 'Words',
                                 tabBarActiveBackgroundColor: lightblue,
                                 headerStyle: styles.coloredTopContainer,
                                 headerTintColor: white,

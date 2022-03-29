@@ -56,8 +56,30 @@ var errorDeletionCallback = function (error) {
 var db = SQLite.openDatabase({ name: 'dictionary.db', createFromLocation: 2 }, okCallback, errorCallback);
 //Bottom Tabs
 var Tab = bottom_tabs_1.createBottomTabNavigator();
+// const onMenuClick = (index: number) => {
+//   switch (index) {
+//     case 0:
+//     default:
+//       customNavigate('list');
+//       break;
+//     case 1:
+//       customNavigate('training-mode');
+//       break;
+//     case 2:
+//       customNavigate('add');
+//       break;
+//     case 3:
+//       customNavigate('challenge-mode');
+//       break;
+//     case 4:
+//       customNavigate('info');
+//       break;
+//   }
+//   setSelectedIndex(index);
+//   setTapsCount(0);
+// };
 //Icons
-var ListIcon = function (props) {
+var WordsIcon = function (props) {
     return (react_1["default"].createElement(react_native_svg_1.SvgXml, { width: '32', height: '32', xml: customIcons_1.getCustomSvg(customIcons_1.walletSvgBase, 'rgb(184,59,94)') }));
 };
 var CardsIcon = function (props) {
@@ -120,9 +142,9 @@ var Homepage = function () {
                         tabBarStyle: { position: 'absolute', height: 50 }
                     } },
                     react_1["default"].createElement(Tab.Screen, { name: 'List', component: ViewWord_1["default"], options: {
-                            tabBarLabel: 'List',
-                            tabBarIcon: ListIcon,
-                            tabBarAccessibilityLabel: 'List',
+                            tabBarLabel: 'Words',
+                            tabBarIcon: WordsIcon,
+                            tabBarAccessibilityLabel: 'Words',
                             tabBarActiveBackgroundColor: styles_1.lightblue,
                             headerStyle: styles_1.styles.coloredTopContainer,
                             headerTintColor: styles_1.white,
