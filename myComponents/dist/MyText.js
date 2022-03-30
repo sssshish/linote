@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 exports.__esModule = true;
-var react_1 = require("react");
-var react_native_1 = require("react-native");
-var styles_1 = require("../myStyles/styles");
+var react_1 = require('react');
+var react_native_1 = require('react-native');
+var styles_1 = require('../myStyles/styles');
 var Mytext = function (props) {
-    return react_1["default"].createElement(react_native_1.Text, { style: styles.text }, props.text);
+    return react_1.default.createElement(react_native_1.Text, { style: styles.text }, props.text);
 };
 var styles = react_native_1.StyleSheet.create({
     text: {
@@ -15,4 +15,4 @@ var styles = react_native_1.StyleSheet.create({
         marginRight: 35
     }
 });
-exports["default"] = Mytext;
+exports.default = Mytext;

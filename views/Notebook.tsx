@@ -174,9 +174,21 @@ type TAppData = {
     // increaseTapsCount: () => void;
 };
 
-export const AppContext = React.createContext({} as TAppData);
+export const HomeContext = React.createContext({} as menuData);
+
+type menuData = {
+    selectedIndex: number;
+    deviceNotchSize: number;
+    db: any;
+    customNavigate: (route: string) => void;
+    onMenuClick: (index: number) => void;
+};
+
 
 const Homepage = () => {
+
+    const currentRouteObj = navigationRef.current?.getCurrentRoute();
+    const currentRoute = currentRouteObj?.name;
 
     const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -184,30 +196,31 @@ const Homepage = () => {
         switch (index) {
             case 0:
             default:
-                customNavigate('words');
+                customNavigate('Words');
                 break;
 
             case 1:
-                customNavigate('category');
+                customNavigate('Category');
                 break;
 
             case 2:
-                customNavigate('add');
+                customNavigate('Add');
                 break;
 
             case 3:
-                customNavigate('quiz');
+                customNavigate('Quiz');
                 break;
 
             case 4:
-                customNavigate('settings');
+                customNavigate('ettings');
                 break;
         }
 
         setSelectedIndex(index);
     };
 
-    const appData: TAppData = {
+
+    const mData: menuData = {
         selectedIndex: 0,
         deviceNotchSize: 0,
         db: undefined,
@@ -220,82 +233,84 @@ const Homepage = () => {
         <NavigationContainer ref={navigationRef}>
             <IconRegistry icons={EvaIconsPack} />
             <ApplicationProvider {...eva} theme={customTheme}>
-                <Layout style={styles.stackNavigatorWrapper} >
-                    <Tab.Navigator
-                        initialRouteName='Words'
-                        screenOptions={{
-                            tabBarActiveTintColor: mainpink,
-                            tabBarInactiveTintColor: fifthColor,
-                            tabBarShowLabel: false,
-                            tabBarStyle: { position: 'absolute', height: 50 }
-                        }}
-                    >
-                        <Tab.Screen
-                            name='Words'
-                            component={Words}
-                            options={{
-                                tabBarLabel: 'Words',
-                                tabBarIcon: WordsIcon,
-                                tabBarAccessibilityLabel: 'Words',
-                                tabBarActiveBackgroundColor: lightblue,
-                                headerStyle: styles.coloredTopContainer,
-                                headerTintColor: white,
-                                headerTitleStyle: styles.whiteTextBold
+                <HomeContext.Provider value={mData}>
+                    <Layout style={styles.stackNavigatorWrapper} >
+                        <Tab.Navigator
+                            initialRouteName='Words'
+                            screenOptions={{
+                                tabBarActiveTintColor: mainpink,
+                                tabBarInactiveTintColor: fifthColor,
+                                tabBarShowLabel: false,
+                                tabBarStyle: { position: 'absolute', height: 50 }
                             }}
-                        />
-                        <Tab.Screen
-                            name='Wallet'
-                            component={Category}
-                            options={{
-                                tabBarLabel: 'Category',
-                                tabBarIcon: CardsIcon,
-                                tabBarAccessibilityLabel: 'Category',
-                                tabBarActiveBackgroundColor: lightblue,
-                                headerStyle: styles.coloredTopContainer,
-                                headerTintColor: white,
-                                headerTitleStyle: styles.whiteTextBold
+                        >
+                            <Tab.Screen
+                                name='Words'
+                                component={Words}
+                                options={{
+                                    tabBarLabel: 'Words',
+                                    tabBarIcon: WordsIcon,
+                                    tabBarAccessibilityLabel: 'Words',
+                                    tabBarActiveBackgroundColor: lightblue,
+                                    headerStyle: styles.coloredTopContainer,
+                                    headerTintColor: white,
+                                    headerTitleStyle: styles.whiteTextBold
+                                }}
+                            />
+                            <Tab.Screen
+                                name='Wallet'
+                                component={Category}
+                                options={{
+                                    tabBarLabel: 'Category',
+                                    tabBarIcon: CardsIcon,
+                                    tabBarAccessibilityLabel: 'Category',
+                                    tabBarActiveBackgroundColor: lightblue,
+                                    headerStyle: styles.coloredTopContainer,
+                                    headerTintColor: white,
+                                    headerTitleStyle: styles.whiteTextBold
 
-                            }}
-                        />
-                        <Tab.Screen
-                            name='New word'
-                            component={AddWords}
-                            options={{
-                                tabBarIcon: PlusIcon,
-                                tabBarHideOnKeyboard: true,
-                                headerStyle: styles.coloredTopContainer,
-                                headerTintColor: white,
-                                headerTitleStyle: styles.whiteTextBold
-                            }}
-                        />
-                        <Tab.Screen
-                            name='Quiz'
-                            component={Quiz}
-                            options={{
-                                tabBarLabel: 'Quiz',
-                                tabBarIcon: PlayIcon,
-                                tabBarAccessibilityLabel: 'Quiz',
-                                tabBarActiveBackgroundColor: lightblue,
-                                headerStyle: styles.coloredTopContainer,
-                                headerTintColor: white,
-                                headerTitleStyle: styles.whiteTextBold
-                            }}
-                        />
-                        <Tab.Screen
-                            name='Settings'
-                            component={Settings}
-                            options={{
-                                tabBarLabel: 'Settings',
-                                tabBarIcon: InfoIcon,
-                                tabBarAccessibilityLabel: 'Settings',
-                                tabBarActiveBackgroundColor: lightblue,
-                                headerStyle: styles.coloredTopContainer,
-                                headerTintColor: white,
-                                headerTitleStyle: styles.whiteTextBold
-                            }}
-                        />
-                    </Tab.Navigator>
-                </Layout>
+                                }}
+                            />
+                            <Tab.Screen
+                                name='New word'
+                                component={AddWords}
+                                options={{
+                                    tabBarIcon: PlusIcon,
+                                    tabBarHideOnKeyboard: true,
+                                    headerStyle: styles.coloredTopContainer,
+                                    headerTintColor: white,
+                                    headerTitleStyle: styles.whiteTextBold
+                                }}
+                            />
+                            <Tab.Screen
+                                name='Quiz'
+                                component={Quiz}
+                                options={{
+                                    tabBarLabel: 'Quiz',
+                                    tabBarIcon: PlayIcon,
+                                    tabBarAccessibilityLabel: 'Quiz',
+                                    tabBarActiveBackgroundColor: lightblue,
+                                    headerStyle: styles.coloredTopContainer,
+                                    headerTintColor: white,
+                                    headerTitleStyle: styles.whiteTextBold
+                                }}
+                            />
+                            <Tab.Screen
+                                name='Settings'
+                                component={Settings}
+                                options={{
+                                    tabBarLabel: 'Settings',
+                                    tabBarIcon: InfoIcon,
+                                    tabBarAccessibilityLabel: 'Settings',
+                                    tabBarActiveBackgroundColor: lightblue,
+                                    headerStyle: styles.coloredTopContainer,
+                                    headerTintColor: white,
+                                    headerTitleStyle: styles.whiteTextBold
+                                }}
+                            />
+                        </Tab.Navigator>
+                    </Layout>
+                </HomeContext.Provider>
             </ApplicationProvider>
         </NavigationContainer >
     );

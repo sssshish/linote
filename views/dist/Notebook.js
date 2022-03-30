@@ -20,7 +20,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 exports.__esModule = true;
-exports.AppContext = exports.navigationRef = void 0;
+exports.HomeContext = exports.navigationRef = void 0;
 /* eslint-disable @typescript-eslint/no-unused-vars */
 var react_1 = require("react");
 var eva = require("@eva-design/eva");
@@ -101,31 +101,34 @@ var customNavigate = function (route) {
     var _a;
     (_a = exports.navigationRef.current) === null || _a === void 0 ? void 0 : _a.navigate(route);
 };
-exports.AppContext = react_1["default"].createContext({});
+exports.HomeContext = react_1["default"].createContext({});
 var Homepage = function () {
-    var _a = react_1.useState(0), selectedIndex = _a[0], setSelectedIndex = _a[1];
+    var _a;
+    var currentRouteObj = (_a = exports.navigationRef.current) === null || _a === void 0 ? void 0 : _a.getCurrentRoute();
+    var currentRoute = currentRouteObj === null || currentRouteObj === void 0 ? void 0 : currentRouteObj.name;
+    var _b = react_1.useState(0), selectedIndex = _b[0], setSelectedIndex = _b[1];
     var onMenuClick = function (index) {
         switch (index) {
             case 0:
             default:
-                customNavigate('words');
+                customNavigate('Words');
                 break;
             case 1:
-                customNavigate('category');
+                customNavigate('Category');
                 break;
             case 2:
-                customNavigate('add');
+                customNavigate('Add');
                 break;
             case 3:
-                customNavigate('quiz');
+                customNavigate('Quiz');
                 break;
             case 4:
-                customNavigate('settings');
+                customNavigate('ettings');
                 break;
         }
         setSelectedIndex(index);
     };
-    var appData = {
+    var mData = {
         selectedIndex: 0,
         deviceNotchSize: 0,
         db: undefined,
@@ -135,55 +138,56 @@ var Homepage = function () {
     return (react_1["default"].createElement(native_1.NavigationContainer, { ref: exports.navigationRef },
         react_1["default"].createElement(components_1.IconRegistry, { icons: eva_icons_1.EvaIconsPack }),
         react_1["default"].createElement(components_1.ApplicationProvider, __assign({}, eva, { theme: customTheme_1.customTheme }),
-            react_1["default"].createElement(components_1.Layout, { style: styles_1.styles.stackNavigatorWrapper },
-                react_1["default"].createElement(Tab.Navigator, { initialRouteName: 'Words', screenOptions: {
-                        tabBarActiveTintColor: styles_1.mainpink,
-                        tabBarInactiveTintColor: styles_1.fifthColor,
-                        tabBarShowLabel: false,
-                        tabBarStyle: { position: 'absolute', height: 50 }
-                    } },
-                    react_1["default"].createElement(Tab.Screen, { name: 'Words', component: Words_1.Words, options: {
-                            tabBarLabel: 'Words',
-                            tabBarIcon: WordsIcon,
-                            tabBarAccessibilityLabel: 'Words',
-                            tabBarActiveBackgroundColor: styles_1.lightblue,
-                            headerStyle: styles_1.styles.coloredTopContainer,
-                            headerTintColor: styles_1.white,
-                            headerTitleStyle: styles_1.styles.whiteTextBold
-                        } }),
-                    react_1["default"].createElement(Tab.Screen, { name: 'Wallet', component: Category_1.Category, options: {
-                            tabBarLabel: 'Category',
-                            tabBarIcon: CardsIcon,
-                            tabBarAccessibilityLabel: 'Category',
-                            tabBarActiveBackgroundColor: styles_1.lightblue,
-                            headerStyle: styles_1.styles.coloredTopContainer,
-                            headerTintColor: styles_1.white,
-                            headerTitleStyle: styles_1.styles.whiteTextBold
-                        } }),
-                    react_1["default"].createElement(Tab.Screen, { name: 'New word', component: AddWords_1["default"], options: {
-                            tabBarIcon: PlusIcon,
-                            tabBarHideOnKeyboard: true,
-                            headerStyle: styles_1.styles.coloredTopContainer,
-                            headerTintColor: styles_1.white,
-                            headerTitleStyle: styles_1.styles.whiteTextBold
-                        } }),
-                    react_1["default"].createElement(Tab.Screen, { name: 'Quiz', component: Quiz_1.Quiz, options: {
-                            tabBarLabel: 'Quiz',
-                            tabBarIcon: PlayIcon,
-                            tabBarAccessibilityLabel: 'Quiz',
-                            tabBarActiveBackgroundColor: styles_1.lightblue,
-                            headerStyle: styles_1.styles.coloredTopContainer,
-                            headerTintColor: styles_1.white,
-                            headerTitleStyle: styles_1.styles.whiteTextBold
-                        } }),
-                    react_1["default"].createElement(Tab.Screen, { name: 'Settings', component: Info_1.Settings, options: {
-                            tabBarLabel: 'Settings',
-                            tabBarIcon: InfoIcon,
-                            tabBarAccessibilityLabel: 'Settings',
-                            tabBarActiveBackgroundColor: styles_1.lightblue,
-                            headerStyle: styles_1.styles.coloredTopContainer,
-                            headerTintColor: styles_1.white,
-                            headerTitleStyle: styles_1.styles.whiteTextBold
-                        } }))))));
+            react_1["default"].createElement(exports.HomeContext.Provider, { value: mData },
+                react_1["default"].createElement(components_1.Layout, { style: styles_1.styles.stackNavigatorWrapper },
+                    react_1["default"].createElement(Tab.Navigator, { initialRouteName: 'Words', screenOptions: {
+                            tabBarActiveTintColor: styles_1.mainpink,
+                            tabBarInactiveTintColor: styles_1.fifthColor,
+                            tabBarShowLabel: false,
+                            tabBarStyle: { position: 'absolute', height: 50 }
+                        } },
+                        react_1["default"].createElement(Tab.Screen, { name: 'Words', component: Words_1.Words, options: {
+                                tabBarLabel: 'Words',
+                                tabBarIcon: WordsIcon,
+                                tabBarAccessibilityLabel: 'Words',
+                                tabBarActiveBackgroundColor: styles_1.lightblue,
+                                headerStyle: styles_1.styles.coloredTopContainer,
+                                headerTintColor: styles_1.white,
+                                headerTitleStyle: styles_1.styles.whiteTextBold
+                            } }),
+                        react_1["default"].createElement(Tab.Screen, { name: 'Wallet', component: Category_1.Category, options: {
+                                tabBarLabel: 'Category',
+                                tabBarIcon: CardsIcon,
+                                tabBarAccessibilityLabel: 'Category',
+                                tabBarActiveBackgroundColor: styles_1.lightblue,
+                                headerStyle: styles_1.styles.coloredTopContainer,
+                                headerTintColor: styles_1.white,
+                                headerTitleStyle: styles_1.styles.whiteTextBold
+                            } }),
+                        react_1["default"].createElement(Tab.Screen, { name: 'New word', component: AddWords_1["default"], options: {
+                                tabBarIcon: PlusIcon,
+                                tabBarHideOnKeyboard: true,
+                                headerStyle: styles_1.styles.coloredTopContainer,
+                                headerTintColor: styles_1.white,
+                                headerTitleStyle: styles_1.styles.whiteTextBold
+                            } }),
+                        react_1["default"].createElement(Tab.Screen, { name: 'Quiz', component: Quiz_1.Quiz, options: {
+                                tabBarLabel: 'Quiz',
+                                tabBarIcon: PlayIcon,
+                                tabBarAccessibilityLabel: 'Quiz',
+                                tabBarActiveBackgroundColor: styles_1.lightblue,
+                                headerStyle: styles_1.styles.coloredTopContainer,
+                                headerTintColor: styles_1.white,
+                                headerTitleStyle: styles_1.styles.whiteTextBold
+                            } }),
+                        react_1["default"].createElement(Tab.Screen, { name: 'Settings', component: Info_1.Settings, options: {
+                                tabBarLabel: 'Settings',
+                                tabBarIcon: InfoIcon,
+                                tabBarAccessibilityLabel: 'Settings',
+                                tabBarActiveBackgroundColor: styles_1.lightblue,
+                                headerStyle: styles_1.styles.coloredTopContainer,
+                                headerTintColor: styles_1.white,
+                                headerTitleStyle: styles_1.styles.whiteTextBold
+                            } })))))));
 };
 exports["default"] = Homepage;

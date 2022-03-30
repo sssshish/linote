@@ -16,7 +16,7 @@ import MyTextInput from '../myComponents/MyTextInput';
 import Mybutton from '../myComponents/MyButton';
 import { styles } from '../myStyles/styles';
 import { NavigationRouteContext } from '@react-navigation/native';
-import DropdownComponent from '../myComponents/Dropdown';
+import MyDropDown from '../myComponents/Dropdown';
 // import ViewWord from '../sectionList/ViewWord';
 
 const SQLite = require('react-native-sqlite-storage');
@@ -27,9 +27,27 @@ const db = SQLite.openDatabase({ name: 'dictionary.db' });
 //{ navigation: any }
 
 const AddWords = () => {
+
     let [word, setWord] = useState('');
     let [translation, setTranslation] = useState('');
     let [description, setDescription] = useState('');
+
+    const wordtypes = [
+        { label: 'Adjective', value: '1' },
+        { label: 'Adposition', value: '2' },
+        { label: 'Adverb', value: '3' },
+        { label: 'Conjunction', value: '4' },
+        { label: 'Contraction', value: '5' },
+        { label: 'Classifier', value: '6' },
+        { label: 'Clitic', value: '7' },
+        { label: 'Determiner/Article', value: '8' },
+        { label: 'Interjection', value: '9' },
+        { label: 'Noun', value: '10' },
+        { label: 'Numeral', value: '11' },
+        { label: 'Preposition', value: '12' },
+        { label: 'Pronoun', value: '13' },
+        { label: 'Verb', value: '14' }
+    ];
 
     let register_word = () => {
         console.log(word, translation, description);
@@ -87,7 +105,7 @@ const AddWords = () => {
                                 }
                             />
 
-                            <DropdownComponent />
+                            <MyDropDown value={wordtypes} placeholder='Select word type' searchPlaceholder='Search' />
 
                             <MyTextInput
                                 label='Description'

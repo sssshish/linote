@@ -23,7 +23,6 @@ const errorCallback = (error: any) => {
 
 const db = SQLite.openDatabase({ name: 'dictionary.db' }, okCallback, errorCallback);
 
-// TO DO: add prop notebookName from Settings
 let makeNotebook = () => {
     db.transaction((tx: any) => {
 

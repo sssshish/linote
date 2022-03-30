@@ -27,7 +27,6 @@ var errorCallback = function (error) {
     console.log('DB connection error', error);
 };
 var db = SQLite.openDatabase({ name: 'dictionary.db' }, okCallback, errorCallback);
-// TO DO: add prop notebookName from Settings
 var makeNotebook = function () {
     db.transaction(function (tx) {
         var test = 'tbletest';

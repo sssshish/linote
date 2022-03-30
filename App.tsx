@@ -11,7 +11,7 @@
         3.2 App Info
 */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import * as eva from '@eva-design/eva';
 import {
   ApplicationProvider,
@@ -43,7 +43,8 @@ import Mybutton from './myComponents/MyButton';
 import { Button, Modal, Portal, Provider, Text, TextInput } from 'react-native-paper';
 import MyTextInput from './myComponents/MyTextInput';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
-
+import { HomeContext } from './views/Notebook';
+import Notebook from './views/dist/Notebook';
 
 const DB_VERSION = '6.0.1';
 
@@ -57,14 +58,14 @@ const errorCallback = (error: any) => {
   console.log('DB connection error', error);
 };
 
-// const okDeletionCallback = () => {
-//   console.log('I deleted the database');
-//   SQLite.openDatabase({ name: 'linote.db', createFromLocation: 1 }, okCallback, errorCallback);
-// };
+const okDeletionCallback = () => {
+  console.log('I deleted the database');
+  SQLite.openDatabase({ name: 'linote.db', createFromLocation: 1 }, okCallback, errorCallback);
+};
 
-// const errorDeletionCallback = (error: any) => {
-//   console.log('Error while deleting DB', error);
-// };
+const errorDeletionCallback = (error: any) => {
+  console.log('Error while deleting DB', error);
+};
 
 const db = SQLite.openDatabase({ name: 'dictionary.db', createFromLocation: 2 }, okCallback, errorCallback);
 
@@ -75,24 +76,29 @@ const openNB = (nbName: String) => {
   }
 };
 
-const AboutApp = () => { //P-3
+const AboutApp = (navigation: any) => {
 };
 
-export default () => {
+let CreateNB = (nbName: String) => {
+  const query = 'CREATE TABLE IF NOT EXISTS ' + nbName + '(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL,word_type TEXT NOT NULL, morph_type TEXT NOT NULL, description TEXT NOT NULL)';
+  db.transaction((tx: any) => {
+    tx.executeSql('CREATE TABLE IF NOT EXISTS ' + nbName + '(word_id INTEGER PRIMARY KEY,word TEXT NOT NULL,translation TEXT NOT NULL,word_type TEXT NOT NULL, morph_type TEXT NOT NULL, description TEXT NOT NULL)', [], (trans: any, results: any) => {
+      console.log('nbName after input = ', nbName);
+      console.log('Notebook created - ', nbName);
+    },
+      (error: any) => {
+        console.log('nbName after input = ', nbName);
+        console.log('Error creating notebook:', error);
+      }
+    );
+  });
+};
 
-  let CreateNB = (nbName: String) => {
 
-    const query = 'CREATE TABLE IF NOT EXISTS ' + nbName + '(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL,word_type TEXT NOT NULL, morph_type TEXT, description TEXT);';
-    db.transaction((tx: any) => {
-      tx.executeSql(query, [], (trans: any, results: any) => {
-        console.log('Notebook created - ', nbName);
-      },
-        (error: any) => {
-          console.log('Error creating notebook', error);
-        }
-      );
-    });
-  };
+export default (navigation: any) => {
+
+  const appData = useContext(HomeContext);
+  const { onMenuClick } = appData;
 
   SplashScreen.hide();
 
@@ -105,6 +111,7 @@ export default () => {
   const hideB = () => setB(false);
 
   const [nbName, setNBname] = useState('');
+  console.log('nbName before input = ', nbName);
 
   return (
     <ImageBackground style={styles.imgBackground}
@@ -118,7 +125,7 @@ export default () => {
             <Modal visible={a} onDismiss={hideA} contentContainerStyle={styles.inputDialog}>
               <MyTextInput
                 label='Enter Notebook Name'
-                onChangeText={(newnbName: React.SetStateAction<string>) => setNBname(newnbName)} />
+                onChangeText={(newnbName: React.SetStateAction<string>) => setNBname(nbName)} />
               <Button mode='contained' style={styles.smallbutton} onPress={() => CreateNB(nbName)}>
                 Create
               </Button>
@@ -136,7 +143,10 @@ export default () => {
               </MyButton>
             </Modal>
           </Portal>
-          <Mybutton title='About App' customClick={AboutApp} />
+          <Mybutton title='About App' />
+          <Button mode='contained' style={styles.smallbutton} onPress={() => onMenuClick(1)}>
+            Shortcut
+          </Button>
         </View>
       </Provider>
     </ImageBackground >

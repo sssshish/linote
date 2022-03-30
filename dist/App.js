@@ -44,6 +44,7 @@ const MyButton_2 = __importDefault(require("./myComponents/MyButton"));
 const react_native_paper_1 = require("react-native-paper");
 const MyTextInput_1 = __importDefault(require("./myComponents/MyTextInput"));
 const react_native_gesture_handler_1 = require("react-native-gesture-handler");
+const Notebook_1 = require("./views/Notebook");
 const DB_VERSION = '6.0.1';
 const SQLite = require('react-native-sqlite-storage');
 const okCallback = () => {
@@ -52,13 +53,13 @@ const okCallback = () => {
 const errorCallback = (error) => {
     console.log('DB connection error', error);
 };
-// const okDeletionCallback = () => {
-//   console.log('I deleted the database');
-//   SQLite.openDatabase({ name: 'linote.db', createFromLocation: 1 }, okCallback, errorCallback);
-// };
-// const errorDeletionCallback = (error: any) => {
-//   console.log('Error while deleting DB', error);
-// };
+const okDeletionCallback = () => {
+    console.log('I deleted the database');
+    SQLite.openDatabase({ name: 'linote.db', createFromLocation: 1 }, okCallback, errorCallback);
+};
+const errorDeletionCallback = (error) => {
+    console.log('Error while deleting DB', error);
+};
 const db = SQLite.openDatabase({ name: 'dictionary.db', createFromLocation: 2 }, okCallback, errorCallback);
 const openNB = (nbName) => {
     if (!nbName) {
@@ -66,19 +67,23 @@ const openNB = (nbName) => {
         return;
     }
 };
-const AboutApp = () => {
+const AboutApp = (navigation) => {
 };
-exports.default = () => {
-    let CreateNB = (nbName) => {
-        const query = 'CREATE TABLE IF NOT EXISTS ' + nbName + '(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL,word_type TEXT NOT NULL, morph_type TEXT, description TEXT);';
-        db.transaction((tx) => {
-            tx.executeSql(query, [], (trans, results) => {
-                console.log('Notebook created - ', nbName);
-            }, (error) => {
-                console.log('Error creating notebook', error);
-            });
+let CreateNB = (nbName) => {
+    const query = 'CREATE TABLE IF NOT EXISTS ' + nbName + '(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL,word_type TEXT NOT NULL, morph_type TEXT NOT NULL, description TEXT NOT NULL)';
+    db.transaction((tx) => {
+        tx.executeSql('CREATE TABLE IF NOT EXISTS ' + nbName + '(word_id INTEGER PRIMARY KEY,word TEXT NOT NULL,translation TEXT NOT NULL,word_type TEXT NOT NULL, morph_type TEXT NOT NULL, description TEXT NOT NULL)', [], (trans, results) => {
+            console.log('nbName after input = ', nbName);
+            console.log('Notebook created - ', nbName);
+        }, (error) => {
+            console.log('nbName after input = ', nbName);
+            console.log('Error creating notebook:', error);
         });
-    };
+    });
+};
+exports.default = (navigation) => {
+    const appData = react_1.useContext(Notebook_1.HomeContext);
+    const { onMenuClick } = appData;
     react_native_splash_screen_1.default.hide();
     const [a, setA] = react_1.useState(false);
     const showA = () => setA(true);
@@ -87,13 +92,14 @@ exports.default = () => {
     const showB = () => setB(true);
     const hideB = () => setB(false);
     const [nbName, setNBname] = react_1.useState('');
+    console.log('nbName before input = ', nbName);
     return (<react_native_1.ImageBackground style={styles_1.styles.imgBackground} resizeMode='contain' source={require('./assets/homepage.png')}>
       <react_native_paper_1.Provider>
         <react_native_1.View style={styles_1.styles.bottomZone}>
           <MyButton_2.default title='Create Notebook' customClick={showA}/>
           <react_native_paper_1.Portal>
             <react_native_paper_1.Modal visible={a} onDismiss={hideA} contentContainerStyle={styles_1.styles.inputDialog}>
-              <MyTextInput_1.default label='Enter Notebook Name' onChangeText={(newnbName) => setNBname(newnbName)}/>
+              <MyTextInput_1.default label='Enter Notebook Name' onChangeText={(newnbName) => setNBname(nbName)}/>
               <react_native_paper_1.Button mode='contained' style={styles_1.styles.smallbutton} onPress={() => CreateNB(nbName)}>
                 Create
               </react_native_paper_1.Button>
@@ -111,7 +117,10 @@ exports.default = () => {
               </MyButton_1.default>
             </react_native_paper_1.Modal>
           </react_native_paper_1.Portal>
-          <MyButton_2.default title='About App' customClick={AboutApp}/>
+          <MyButton_2.default title='About App'/>
+          <react_native_paper_1.Button mode='contained' style={styles_1.styles.smallbutton} onPress={() => onMenuClick(1)}>
+            Shortcut
+          </react_native_paper_1.Button>
         </react_native_1.View>
       </react_native_paper_1.Provider>
     </react_native_1.ImageBackground>);
