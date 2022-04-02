@@ -1,24 +1,27 @@
-/* App.tsx contains the code for homepage which will contain of the following:
+/* App.tsx contains two major screen components
+
+A) Homepage() contains the following:
     1. Linote app icon/image in background
     2. Button for Open Notebook
-        2.1 Dialog/View container to dislplay all notebooks
+        2.2 Button + Modal to create a NB
+        2.1 Modal to dislplay all NBs
             2.1.1 Search Button
-            2.1.2 List of Notebooks displayed by name and date (with delete button at side/swipe which calls deleteNB())
-            2.1.3 Plus icon which calls createNB()
-            2.1.4 Select Buttom which routes/navigates to Notebook.tsx
+            2.1.2 List of Notebooks displayed by name (with delete button at side/swipe which calls deleteNB())
+            2.1.3 Select Buttom which navigates to Notebook.tsx
     3. Button for About App
         3.1 App Icon
         3.2 App Info
 
-Homepage() contains the template for all Notebooks:
+B) Notebook() contains the template for all Notebooks:
     1. Header (with Home icon which routes to App.tsx)
     2. Bottom Tabs
-        2.1 List calls List.tsx (which will display all words)
+        2.1 Words calls Words.tsx (which will display all words)
         2.2 Category calls Category.tsx (which will display all categories)
         2.3 Quiz calls Quiz.tsx (which will display all quizes)
         2.4 Info calls Info.tsx (which will display info on NB)
         2.5 Plus icon calls Addwords.tsx (which will add new words to List and db)
 */
+
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext, useState } from 'react';
 import * as eva from '@eva-design/eva';
@@ -57,12 +60,6 @@ const okCallback = () => {
 const errorCallback = (error: any) => {
   console.log('DB connection error', error);
 };
-const okDeletionCallback = () => {
-  console.log('I deleted the database');
-};
-const errorDeletionCallback = (error: any) => {
-  console.log('Error while deleting DB', error);
-};
 const db = openDatabase({ name: 'dictionary.db' }, okCallback, errorCallback);
 
 //Function to open a Notebook from DB
@@ -89,6 +86,20 @@ export let CreateNB = (nbName: String) => {
       (error: any) => {
         console.log('nbName after input = ', nbName);
         console.log('Error creating notebook:', error);
+      }
+    );
+  });
+};
+
+//Function to create a Notebook (table)
+export let deleteNB = (nbName: String) => {
+  const query = 'DROP TABLE ' + nbName;
+  db.transaction((tx: any) => {
+    tx.executeSql(query, [], (trans: any, results: any) => {
+      console.log('Notebook deleted', nbName);
+    },
+      (error: any) => {
+        console.log('Error deleting notebook:', error);
       }
     );
   });
