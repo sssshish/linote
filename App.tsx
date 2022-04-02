@@ -43,15 +43,13 @@ import { SvgXml } from 'react-native-svg';
 import { plusSvg, challengeSvgBase, walletSvgBase, infoSvgBase, getCustomSvg, cardsSvgBase } from './myUtils/customIcons';
 import SplashScreen from 'react-native-splash-screen';
 import { Alert, ImageBackground, SafeAreaView, View } from 'react-native';
-import MyButton from './myComponents/dist/MyButton';
 import Mybutton from './myComponents/MyButton';
 import { Button, Modal, Portal, Provider, Text, TextInput } from 'react-native-paper';
 import MyTextInput from './myComponents/MyTextInput';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import { createNavigationContainerRef } from '@react-navigation/native';
 import { openDatabase } from 'react-native-sqlite-storage';
 import { createStackNavigator } from '@react-navigation/stack';
-import RNGestureHandlerButton from 'react-native-gesture-handler/lib/typescript/components/GestureHandlerButton';
 
 //Database connection starts here
 const okCallback = () => {
