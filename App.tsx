@@ -9,18 +9,21 @@
     3. Button for About App
         3.1 App Icon
         3.2 App Info
+
+Homepage() contains the template for all Notebooks:
+    1. Header (with Home icon which routes to App.tsx)
+    2. Bottom Tabs
+        2.1 List calls List.tsx (which will display all words)
+        2.2 Category calls Category.tsx (which will display all categories)
+        2.3 Quiz calls Quiz.tsx (which will display all quizes)
+        2.4 Info calls Info.tsx (which will display info on NB)
+        2.5 Plus icon calls Addwords.tsx (which will add new words to List and db)
 */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext, useState } from 'react';
 import * as eva from '@eva-design/eva';
 import {
-  ApplicationProvider,
-  IconRegistry,
-  Layout,
-  Icon,
-  IconProps,
-  Input,
-  StyleService
+  ApplicationProvider, IconRegistry, Layout, IconProps
 } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -35,7 +38,6 @@ import { fifthColor, lightblue, mainpink, white, black, styles } from './myStyle
 import AddWords from './views/AddWords';
 import { SvgXml } from 'react-native-svg';
 import { plusSvg, challengeSvgBase, walletSvgBase, infoSvgBase, getCustomSvg, cardsSvgBase } from './myUtils/customIcons';
-import { ViewWord } from './sectionList/ViewWord';
 import SplashScreen from 'react-native-splash-screen';
 import { Alert, ImageBackground, SafeAreaView, View } from 'react-native';
 import MyButton from './myComponents/dist/MyButton';
@@ -43,43 +45,41 @@ import Mybutton from './myComponents/MyButton';
 import { Button, Modal, Portal, Provider, Text, TextInput } from 'react-native-paper';
 import MyTextInput from './myComponents/MyTextInput';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
-import { HomeContext } from './views/Notebook';
-import Notebook from './views/dist/Notebook';
+import { createNavigationContainerRef } from '@react-navigation/native';
+import { openDatabase } from 'react-native-sqlite-storage';
+import { createStackNavigator } from '@react-navigation/stack';
+import RNGestureHandlerButton from 'react-native-gesture-handler/lib/typescript/components/GestureHandlerButton';
 
-const DB_VERSION = '6.0.1';
-
-const SQLite = require('react-native-sqlite-storage');
-
+//Database connection starts here
 const okCallback = () => {
   console.log('Connected to DB');
 };
-
 const errorCallback = (error: any) => {
   console.log('DB connection error', error);
 };
-
 const okDeletionCallback = () => {
   console.log('I deleted the database');
-  SQLite.openDatabase({ name: 'linote.db', createFromLocation: 1 }, okCallback, errorCallback);
 };
-
 const errorDeletionCallback = (error: any) => {
   console.log('Error while deleting DB', error);
 };
+const db = openDatabase({ name: 'dictionary.db' }, okCallback, errorCallback);
 
-const db = SQLite.openDatabase({ name: 'dictionary.db', createFromLocation: 2 }, okCallback, errorCallback);
-
+//Function to open a Notebook from DB
 const openNB = (nbName: String) => {
   if (!nbName) {
     Alert.alert('Notebook doesn\'t exist. Please create a Notebook first.');
     return;
   }
+  else {
+    return (
+      <Notebook />
+    );
+  }
 };
 
-const AboutApp = (navigation: any) => {
-};
-
-let CreateNB = (nbName: String) => {
+//Function to create a Notebook (table)
+export let CreateNB = (nbName: String) => {
   const query = 'CREATE TABLE IF NOT EXISTS ' + nbName + '(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL,word_type TEXT NOT NULL, morph_type TEXT NOT NULL, description TEXT NOT NULL)';
   db.transaction((tx: any) => {
     tx.executeSql('CREATE TABLE IF NOT EXISTS ' + nbName + '(word_id INTEGER PRIMARY KEY,word TEXT NOT NULL,translation TEXT NOT NULL,word_type TEXT NOT NULL, morph_type TEXT NOT NULL, description TEXT NOT NULL)', [], (trans: any, results: any) => {
@@ -94,13 +94,204 @@ let CreateNB = (nbName: String) => {
   });
 };
 
+//Function to display info on App
+const AboutApp = () => {
+  return (
+    <Text>About App Info + User Manual</Text>
+  );
+};
 
-export default (navigation: any) => {
+//Testing DB function (not implemented in final app)
+let testNB = () => {
+  db.transaction((tx: any) => {
+    tx.executeSql('INSERT INTO test (word) VALUES (testw)', [], (trans: any, results: any) => {
+      console.log('Test notebook updated.');
+    },
+      (error: any) => {
+        console.log('Error updating test notebook:', error);
+      }
+    );
+  });
+};
 
-  const appData = useContext(HomeContext);
-  const { onMenuClick } = appData;
 
-  SplashScreen.hide();
+//Initializing bottom tabs & navigation ref
+const Tab = createBottomTabNavigator();
+export const navigationRef = createNavigationContainerRef();
+export const customNavigate = (name: string) => {
+  if (navigationRef.isReady()) {
+    navigationRef.navigate(name as never);
+  }
+  else {
+    console.log('Navigation not rendered.');
+  }
+};
+export const onMenuClick = (index: number) => {
+  switch (index) {
+    case 0:
+    default:
+      customNavigate('Words');
+      break;
+
+    case 1:
+      customNavigate('Wallet');
+      break;
+
+    case 2:
+      customNavigate('AddWords');
+      break;
+
+    case 3:
+      customNavigate('Quiz');
+      break;
+
+    case 4:
+      customNavigate('Settings');
+      break;
+  }
+};
+
+//Initializing Stack navigator
+const Stack = createStackNavigator();
+
+//Import bottom tab icons
+const WordsIcon = (props: IconProps) => {
+  return (
+    <SvgXml
+      width='32'
+      height='32'
+      xml={getCustomSvg(walletSvgBase, 'rgb(184,59,94)')}
+    />
+  );
+};
+const CardsIcon = (props: IconProps) => {
+  return (
+    <SvgXml
+      width='32'
+      height='32'
+      xml={getCustomSvg(cardsSvgBase, 'rgb(184,59,94)')}
+    />
+  );
+};
+const PlusIcon = () => {
+  return (
+    <SvgXml
+      width='44'
+      height='44'
+      xml={plusSvg}
+      style={styles.plusIcon}
+    />
+  );
+};
+const PlayIcon = (props: IconProps) => {
+  return (
+    <SvgXml
+      width='32'
+      height='32'
+      xml={getCustomSvg(challengeSvgBase, 'rgb(184,59,94)')}
+    />
+  );
+};
+const InfoIcon = (props: IconProps) => {
+  return (
+    <SvgXml
+      width='32'
+      height='32'
+      xml={getCustomSvg(infoSvgBase, 'rgb(184,59,94)')}
+    />
+  );
+};
+
+
+//Notebook -> sectionWords, sectionCategory, sectionQuiz, sectionSettings + AddWords views
+const Notebook = () => {
+
+  return (
+    <NavigationContainer ref={navigationRef}>
+      <IconRegistry icons={EvaIconsPack} />
+      <ApplicationProvider {...eva} theme={customTheme}>
+        <Layout style={styles.stackNavigatorWrapper} >
+          <Tab.Navigator
+            initialRouteName='Words'
+            screenOptions={{
+              tabBarActiveTintColor: mainpink,
+              tabBarInactiveTintColor: fifthColor,
+              tabBarShowLabel: false,
+              tabBarStyle: { position: 'absolute', height: 50 }
+            }}
+          >
+            <Tab.Screen
+              name='Words'
+              component={Words}
+              options={{
+                tabBarLabel: 'Words',
+                tabBarIcon: WordsIcon,
+                tabBarAccessibilityLabel: 'Words',
+                tabBarActiveBackgroundColor: lightblue,
+                headerStyle: styles.coloredTopContainer,
+                headerTintColor: white,
+                headerTitleStyle: styles.whiteTextBold
+              }}
+            />
+            <Tab.Screen
+              name='Wallet'
+              component={Category}
+              options={{
+                tabBarLabel: 'Category',
+                tabBarIcon: CardsIcon,
+                tabBarAccessibilityLabel: 'Category',
+                tabBarActiveBackgroundColor: lightblue,
+                headerStyle: styles.coloredTopContainer,
+                headerTintColor: white,
+                headerTitleStyle: styles.whiteTextBold
+              }}
+            />
+            <Tab.Screen
+              name='AddWords'
+              component={AddWords}
+              options={{
+                tabBarIcon: PlusIcon,
+                tabBarHideOnKeyboard: true,
+                headerStyle: styles.coloredTopContainer,
+                headerTintColor: white,
+                headerTitleStyle: styles.whiteTextBold
+              }}
+            />
+            <Tab.Screen
+              name='Quiz'
+              component={Quiz}
+              options={{
+                tabBarLabel: 'Quiz',
+                tabBarIcon: PlayIcon,
+                tabBarAccessibilityLabel: 'Quiz',
+                tabBarActiveBackgroundColor: lightblue,
+                headerStyle: styles.coloredTopContainer,
+                headerTintColor: white,
+                headerTitleStyle: styles.whiteTextBold
+              }}
+            />
+            <Tab.Screen
+              name='Settings'
+              component={Settings}
+              options={{
+                tabBarLabel: 'Settings',
+                tabBarIcon: InfoIcon,
+                tabBarAccessibilityLabel: 'Settings',
+                tabBarActiveBackgroundColor: lightblue,
+                headerStyle: styles.coloredTopContainer,
+                headerTintColor: white,
+                headerTitleStyle: styles.whiteTextBold
+              }}
+            />
+          </Tab.Navigator>
+        </Layout>
+      </ApplicationProvider>
+    </NavigationContainer >
+  );
+};
+
+//Homepage -> openNB, createNB, AboutApp
+const Homepage = () => {
 
   const [a, setA] = useState(false);
   const showA = () => setA(true);
@@ -110,7 +301,7 @@ export default (navigation: any) => {
   const showB = () => setB(true);
   const hideB = () => setB(false);
 
-  const [nbName, setNBname] = useState('');
+  const [nbName, setNBname] = useState('Demo');
   console.log('nbName before input = ', nbName);
 
   return (
@@ -138,17 +329,42 @@ export default (navigation: any) => {
               <ScrollView>
                 <Text style={styles.searchResultsContainer}>Notebook List displayed here</Text>
               </ScrollView>
-              <MyButton mode='contained' styles={[styles.smallbutton, styles.createDeckCtaButton]}>
+              <Button mode='contained' style={styles.smallbutton} onPress={() => openNB}>
                 Select
-              </MyButton>
+              </Button>
             </Modal>
           </Portal>
           <Mybutton title='About App' />
-          <Button mode='contained' style={styles.smallbutton} onPress={() => onMenuClick(1)}>
+          <Button mode='contained' style={styles.smallbutton} onPress={() => onMenuClick(0)}>
             Shortcut
           </Button>
         </View>
       </Provider>
     </ImageBackground >
+  );
+};
+
+
+//Defaul App() containing the stack navigation for both screens
+export default () => {
+
+  SplashScreen.hide();
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName='Home'
+        screenOptions={
+          {
+            headerShown: false,
+            headerStatusBarHeight: 0,
+            headerBackgroundContainerStyle: {
+              backgroundColor: '#fcfcfc'
+            }
+          }
+        }>
+        <Stack.Screen name='Home' component={Homepage} />
+        <Stack.Screen name='Notebook' component={Notebook} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };

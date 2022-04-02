@@ -20,7 +20,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 exports.__esModule = true;
-exports.HomeContext = exports.navigationRef = void 0;
+exports.HomeContext = void 0;
 /* eslint-disable @typescript-eslint/no-unused-vars */
 var react_1 = require("react");
 var eva = require("@eva-design/eva");
@@ -38,47 +38,11 @@ var styles_1 = require("../myStyles/styles");
 var AddWords_1 = require("./AddWords");
 var react_native_svg_1 = require("react-native-svg");
 var customIcons_1 = require("../myUtils/customIcons");
-//Database connection code starts here
-var DB_VERSION = '6.0.1';
+var App_1 = require("../App");
 var SQLite = require('react-native-sqlite-storage');
-var okCallback = function () {
-    console.log('connected to DB');
-};
-var errorCallback = function (error) {
-    console.log('DB connection error', error);
-};
-var okDeletionCallback = function () {
-    console.log('I deleted the database');
-    SQLite.openDatabase({ name: 'dictionary.db', createFromLocation: 1 }, okCallback, errorCallback);
-};
-var errorDeletionCallback = function (error) {
-    console.log('Error while deleting DB', error);
-};
-var db = SQLite.openDatabase({ name: 'dictionary.db', createFromLocation: 2 }, okCallback, errorCallback);
+var db = SQLite.openDatabase({ name: 'dictionary.db' });
 //Bottom Tabs
 var Tab = bottom_tabs_1.createBottomTabNavigator();
-// const onMenuClick = (index: number) => {
-//   switch (index) {
-//     case 0:
-//     default:
-//       customNavigate('list');
-//       break;
-//     case 1:
-//       customNavigate('training-mode');
-//       break;
-//     case 2:
-//       customNavigate('add');
-//       break;
-//     case 3:
-//       customNavigate('challenge-mode');
-//       break;
-//     case 4:
-//       customNavigate('info');
-//       break;
-//   }
-//   setSelectedIndex(index);
-//   setTapsCount(0);
-// };
 //Icons
 var WordsIcon = function (props) {
     return (react_1["default"].createElement(react_native_svg_1.SvgXml, { width: '32', height: '32', xml: customIcons_1.getCustomSvg(customIcons_1.walletSvgBase, 'rgb(184,59,94)') }));
@@ -95,47 +59,15 @@ var PlayIcon = function (props) {
 var InfoIcon = function (props) {
     return (react_1["default"].createElement(react_native_svg_1.SvgXml, { width: '32', height: '32', xml: customIcons_1.getCustomSvg(customIcons_1.infoSvgBase, 'rgb(184,59,94)') }));
 };
-//NavigationRef
-exports.navigationRef = react_1["default"].createRef();
-var customNavigate = function (route) {
-    var _a;
-    (_a = exports.navigationRef.current) === null || _a === void 0 ? void 0 : _a.navigate(route);
-};
 exports.HomeContext = react_1["default"].createContext({});
 var Homepage = function () {
-    var _a;
-    var currentRouteObj = (_a = exports.navigationRef.current) === null || _a === void 0 ? void 0 : _a.getCurrentRoute();
-    var currentRoute = currentRouteObj === null || currentRouteObj === void 0 ? void 0 : currentRouteObj.name;
-    var _b = react_1.useState(0), selectedIndex = _b[0], setSelectedIndex = _b[1];
-    var onMenuClick = function (index) {
-        switch (index) {
-            case 0:
-            default:
-                customNavigate('Words');
-                break;
-            case 1:
-                customNavigate('Category');
-                break;
-            case 2:
-                customNavigate('Add');
-                break;
-            case 3:
-                customNavigate('Quiz');
-                break;
-            case 4:
-                customNavigate('ettings');
-                break;
-        }
-        setSelectedIndex(index);
-    };
+    var _a = react_1.useState(0), selectedIndex = _a[0], setSelectedIndex = _a[1];
     var mData = {
         selectedIndex: 0,
         deviceNotchSize: 0,
-        db: undefined,
-        customNavigate: customNavigate,
-        onMenuClick: onMenuClick
+        db: undefined
     };
-    return (react_1["default"].createElement(native_1.NavigationContainer, { ref: exports.navigationRef },
+    return (react_1["default"].createElement(native_1.NavigationContainer, { ref: App_1.navigationRef },
         react_1["default"].createElement(components_1.IconRegistry, { icons: eva_icons_1.EvaIconsPack }),
         react_1["default"].createElement(components_1.ApplicationProvider, __assign({}, eva, { theme: customTheme_1.customTheme }),
             react_1["default"].createElement(exports.HomeContext.Provider, { value: mData },
@@ -164,7 +96,7 @@ var Homepage = function () {
                                 headerTintColor: styles_1.white,
                                 headerTitleStyle: styles_1.styles.whiteTextBold
                             } }),
-                        react_1["default"].createElement(Tab.Screen, { name: 'New word', component: AddWords_1["default"], options: {
+                        react_1["default"].createElement(Tab.Screen, { name: 'AddWords', component: AddWords_1["default"], options: {
                                 tabBarIcon: PlusIcon,
                                 tabBarHideOnKeyboard: true,
                                 headerStyle: styles_1.styles.coloredTopContainer,

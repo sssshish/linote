@@ -581,15 +581,17 @@ export const styles = StyleSheet.create({
         alignItems: 'center'
     },
     createDeckCtaButton: {
-        borderWidth: 1,
         alignItems: 'center',
         justifyContent: 'center',
         paddingVertical: 12,
         paddingHorizontal: 15,
         borderRadius: 4,
-        margin: 2,
-        width: '80%',
-        backgroundColor: mainpink
+        marginTop: 10,
+        marginBottom: 10,
+        width: '70%',
+        backgroundColor: mainpink,
+        borderColor: mainpink,
+        fontFamily: customFontRegular
     },
     'createDeckCtaButton--Disabled': {
         backgroundColor: '#EAC4CE',
