@@ -58,17 +58,19 @@ const okCallback = () => {
 const errorCallback = (error: any) => {
   console.log('DB connection error', error);
 };
-const db = openDatabase({ name: 'dictionary.db' }, okCallback, errorCallback);
+const db = openDatabase({ name: 'linote.db' }, okCallback, errorCallback);
 
 //Function to open a Notebook from DB
-const openNB = (nbName: String) => {
+const openNB = (nbName: String, { navigation }: { navigation: any }) => {
   if (!nbName) {
     Alert.alert('Notebook doesn\'t exist. Please create a Notebook first.');
+    const currentNB = '';
+    console.log('Notebook openened ', currentNB);
     return;
   }
   else {
     return (
-      <Notebook />
+      navigation.navigate('Notebook')
     );
   }
 };
@@ -77,7 +79,7 @@ const openNB = (nbName: String) => {
 export let CreateNB = (nbName: String) => {
   const query = 'CREATE TABLE IF NOT EXISTS ' + nbName + '(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL,word_type TEXT NOT NULL, morph_type TEXT NOT NULL, description TEXT NOT NULL)';
   db.transaction((tx: any) => {
-    tx.executeSql('CREATE TABLE IF NOT EXISTS ' + nbName + '(word_id INTEGER PRIMARY KEY,word TEXT NOT NULL,translation TEXT NOT NULL,word_type TEXT NOT NULL, morph_type TEXT NOT NULL, description TEXT NOT NULL)', [], (trans: any, results: any) => {
+    tx.executeSql(query, [], (trans: any, results: any) => {
       console.log('nbName after input = ', nbName);
       console.log('Notebook created - ', nbName);
     },
@@ -89,7 +91,7 @@ export let CreateNB = (nbName: String) => {
   });
 };
 
-//Function to create a Notebook (table)
+//Function to delete a Notebook (table)
 export let deleteNB = (nbName: String) => {
   const query = 'DROP TABLE ' + nbName;
   db.transaction((tx: any) => {
@@ -213,10 +215,10 @@ const InfoIcon = (props: IconProps) => {
 
 
 //Notebook -> sectionWords, sectionCategory, sectionQuiz, sectionSettings + AddWords views
-const Notebook = () => {
+const Notebook = ({ navigation }: { navigation: any }) => {
 
   return (
-    <NavigationContainer ref={navigationRef}>
+    <NavigationContainer ref={navigationRef} independent={true} >
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider {...eva} theme={customTheme}>
         <Layout style={styles.stackNavigatorWrapper} >
@@ -300,7 +302,7 @@ const Notebook = () => {
 };
 
 //Homepage -> openNB, createNB, AboutApp
-const Homepage = () => {
+const Homepage = ({ navigation }: { navigation: any }) => {
 
   const [a, setA] = useState(false);
   const showA = () => setA(true);
@@ -325,7 +327,21 @@ const Homepage = () => {
               <MyTextInput
                 label='Enter Notebook Name'
                 onChangeText={(newnbName: React.SetStateAction<string>) => setNBname(nbName)} />
-              <Button mode='contained' style={styles.smallbutton} onPress={() => CreateNB(nbName)}>
+              <Button mode='contained' style={styles.smallbutton} onPress={
+                () => {
+                  const query = `CREATE TABLE IF NOT EXISTS ' ${nbName} '(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL,word_type TEXT NOT NULL, morph_type TEXT NOT NULL, description TEXT NOT NULL)`;
+                  db.transaction((tx: any) => {
+                    tx.executeSql(query, [], (trans: any, results: any) => {
+                      console.log('Notebook created - ', nbName);
+                    },
+                      (error: any) => {
+                        console.log('nbName after input = ', nbName);
+                        console.log('Error creating notebook:', error);
+                      }
+                    );
+                  });
+                }
+              }>
                 Create
               </Button>
             </Modal>
@@ -337,13 +353,25 @@ const Homepage = () => {
               <ScrollView>
                 <Text style={styles.searchResultsContainer}>Notebook List displayed here</Text>
               </ScrollView>
-              <Button mode='contained' style={styles.smallbutton} onPress={() => openNB}>
+              <Button mode='contained' style={styles.smallbutton} onPress={() => {
+                if (!nbName) {
+                  Alert.alert('No notebook selected. Please create a Notebook first.');
+                  const currentNB = '';
+                  console.log('Notebook openened ', currentNB);
+                  return;
+                }
+                else {
+                  return (
+                    navigation.navigate('Notebook')
+                  );
+                }
+              }}>
                 Select
               </Button>
             </Modal>
           </Portal>
           <Mybutton title='About App' />
-          <Button mode='contained' style={styles.smallbutton} onPress={() => onMenuClick(0)}>
+          <Button mode='contained' style={styles.smallbutton} onPress={() => navigation.navigate('Notebook')}>
             Shortcut
           </Button>
         </View>
@@ -359,7 +387,7 @@ export default () => {
   SplashScreen.hide();
 
   return (
-    <NavigationContainer>
+    <NavigationContainer independent={true}>
       <Stack.Navigator
         initialRouteName='Home'
         screenOptions={
