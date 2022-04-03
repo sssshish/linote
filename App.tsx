@@ -310,8 +310,7 @@ const Homepage = () => {
   const showB = () => setB(true);
   const hideB = () => setB(false);
 
-  const [nbName, setNBname] = useState('Demo');
-  console.log('nbName before input = ', nbName);
+  const [nbName, setNBname] = useState('');
 
   return (
     <ImageBackground style={styles.imgBackground}
@@ -358,6 +357,7 @@ const Homepage = () => {
 export default () => {
 
   SplashScreen.hide();
+
   return (
     <NavigationContainer>
       <Stack.Navigator
