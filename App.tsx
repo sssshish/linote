@@ -20,13 +20,25 @@ B) Notebook() contains the template for all Notebooks:
         2.3 Quiz calls Quiz.tsx (which will display all quizes)
         2.4 Info calls Info.tsx (which will display info on NB)
         2.5 Plus icon calls Addwords.tsx (which will add new words to List and db)
+
+const textDB = () => {
+  const query = ``
+  db.transaction((tx: any) => {
+  tx.executeSql(query, [], (trans: any, results: any) => {
+      console.log('Query successfully executed.');
+  },
+  (error: any) => {
+      console.log('Error', error);
+  });
+}
+
 */
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import * as eva from '@eva-design/eva';
 import {
-  ApplicationProvider, IconRegistry, Layout, IconProps
+  ApplicationProvider, IconRegistry, Layout, IconProps, Icon
 } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -40,43 +52,32 @@ import { customTheme } from './myUtils/customTheme';
 import { fifthColor, lightblue, mainpink, white, black, styles } from './myStyles/styles';
 import AddWords from './views/AddWords';
 import { SvgXml } from 'react-native-svg';
-import { plusSvg, challengeSvgBase, walletSvgBase, infoSvgBase, getCustomSvg, cardsSvgBase } from './myUtils/customIcons';
+import { plusSvg, challengeSvgBase, walletSvgBase, infoSvgBase, getCustomSvg, cardsSvgBase, closeX } from './myUtils/customIcons';
 import SplashScreen from 'react-native-splash-screen';
 import { Alert, ImageBackground, SafeAreaView, View } from 'react-native';
 import Mybutton from './myComponents/MyButton';
-import { Button, Modal, Portal, Provider, Text, TextInput } from 'react-native-paper';
+import { Button, IconButton, Modal, Portal, Provider, Text, TextInput } from 'react-native-paper';
 import MyTextInput from './myComponents/MyTextInput';
-import { ScrollView } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 import { createNavigationContainerRef } from '@react-navigation/native';
-import { openDatabase } from 'react-native-sqlite-storage';
+import { enablePromise, openDatabase } from 'react-native-sqlite-storage';
 import { createStackNavigator } from '@react-navigation/stack';
+import SQLite from 'react-native-sqlite-storage';
 
 //Database connection starts here
+
 const okCallback = () => {
   console.log('Connected to DB');
 };
 const errorCallback = (error: any) => {
   console.log('DB connection error', error);
 };
-const db = openDatabase({ name: 'linote.db' }, okCallback, errorCallback);
 
-//Function to open a Notebook from DB
-const openNB = (nbName: String, { navigation }: { navigation: any }) => {
-  if (!nbName) {
-    Alert.alert('Notebook doesn\'t exist. Please create a Notebook first.');
-    const currentNB = '';
-    console.log('Notebook openened ', currentNB);
-    return;
-  }
-  else {
-    return (
-      navigation.navigate('Notebook')
-    );
-  }
-};
+const db = openDatabase({ name: 'linote', location: 'default' }, okCallback, errorCallback);
+
 
 //Function to create a Notebook (table)
-export let CreateNB = (nbName: String) => {
+export const CreateNB = (nbName: String) => {
   const query = 'CREATE TABLE IF NOT EXISTS ' + nbName + '(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL,word_type TEXT NOT NULL, morph_type TEXT NOT NULL, description TEXT NOT NULL)';
   db.transaction((tx: any) => {
     tx.executeSql(query, [], (trans: any, results: any) => {
@@ -92,7 +93,7 @@ export let CreateNB = (nbName: String) => {
 };
 
 //Function to delete a Notebook (table)
-export let deleteNB = (nbName: String) => {
+export const deleteNB = (nbName: String) => {
   const query = 'DROP TABLE ' + nbName;
   db.transaction((tx: any) => {
     tx.executeSql(query, [], (trans: any, results: any) => {
@@ -105,24 +106,21 @@ export let deleteNB = (nbName: String) => {
   });
 };
 
-//Function to display info on App
-const AboutApp = () => {
-  return (
-    <Text>About App Info + User Manual</Text>
-  );
+export const openNB = () => {
+
 };
 
-//Testing DB function (not implemented in final app)
-let testNB = () => {
-  db.transaction((tx: any) => {
-    tx.executeSql('INSERT INTO test (word) VALUES (testw)', [], (trans: any, results: any) => {
-      console.log('Test notebook updated.');
-    },
-      (error: any) => {
-        console.log('Error updating test notebook:', error);
-      }
-    );
-  });
+//Function to display info on App
+const AboutApp = ({ navigation }: { navigation: any }) => {
+  return (
+    <Layout style={styles.infoContainer}>
+      <Text style={[styles.biggerText, styles.text, styles.pinkText]}>
+        Linote
+      </Text>
+      <Layout style={styles.commonDivider} />
+      <Text style={[styles.smallerText, styles.leftAlignedText, styles.text]}> Linote is a note-taking mobile app that helps you create your own dictionaries and practice your words whenever and wherever you want. It requires no internet connection or special storage permissions. You can even create notes on languages that YOU have made up.</Text>
+    </Layout>
+  );
 };
 
 
@@ -161,6 +159,7 @@ export const onMenuClick = (index: number) => {
       break;
   }
 };
+
 
 //Initializing Stack navigator
 const Stack = createStackNavigator();
@@ -212,9 +211,19 @@ const InfoIcon = (props: IconProps) => {
     />
   );
 };
+// const closeIcon = (props: IconProps) => {
+//   return (
+//     <SvgXml
+//       width='32'
+//       height='32'
+//       xml={getCustomSvg(closeX, 'rgb(184,59,94)')}
+//     />
+//   );
+// };
 
 
 //Notebook -> sectionWords, sectionCategory, sectionQuiz, sectionSettings + AddWords views
+
 const Notebook = ({ navigation }: { navigation: any }) => {
 
   return (
@@ -312,7 +321,12 @@ const Homepage = ({ navigation }: { navigation: any }) => {
   const showB = () => setB(true);
   const hideB = () => setB(false);
 
+  const [c, setC] = useState(false);
+  const showC = () => setC(true);
+  const hideC = () => setC(false);
+
   const [nbName, setNBname] = useState('');
+  const [currentNB, setcurrentNB] = useState('');
 
   return (
     <ImageBackground style={styles.imgBackground}
@@ -326,7 +340,8 @@ const Homepage = ({ navigation }: { navigation: any }) => {
             <Modal visible={a} onDismiss={hideA} contentContainerStyle={styles.inputDialog}>
               <MyTextInput
                 label='Enter Notebook Name'
-                onChangeText={(newnbName: React.SetStateAction<string>) => setNBname(nbName)} />
+                // eslint-disable-next-line @typescript-eslint/no-shadow
+                onChangeText={(nbName: React.SetStateAction<string>) => setNBname(nbName)} />
               <Button mode='contained' style={styles.smallbutton} onPress={
                 () => {
                   const query = `CREATE TABLE IF NOT EXISTS ' ${nbName} '(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL,word_type TEXT NOT NULL, morph_type TEXT NOT NULL, description TEXT NOT NULL)`;
@@ -349,31 +364,27 @@ const Homepage = ({ navigation }: { navigation: any }) => {
           <Mybutton title='Open Notebook' customClick={showB} />
           <Portal>
             <Modal visible={b} onDismiss={hideB} contentContainerStyle={styles.bottomDialog}>
-              <Text style={styles.addWordInput}>Select a Notebook</Text>
-              <ScrollView>
-                <Text style={styles.searchResultsContainer}>Notebook List displayed here</Text>
-              </ScrollView>
-              <Button mode='contained' style={styles.smallbutton} onPress={() => {
-                if (!nbName) {
-                  Alert.alert('No notebook selected. Please create a Notebook first.');
-                  const currentNB = '';
-                  console.log('Notebook openened ', currentNB);
-                  return;
-                }
-                else {
-                  return (
-                    navigation.navigate('Notebook')
-                  );
-                }
-              }}>
+              <FlatList
+                style={styles.createDeckList}
+                contentContainerStyle={styles.createDeckListContainer}
+                data={undefined}
+                renderItem={undefined}
+              />
+              <Button mode='contained' style={styles.smallbutton} onPress={() => { currentNB ? Alert.alert('No notebook selected. Please create a Notebook first.') : navigation.navigate('Notebook'); }
+              }>
                 Select
               </Button>
             </Modal>
           </Portal>
-          <Mybutton title='About App' />
-          <Button mode='contained' style={styles.smallbutton} onPress={() => navigation.navigate('Notebook')}>
-            Shortcut
-          </Button>
+          <Mybutton title='About App' customClick={showC} />
+          <Portal>
+            <Modal visible={c} onDismiss={hideC} style={styles.infoDialog}>
+              <Text style={[styles.biggerText, styles.text, styles.pinkText]}>
+                Linote
+              </Text>
+              <Text style={[styles.smallerText, styles.leftAlignedText, styles.text]}> Linote is a note-taking mobile app that helps you create your own dictionaries and practice your words whenever and wherever you want. It requires no internet connection or special storage permissions. You can even create notes on languages that YOU have made up.</Text>
+            </Modal>
+          </Portal>
         </View>
       </Provider>
     </ImageBackground >
@@ -390,17 +401,10 @@ export default () => {
     <NavigationContainer independent={true}>
       <Stack.Navigator
         initialRouteName='Home'
-        screenOptions={
-          {
-            headerShown: false,
-            headerStatusBarHeight: 0,
-            headerBackgroundContainerStyle: {
-              backgroundColor: '#fcfcfc'
-            }
-          }
-        }>
-        <Stack.Screen name='Home' component={Homepage} />
+        screenOptions={{ headerShown: false }}>
+        <Stack.Screen name='Home' component={Homepage} options={{ headerShown: false }} />
         <Stack.Screen name='Notebook' component={Notebook} />
+        <Stack.Screen name='AboutApp' component={AboutApp} />
       </Stack.Navigator>
     </NavigationContainer>
   );

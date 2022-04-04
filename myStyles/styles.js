@@ -143,7 +143,8 @@ export const styles = StyleSheet.create({
     verticalSpacer: {
         marginTop: 10,
         marginBottom: 10,
-        height: 20
+        height: 20,
+        color: black
     },
     backupDivider: {
         width: '91%',
@@ -221,7 +222,6 @@ export const styles = StyleSheet.create({
     },
     text: {
         textAlign: 'center',
-        color: '#fff',
         fontFamily: customFontRegular,
         fontSize: 16.5
     },
@@ -261,6 +261,9 @@ export const styles = StyleSheet.create({
     },
     redText: {
         color: 'red'
+    },
+    pinkText: {
+        color: mainpink
     },
     textWithTopMargin: {
         marginTop: 10
@@ -568,6 +571,16 @@ export const styles = StyleSheet.create({
         backgroundColor: 'rgba(255, 255, 255, 0.9)',
         alignItems: 'center',
         justifyContent: 'center',
+        right: '5%',
+        left: '5%',
+        borderRadius: 20
+    },
+    infoDialog: {
+        height: '90%',
+        width: '90%',
+        backgroundColor: 'rgba(255, 255, 255,1)',
+        alignItems: 'flex-start',
+        justifyContent: 'space-evenly',
         right: '5%',
         left: '5%',
         borderRadius: 20

@@ -2,7 +2,7 @@ import { sixthColor } from '../myStyles/styles';
 
 export const plusSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
 <g fill="none" fill-rule="evenodd">
-  <circle cx="14" cy="14" r="14" fill="${ sixthColor }"/>
+  <circle cx="14" cy="14" r="14" fill="${sixthColor}"/>
   <g fill-rule="nonzero" transform="translate(2 2)">
     <rect width="24" height="24" fill="#000" opacity="0" transform="rotate(180 12 12)"/>
     <path fill="#FFF" d="M19,11 L13,11 L13,5 C13,4.44771525 12.5522847,4 12,4 C11.4477153,4 11,4.44771525 11,5 L11,11 L5,11 C4.44771525,11 4,11.4477153 4,12 C4,12.5522847 4.44771525,13 5,13 L11,13 L11,19 C11,19.5522847 11.4477153,20 12,20 C12.5522847,20 13,19.5522847 13,19 L13,13 L19,13 C19.5522847,13 20,12.5522847 20,12 C20,11.4477153 19.5522847,11 19,11 Z"/>
@@ -44,5 +44,10 @@ export const downArrowSvgBase = `<svg xmlns="http://www.w3.org/2000/svg" viewBox
 <rect width="24" height="24" opacity="0"/>
 <path d="M14.31 12.41L13 13.66V8a1 1 0 0 0-2 0v5.59l-1.29-1.3a1 1 0 0 0-1.42 1.42l3 3a1 1 0 0 0 .33.21.94.94 0 0 0 .76 0 .54.54 0 0 0 .16-.1.49.49 0 0 0 .15-.1l3-2.86a1 1 0 0 0-1.38-1.45z"/><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/></g></g></svg>`;
 
-export const getCustomSvg = ( svgCode, color ) => svgCode.replace( /{{color}}/g, color );
+export const closeX = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+<g data-name="Layer 2"><g data-name="close">
+<rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/>
+<path d="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"/></g></g></svg>`;
+
+export const getCustomSvg = (svgCode, color) => svgCode.replace(/{{color}}/g, color);
 

@@ -20,7 +20,7 @@ const MyTextInput = (props: any) => {
             autoCorrect={false}
             activeOutlineColor={mainpink}
             outlineColor={secondColor}
-            autoFocus={true}
+            autoFocus={false}
         />
     );
 };
