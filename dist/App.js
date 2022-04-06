@@ -72,7 +72,6 @@ const Quiz_1 = require("./sectionQuiz/Quiz");
 const Info_1 = require("./sectionInfo/Info");
 const customTheme_1 = require("./myUtils/customTheme");
 const styles_1 = require("./myStyles/styles");
-const AddWords_1 = __importDefault(require("./views/AddWords"));
 const react_native_svg_1 = require("react-native-svg");
 const customIcons_1 = require("./myUtils/customIcons");
 const react_native_splash_screen_1 = __importDefault(require("react-native-splash-screen"));
@@ -83,6 +82,7 @@ const MyTextInput_1 = __importDefault(require("./myComponents/MyTextInput"));
 const react_native_gesture_handler_1 = require("react-native-gesture-handler");
 const native_2 = require("@react-navigation/native");
 const stack_1 = require("@react-navigation/stack");
+const AddComp_1 = __importDefault(require("./views/AddComp"));
 //Database connection starts here
 const okCallback = () => {
     console.log('Connected to DB');
@@ -193,7 +193,7 @@ const Notebook = ({ navigation }) => {
           <Tab.Navigator initialRouteName='Words' screenOptions={{
         tabBarActiveTintColor: styles_1.mainpink,
         tabBarInactiveTintColor: styles_1.fifthColor,
-        tabBarShowLabel: false,
+        tabBarShowLabel: true,
         tabBarStyle: { position: 'absolute', height: 50 }
     }}>
             <Tab.Screen name='Words' component={Words_1.Words} options={{
@@ -201,43 +201,36 @@ const Notebook = ({ navigation }) => {
         tabBarIcon: WordsIcon,
         tabBarAccessibilityLabel: 'Words',
         tabBarActiveBackgroundColor: styles_1.lightblue,
-        headerStyle: styles_1.styles.coloredTopContainer,
-        headerTintColor: styles_1.white,
-        headerTitleStyle: styles_1.styles.whiteTextBold
+        headerShown: false
     }}/>
             <Tab.Screen name='Wallet' component={Category_1.Category} options={{
         tabBarLabel: 'Category',
         tabBarIcon: CardsIcon,
         tabBarAccessibilityLabel: 'Category',
         tabBarActiveBackgroundColor: styles_1.lightblue,
+        headerShown: false
+    }}/>
+            <Tab.Screen name='AddComp' component={AddComp_1.default} options={{
+        tabBarIcon: PlusIcon,
+        tabBarHideOnKeyboard: true,
+        tabBarShowLabel: false,
         headerStyle: styles_1.styles.coloredTopContainer,
         headerTintColor: styles_1.white,
         headerTitleStyle: styles_1.styles.whiteTextBold
     }}/>
-            <Tab.Screen name='AddWords' component={AddWords_1.default} options={{
-        tabBarIcon: PlusIcon,
-        tabBarHideOnKeyboard: true,
-        headerStyle: styles_1.styles.coloredTopContainer,
-        headerTintColor: styles_1.white,
-        headerTitleStyle: styles_1.styles.whiteTextBold
+            <Tab.Screen name='Info' component={Info_1.Settings} options={{
+        tabBarLabel: 'Settings',
+        tabBarIcon: InfoIcon,
+        tabBarAccessibilityLabel: 'Settings',
+        tabBarActiveBackgroundColor: styles_1.lightblue,
+        headerShown: false
     }}/>
             <Tab.Screen name='Quiz' component={Quiz_1.Quiz} options={{
         tabBarLabel: 'Quiz',
         tabBarIcon: PlayIcon,
         tabBarAccessibilityLabel: 'Quiz',
         tabBarActiveBackgroundColor: styles_1.lightblue,
-        headerStyle: styles_1.styles.coloredTopContainer,
-        headerTintColor: styles_1.white,
-        headerTitleStyle: styles_1.styles.whiteTextBold
-    }}/>
-            <Tab.Screen name='Settings' component={Info_1.Settings} options={{
-        tabBarLabel: 'Settings',
-        tabBarIcon: InfoIcon,
-        tabBarAccessibilityLabel: 'Settings',
-        tabBarActiveBackgroundColor: styles_1.lightblue,
-        headerStyle: styles_1.styles.coloredTopContainer,
-        headerTintColor: styles_1.white,
-        headerTitleStyle: styles_1.styles.whiteTextBold
+        headerShown: false
     }}/>
           </Tab.Navigator>
         </components_1.Layout>
@@ -258,13 +251,11 @@ const Homepage = ({ navigation }) => {
     const [nbName, setNBname] = react_1.useState('');
     const [currentNB, setcurrentNB] = react_1.useState('');
     let [flatListItems, setFlatListItems] = react_1.useState([]);
-    const testdata = ['test', 'Other Notebooks'];
     const testNB = () => {
-        const testQ = 'CREATE TABLE IF NOT EXISTS test(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL, pronounciation TEXT, description TEXT,complex TEXT, morpheme TEXT, graminfo TEXT)';
+        const testQ = 'CREATE TABLE IF NOT EXISTS test(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL, pronounciation TEXT, description TEXT,complex TEXT, morpheme TEXT, graminfo TEXT, infotitle TEXT info TEXT)';
         db.transaction((tx) => {
             tx.executeSql(testQ, [], (trans, results) => {
                 console.log('Test Notebook created');
-                navigation.navigate('Notebook');
             }, (error) => {
                 console.log('Error creating test notebook:', error);
             });
@@ -313,7 +304,8 @@ const Homepage = ({ navigation }) => {
           <MyButton_1.default title='Open Notebook' customClick={showB}/>
           <react_native_paper_1.Portal>
             <react_native_paper_1.Modal visible={b} onDismiss={hideB} contentContainerStyle={styles_1.styles.bottomDialog}>
-              <react_native_gesture_handler_1.FlatList style={styles_1.styles.createDeckList} contentContainerStyle={styles_1.styles.createDeckListContainer} data={testdata} renderItem={undefined}/>
+              <react_native_paper_1.Text style={styles_1.styles.titleText}>Test</react_native_paper_1.Text>
+              <react_native_gesture_handler_1.FlatList style={styles_1.styles.createDeckList} contentContainerStyle={styles_1.styles.createDeckListContainer} data={flatListItems} renderItem={undefined}/>
               <react_native_paper_1.Button mode='contained' style={styles_1.styles.smallbutton} onPress={() => { currentNB ? react_native_1.Alert.alert('No notebook selected. Please create a Notebook first.') : navigation.navigate('Notebook'); }}>
                 Select
               </react_native_paper_1.Button>
@@ -340,9 +332,7 @@ const Homepage = ({ navigation }) => {
               </react_native_paper_1.Text>
             </react_native_paper_1.Modal>
           </react_native_paper_1.Portal>
-          <react_native_paper_1.Button mode='contained' onPress={testNB}>
-            test
-          </react_native_paper_1.Button>
+          <MyButton_1.default title='Open Demo Notebook' customClick={testNB}/>
         </react_native_1.View>
       </react_native_paper_1.Provider>
     </react_native_1.ImageBackground>);

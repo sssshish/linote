@@ -22,7 +22,7 @@ exports.Words = function () {
         console.log(inputWordId);
         setWordData({});
         db.transaction(function (tx) {
-            tx.executeSql('SELECT * FROM teste where word_id = ?', [inputWordId], function (trans, results) {
+            tx.executeSql('SELECT * FROM test where word_id = ?', [inputWordId], function (trans, results) {
                 var len = results.rows.length;
                 console.log('len', len);
                 if (len > 0) {
@@ -37,11 +37,9 @@ exports.Words = function () {
     return (react_1["default"].createElement(react_native_1.SafeAreaView, { style: { flex: 1, alignItems: 'center' } },
         react_1["default"].createElement(react_native_1.View, { style: { flex: 1, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', width: '100%' } },
             react_1["default"].createElement(react_native_1.View, { style: { flex: 1, alignItems: 'center', width: '100%' } },
-                react_1["default"].createElement(MyTextInput_1["default"], {
-                    label: 'Enter Word id', placeholder: 'Enter Word id', onChangeText:
-                        // eslint-disable-next-line @typescript-eslint/no-shadow
-                        function (inputWordId) { return setInputWordId(inputWordId); }, style: styles_1.styles.topSearchInput
-                }),
+                react_1["default"].createElement(MyTextInput_1["default"], { label: 'Enter Word id', placeholder: 'Enter Word id', onChangeText: 
+                    // eslint-disable-next-line @typescript-eslint/no-shadow
+                    function (inputWordId) { return setInputWordId(inputWordId); }, style: styles_1.styles.topSearchInput }),
                 react_1["default"].createElement(MyButton_1["default"], { title: 'Search Word', customClick: searchWord, styles: styles_1.styles.createDeckCtaButton }),
                 react_1["default"].createElement(react_native_1.Text, { style: [styles_1.styles.veryBigText, styles_1.styles.pinkText, styles_1.styles.centeredText] }, "Your word list is empty!")))));
 };

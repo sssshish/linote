@@ -47,10 +47,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Words } from './sectionList/Words';
 import { Category } from './sectionCategory/Category';
 import { Quiz } from './sectionQuiz/Quiz';
-import { Settings } from './sectionInfo/Info';
+import { Settings as Info } from './sectionInfo/Info';
 import { customTheme } from './myUtils/customTheme';
 import { fifthColor, lightblue, mainpink, white, black, styles } from './myStyles/styles';
-import AddWords from './views/AddWords';
+import AddWords from './views/AddComp';
 import { SvgXml } from 'react-native-svg';
 import { plusSvg, challengeSvgBase, walletSvgBase, infoSvgBase, getCustomSvg, cardsSvgBase, closeX } from './myUtils/customIcons';
 import SplashScreen from 'react-native-splash-screen';
@@ -62,6 +62,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { createNavigationContainerRef } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { color } from 'react-native-reanimated';
+import AddComp from './views/AddComp';
 
 //Database connection starts here
 
@@ -235,7 +236,7 @@ const Notebook = ({ navigation }: { navigation: any }) => {
             screenOptions={{
               tabBarActiveTintColor: mainpink,
               tabBarInactiveTintColor: fifthColor,
-              tabBarShowLabel: false,
+              tabBarShowLabel: true,
               tabBarStyle: { position: 'absolute', height: 50 }
             }}
           >
@@ -247,9 +248,7 @@ const Notebook = ({ navigation }: { navigation: any }) => {
                 tabBarIcon: WordsIcon,
                 tabBarAccessibilityLabel: 'Words',
                 tabBarActiveBackgroundColor: lightblue,
-                headerStyle: styles.coloredTopContainer,
-                headerTintColor: white,
-                headerTitleStyle: styles.whiteTextBold
+                headerShown: false
               }}
             />
             <Tab.Screen
@@ -260,20 +259,30 @@ const Notebook = ({ navigation }: { navigation: any }) => {
                 tabBarIcon: CardsIcon,
                 tabBarAccessibilityLabel: 'Category',
                 tabBarActiveBackgroundColor: lightblue,
+                headerShown: false
+              }}
+            />
+            <Tab.Screen
+              name='AddComp'
+              component={AddComp}
+              options={{
+                tabBarIcon: PlusIcon,
+                tabBarHideOnKeyboard: true,
+                tabBarShowLabel: false,
                 headerStyle: styles.coloredTopContainer,
                 headerTintColor: white,
                 headerTitleStyle: styles.whiteTextBold
               }}
             />
             <Tab.Screen
-              name='AddWords'
-              component={AddWords}
+              name='Info'
+              component={Info}
               options={{
-                tabBarIcon: PlusIcon,
-                tabBarHideOnKeyboard: true,
-                headerStyle: styles.coloredTopContainer,
-                headerTintColor: white,
-                headerTitleStyle: styles.whiteTextBold
+                tabBarLabel: 'Settings',
+                tabBarIcon: InfoIcon,
+                tabBarAccessibilityLabel: 'Settings',
+                tabBarActiveBackgroundColor: lightblue,
+                headerShown: false
               }}
             />
             <Tab.Screen
@@ -284,22 +293,7 @@ const Notebook = ({ navigation }: { navigation: any }) => {
                 tabBarIcon: PlayIcon,
                 tabBarAccessibilityLabel: 'Quiz',
                 tabBarActiveBackgroundColor: lightblue,
-                headerStyle: styles.coloredTopContainer,
-                headerTintColor: white,
-                headerTitleStyle: styles.whiteTextBold
-              }}
-            />
-            <Tab.Screen
-              name='Settings'
-              component={Settings}
-              options={{
-                tabBarLabel: 'Settings',
-                tabBarIcon: InfoIcon,
-                tabBarAccessibilityLabel: 'Settings',
-                tabBarActiveBackgroundColor: lightblue,
-                headerStyle: styles.coloredTopContainer,
-                headerTintColor: white,
-                headerTitleStyle: styles.whiteTextBold
+                headerShown: false
               }}
             />
           </Tab.Navigator>
@@ -328,14 +322,12 @@ const Homepage = ({ navigation }: { navigation: any }) => {
   const [nbName, setNBname] = useState('');
   const [currentNB, setcurrentNB] = useState('');
   let [flatListItems, setFlatListItems] = useState([]);
-  const testdata = ['test', 'Other Notebooks'];
 
   const testNB = () => {
-    const testQ = 'CREATE TABLE IF NOT EXISTS test(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL, pronounciation TEXT, description TEXT,complex TEXT, morpheme TEXT, graminfo TEXT)';
+    const testQ = 'CREATE TABLE IF NOT EXISTS test(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL, pronounciation TEXT, description TEXT,complex TEXT, morpheme TEXT, graminfo TEXT, infotitle TEXT info TEXT)';
     db.transaction((tx: any) => {
       tx.executeSql(testQ, [], (trans: any, results: any) => {
         console.log('Test Notebook created');
-        navigation.navigate('Notebook');
       },
         (error: any) => {
           console.log('Error creating test notebook:', error);
@@ -400,10 +392,11 @@ const Homepage = ({ navigation }: { navigation: any }) => {
           <Mybutton title='Open Notebook' customClick={showB} />
           <Portal>
             <Modal visible={b} onDismiss={hideB} contentContainerStyle={styles.bottomDialog}>
+              <Text style={styles.titleText}>Test</Text>
               <FlatList
                 style={styles.createDeckList}
                 contentContainerStyle={styles.createDeckListContainer}
-                data={testdata}
+                data={flatListItems}
                 renderItem={undefined}
               />
               <Button mode='contained' style={styles.smallbutton} onPress={() => { currentNB ? Alert.alert('No notebook selected. Please create a Notebook first.') : navigation.navigate('Notebook'); }}>
@@ -432,9 +425,7 @@ const Homepage = ({ navigation }: { navigation: any }) => {
               </Text>
             </Modal>
           </Portal>
-          <Button mode='contained' onPress={testNB}>
-            test
-          </Button>
+          <Mybutton title='Open Demo Notebook' customClick={testNB} />
         </View>
       </Provider>
     </ImageBackground >

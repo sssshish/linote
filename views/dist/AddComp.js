@@ -13,7 +13,6 @@ var components_1 = require("@ui-kitten/components");
 var react_native_element_dropdown_1 = require("react-native-element-dropdown");
 var SQLite = require('react-native-sqlite-storage');
 var db = SQLite.openDatabase({ name: 'linote.db' });
-//{ navigation: any }
 var AddWords = function () {
     var _a = react_1.useState(''), word = _a[0], setWord = _a[1];
     var _b = react_1.useState(''), translation = _b[0], setTranslation = _b[1];

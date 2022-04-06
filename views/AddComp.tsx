@@ -15,14 +15,14 @@ import MyTextInput from '../myComponents/MyTextInput';
 import { styles } from '../myStyles/styles';
 import { onMenuClick } from '../App';
 import { Button } from 'react-native-paper';
-const SQLite = require('react-native-sqlite-storage');
 import { Icon } from '@ui-kitten/components';
 import { Dropdown } from 'react-native-element-dropdown';
+
+const SQLite = require('react-native-sqlite-storage');
 
 const db = SQLite.openDatabase({ name: 'linote.db' });
 
 
-//{ navigation: any }
 
 const AddWords = () => {
 
@@ -138,35 +138,10 @@ const AddWords = () => {
 
     let register_word = () => {
 
-        if (!word) {
-            Alert.alert('Word cannot be empty.');
+        if (!word || !translation || !pronounciation || !description || !complex || !morpheme || !graminfo) {
+            Alert.alert('Please fill all details.');
             return;
         }
-        if (!translation) {
-            Alert.alert('Translation cannot be empty.');
-            return;
-        }
-        if (!pronounciation) {
-            Alert.alert('Pronounciation cannot be empty.');
-            return;
-        }
-        if (!description) {
-            Alert.alert('Description cannot be empty.');
-            return;
-        }
-        if (!graminfo) {
-            Alert.alert('Please select a Grammatical Info.');
-            return;
-        }
-        if (!morpheme) {
-            Alert.alert('Please select a Morpheme Type.');
-            return;
-        }
-        if (!complex) {
-            Alert.alert('Please select a Complex Form Type.');
-            return;
-        }
-
         db.transaction((tx: any) => {
             tx.executeSql('INSERT INTO test(word,translation, pronounciation, description,complex, morpheme, graminfo) VALUES (?,?,?,?,?,?,?)',
                 [word, translation, pronounciation, description, complex, morpheme, graminfo],
@@ -198,6 +173,37 @@ const AddWords = () => {
                         <KeyboardAvoidingView
                             behavior='padding'
                             style={{ flex: 1, justifyContent: 'center' }}>
+
+                            <MyTextInput
+                                label='Word'
+                                onChangeText={
+                                    (word: React.SetStateAction<string>) => setWord(word)
+                                }
+                            />
+
+                            <MyTextInput
+                                label='Translation'
+                                onChangeText={
+                                    (translation: React.SetStateAction<string>) => setTranslation(translation)
+                                }
+                            />
+
+                            <MyTextInput
+                                label='Pronounciation'
+                                onChangeText={
+                                    (pronounciation: React.SetStateAction<string>) => setpronoun(pronounciation)
+                                }
+                            />
+
+                            <MyTextInput
+                                label='Description'
+                                onChangeText={
+                                    (description: React.SetStateAction<string>) => setDescription(description)
+                                }
+                                maxLength={225}
+                                numberOfLines={3}
+                                multiline={true}
+                            />
                             <Dropdown
                                 style={styles.dropdown}
                                 placeholderStyle={styles.placeholderStyle}
@@ -267,37 +273,6 @@ const AddWords = () => {
                                 }}
                                 renderItem={renderGram}
                             />
-                            <MyTextInput
-                                label='Word'
-                                onChangeText={
-                                    (word: React.SetStateAction<string>) => setWord(word)
-                                }
-                            />
-
-                            <MyTextInput
-                                label='Translation'
-                                onChangeText={
-                                    (translation: React.SetStateAction<string>) => setTranslation(translation)
-                                }
-                            />
-
-                            <MyTextInput
-                                label='Pronounciation'
-                                onChangeText={
-                                    (pronounciation: React.SetStateAction<string>) => setpronoun(pronounciation)
-                                }
-                            />
-
-                            <MyTextInput
-                                label='Description'
-                                onChangeText={
-                                    (description: React.SetStateAction<string>) => setDescription(description)
-                                }
-                                maxLength={225}
-                                numberOfLines={3}
-                                multiline={true}
-                            />
-
                             <Button mode='contained' onPress={register_word} style={styles['ctaButton--smallWidth']}>
                                 ADD
                             </Button>
@@ -308,5 +283,6 @@ const AddWords = () => {
         </SafeAreaView>
     );
 };
+
 
 export default AddWords;

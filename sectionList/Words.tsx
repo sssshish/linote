@@ -26,7 +26,7 @@ export const Words = () => {
         setWordData({});
         db.transaction((tx: any) => {
             tx.executeSql(
-                'SELECT * FROM teste where word_id = ?',
+                'SELECT * FROM test where word_id = ?',
                 [inputWordId],
                 (trans: any, results: any) => {
                     var len = results.rows.length;
