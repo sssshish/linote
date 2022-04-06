@@ -5,23 +5,33 @@ var react_native_1 = require("react-native");
 var components_1 = require("@ui-kitten/components");
 var react_native_element_dropdown_1 = require("react-native-element-dropdown");
 var styles_1 = require("../myStyles/styles");
-var MyDropDown = function (props) {
+var GramInfoDD = function (props) {
     var _a = react_1.useState(null), value = _a[0], setValue = _a[1];
     var wordtypes = [
+        { label: 'Other', value: '0' },
         { label: 'Adjective', value: '1' },
-        { label: 'Adposition', value: '2' },
-        { label: 'Adverb', value: '3' },
-        { label: 'Conjunction', value: '4' },
-        { label: 'Contraction', value: '5' },
-        { label: 'Classifier', value: '6' },
-        { label: 'Clitic', value: '7' },
-        { label: 'Determiner/Article', value: '8' },
-        { label: 'Interjection', value: '9' },
-        { label: 'Noun', value: '10' },
-        { label: 'Numeral', value: '11' },
-        { label: 'Preposition', value: '12' },
-        { label: 'Pronoun', value: '13' },
-        { label: 'Verb', value: '14' }
+        { label: 'Adposition (Postposition)', value: '2' },
+        { label: 'Adposition (Preposition)', value: '3' },
+        { label: 'Adverb', value: '4' },
+        { label: 'Classifier', value: '5' },
+        { label: 'Clitic', value: '6' },
+        { label: 'Conjunction', value: '7' },
+        { label: 'Connective', value: '8' },
+        { label: 'Contraction', value: '9' },
+        { label: 'Determiner (Article)', value: '10' },
+        { label: 'Determiner (Demonstrative)', value: '11' },
+        { label: 'Existential Marker', value: '12' },
+        { label: 'Expletive', value: '13' },
+        { label: 'Interjection', value: '14' },
+        { label: 'Noun', value: '15' },
+        { label: 'Numeral', value: '16' },
+        { label: 'Prenoun', value: '17' },
+        { label: 'Preposition', value: '18' },
+        { label: 'Preverb', value: '19' },
+        { label: 'Proform', value: '20' },
+        { label: 'Pronoun', value: '21' },
+        { label: 'Verb', value: '22' },
+        { label: 'None', value: '23' }
     ];
     var renderItem = function (item) {
         return (react_1["default"].createElement(react_native_1.View, { style: styles_1.styles.item },
@@ -36,4 +46,4 @@ var MyDropDown = function (props) {
         // )}
         renderItem: renderItem }));
 };
-exports["default"] = MyDropDown;
+exports["default"] = GramInfoDD;

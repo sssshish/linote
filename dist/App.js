@@ -1,4 +1,5 @@
 "use strict";
+/* eslint-disable react-native/no-inline-styles */
 /* App.tsx contains two major screen components
 
 A) Homepage() contains the following:
@@ -57,7 +58,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.onMenuClick = exports.customNavigate = exports.navigationRef = exports.openNB = exports.deleteNB = exports.CreateNB = void 0;
+exports.onMenuClick = exports.customNavigate = exports.navigationRef = exports.deleteNB = exports.CreateNB = void 0;
 /* eslint-disable @typescript-eslint/no-unused-vars */
 const react_1 = __importStar(require("react"));
 const eva = __importStar(require("@eva-design/eva"));
@@ -81,7 +82,6 @@ const react_native_paper_1 = require("react-native-paper");
 const MyTextInput_1 = __importDefault(require("./myComponents/MyTextInput"));
 const react_native_gesture_handler_1 = require("react-native-gesture-handler");
 const native_2 = require("@react-navigation/native");
-const react_native_sqlite_storage_1 = require("react-native-sqlite-storage");
 const stack_1 = require("@react-navigation/stack");
 //Database connection starts here
 const okCallback = () => {
@@ -90,7 +90,8 @@ const okCallback = () => {
 const errorCallback = (error) => {
     console.log('DB connection error', error);
 };
-const db = react_native_sqlite_storage_1.openDatabase({ name: 'linote', location: 'default' }, okCallback, errorCallback);
+const SQLite = require('react-native-sqlite-storage');
+const db = SQLite.openDatabase({ name: 'linote.db', createFromLocation: 2 }, okCallback, errorCallback);
 //Function to create a Notebook (table)
 exports.CreateNB = (nbName) => {
     const query = 'CREATE TABLE IF NOT EXISTS ' + nbName + '(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL,word_type TEXT NOT NULL, morph_type TEXT NOT NULL, description TEXT NOT NULL)';
@@ -114,8 +115,6 @@ exports.deleteNB = (nbName) => {
             console.log('Error deleting notebook:', error);
         });
     });
-};
-exports.openNB = () => {
 };
 //Function to display info on App
 const AboutApp = ({ navigation }) => {
@@ -258,6 +257,35 @@ const Homepage = ({ navigation }) => {
     const hideC = () => setC(false);
     const [nbName, setNBname] = react_1.useState('');
     const [currentNB, setcurrentNB] = react_1.useState('');
+    let [flatListItems, setFlatListItems] = react_1.useState([]);
+    const testdata = ['test', 'Other Notebooks'];
+    const testNB = () => {
+        const testQ = 'CREATE TABLE IF NOT EXISTS test(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL, pronounciation TEXT, description TEXT,complex TEXT, morpheme TEXT, graminfo TEXT)';
+        db.transaction((tx) => {
+            tx.executeSql(testQ, [], (trans, results) => {
+                console.log('Test Notebook created');
+                navigation.navigate('Notebook');
+            }, (error) => {
+                console.log('Error creating test notebook:', error);
+            });
+        });
+    };
+    // db.transaction((tx) => {
+    //   tx.executeSql(
+    //     'SELECT * FROM sqlite_master where type=\'table\'',
+    //     [],
+    //     (_tx, _results) => {
+    //       console.log('NB names loaded');
+    //       var temp: any;
+    //       for (let i = 0; i < _results.rows.length; ++i) { temp.push(_results.rows.item(i)); }
+    //       setFlatListItems(temp);
+    //       console.log(flatListItems);
+    //     },
+    //     (error: any) => {
+    //       console.log('Error loading notebooks', error);
+    //     }
+    //   );
+    // });
     return (<react_native_1.ImageBackground style={styles_1.styles.imgBackground} resizeMode='contain' source={require('./assets/homepage.png')}>
       <react_native_paper_1.Provider>
         <react_native_1.View style={styles_1.styles.bottomZone}>
@@ -268,7 +296,7 @@ const Homepage = ({ navigation }) => {
     // eslint-disable-next-line @typescript-eslint/no-shadow
     onChangeText={(nbName) => setNBname(nbName)}/>
               <react_native_paper_1.Button mode='contained' style={styles_1.styles.smallbutton} onPress={() => {
-        const query = `CREATE TABLE IF NOT EXISTS ' ${nbName} '(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL,word_type TEXT NOT NULL, morph_type TEXT NOT NULL, description TEXT NOT NULL)`;
+        const query = `CREATE TABLE IF NOT EXISTS ' ${nbName} '(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL,complex TEXT NOT NULL, morpheme TEXT NOT NULL, graminfo TEXT NOT NULL, description TEXT NOT NULL)`;
         db.transaction((tx) => {
             tx.executeSql(query, [], (trans, results) => {
                 console.log('Notebook created - ', nbName);
@@ -285,7 +313,7 @@ const Homepage = ({ navigation }) => {
           <MyButton_1.default title='Open Notebook' customClick={showB}/>
           <react_native_paper_1.Portal>
             <react_native_paper_1.Modal visible={b} onDismiss={hideB} contentContainerStyle={styles_1.styles.bottomDialog}>
-              <react_native_gesture_handler_1.FlatList style={styles_1.styles.createDeckList} contentContainerStyle={styles_1.styles.createDeckListContainer} data={undefined} renderItem={undefined}/>
+              <react_native_gesture_handler_1.FlatList style={styles_1.styles.createDeckList} contentContainerStyle={styles_1.styles.createDeckListContainer} data={testdata} renderItem={undefined}/>
               <react_native_paper_1.Button mode='contained' style={styles_1.styles.smallbutton} onPress={() => { currentNB ? react_native_1.Alert.alert('No notebook selected. Please create a Notebook first.') : navigation.navigate('Notebook'); }}>
                 Select
               </react_native_paper_1.Button>
@@ -294,12 +322,27 @@ const Homepage = ({ navigation }) => {
           <MyButton_1.default title='About App' customClick={showC}/>
           <react_native_paper_1.Portal>
             <react_native_paper_1.Modal visible={c} onDismiss={hideC} style={styles_1.styles.infoDialog}>
-              <react_native_paper_1.Text style={[styles_1.styles.biggerText, styles_1.styles.text, styles_1.styles.pinkText]}>
-                Linote
+              <react_native_paper_1.Text style={[{ fontSize: 40 }, styles_1.styles.text, styles_1.styles.pinkText]}>Linote</react_native_paper_1.Text>
+              <react_native_1.View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <react_native_1.View style={{ flex: 1, height: 1, backgroundColor: styles_1.mainpink }}/>
+                <react_native_1.View>
+                  <react_native_paper_1.Text style={{ width: 50, textAlign: 'center', color: styles_1.mainpink }}>***</react_native_paper_1.Text>
+                </react_native_1.View>
+                <react_native_1.View style={{ flex: 1, height: 1, backgroundColor: styles_1.mainpink }}/>
+              </react_native_1.View>
+              <react_native_paper_1.Text style={[styles_1.styles.smallerText, styles_1.styles.textWithTopMargin, styles_1.styles.text, { textAlign: 'justify', paddingRight: '5%', paddingLeft: '5%' }]}> Linote is a note-taking mobile app that helps you create your own dictionaries and practice your words whenever and wherever you want. It requires no internet connection or special storage permissions. You can even create notes on languages that you have made up.</react_native_paper_1.Text>
+              <react_native_1.View style={{ height: '4%' }}/>
+              <react_native_paper_1.Text style={[styles_1.styles.smallerText, styles_1.styles.textWithTopMargin, styles_1.styles.text, { textAlign: 'justify', paddingRight: '5%', paddingLeft: '5%' }]}>
+                Project Source Code:
               </react_native_paper_1.Text>
-              <react_native_paper_1.Text style={[styles_1.styles.smallerText, styles_1.styles.leftAlignedText, styles_1.styles.text]}> Linote is a note-taking mobile app that helps you create your own dictionaries and practice your words whenever and wherever you want. It requires no internet connection or special storage permissions. You can even create notes on languages that YOU have made up.</react_native_paper_1.Text>
+              <react_native_paper_1.Text onPress={() => react_native_1.Linking.openURL('https://github.com/s19036/linote')} style={[styles_1.styles.smallerText, styles_1.styles.textWithTopMargin, styles_1.styles.text, styles_1.styles.boldText, styles_1.styles.linkText, styles_1.styles.lightText, { textAlign: 'justify', paddingRight: '5%', paddingLeft: '5%' }]}>
+                Github
+              </react_native_paper_1.Text>
             </react_native_paper_1.Modal>
           </react_native_paper_1.Portal>
+          <react_native_paper_1.Button mode='contained' onPress={testNB}>
+            test
+          </react_native_paper_1.Button>
         </react_native_1.View>
       </react_native_paper_1.Provider>
     </react_native_1.ImageBackground>);
@@ -309,9 +352,8 @@ exports.default = () => {
     react_native_splash_screen_1.default.hide();
     return (<native_1.NavigationContainer independent={true}>
       <Stack.Navigator initialRouteName='Home' screenOptions={{ headerShown: false }}>
-        <Stack.Screen name='Home' component={Homepage} options={{ headerShown: false }}/>
+        <Stack.Screen name='Home' component={Homepage}/>
         <Stack.Screen name='Notebook' component={Notebook}/>
-        <Stack.Screen name='AboutApp' component={AboutApp}/>
       </Stack.Navigator>
     </native_1.NavigationContainer>);
 };

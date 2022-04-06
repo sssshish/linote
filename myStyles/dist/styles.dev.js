@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.styles = exports.white = exports.black = exports.lightblue = exports.seventhColor = exports.sixthColor = exports.fifthColor = exports.fourthColor = exports.thirdColor = exports.secondColor = exports.mainpink = void 0;
+exports.styles = exports.white = exports.black = exports.morelightblue = exports.lightblue = exports.seventhColor = exports.sixthColor = exports.fifthColor = exports.fourthColor = exports.thirdColor = exports.secondColor = exports.mainpink = void 0;
 
 var _reactNative = require("react-native");
 
@@ -44,9 +44,12 @@ exports.seventhColor = seventhColor;
 var lightblue = 'rgb(209,220,255)'; //light blue
 
 exports.lightblue = lightblue;
+var morelightblue = 'rgb(252,252,255)'; //even more light blue
+
+exports.morelightblue = morelightblue;
 var black = 'rgb(0,0,0)';
 exports.black = black;
-var white = 'rgb(255,255,255)';
+var white = 'rgb(255,25,255)';
 exports.white = white;
 var customFontRegular = 'Nunito-Regular';
 var customFontBold = 'Nunito-SemiBold';
@@ -62,7 +65,7 @@ var styles = _reactNative.StyleSheet.create({
   dropdown: {
     margin: 16,
     height: 50,
-    backgroundColor: 'white',
+    backgroundColor: morelightblue,
     borderRadius: 12,
     padding: 12,
     shadowColor: '#000',
@@ -166,7 +169,8 @@ var styles = _reactNative.StyleSheet.create({
   verticalSpacer: {
     marginTop: 10,
     marginBottom: 10,
-    height: 20
+    height: 20,
+    color: black
   },
   backupDivider: {
     width: '91%',
@@ -240,9 +244,7 @@ var styles = _reactNative.StyleSheet.create({
   },
   text: {
     textAlign: 'center',
-    color: '#fff',
-    fontFamily: customFontRegular,
-    fontSize: 16.5
+    fontFamily: customFontRegular
   },
   boldText: {
     fontFamily: customFontBold,
@@ -255,7 +257,7 @@ var styles = _reactNative.StyleSheet.create({
     fontSize: 27
   },
   smallerText: {
-    fontSize: 13
+    fontSize: 17
   },
   verySmallText: {
     fontSize: 10
@@ -280,6 +282,9 @@ var styles = _reactNative.StyleSheet.create({
   },
   redText: {
     color: 'red'
+  },
+  pinkText: {
+    color: mainpink
   },
   textWithTopMargin: {
     marginTop: 10
@@ -482,8 +487,10 @@ var styles = _reactNative.StyleSheet.create({
     fontFamily: customFontRegular
   },
   'ctaButton--smallWidth': {
-    width: '50%',
-    marginLeft: '25%'
+    alignSelf: 'center',
+    width: '30%',
+    marginTop: '5%',
+    backgroundColor: mainpink
   },
   cardsTopNav: {
     paddingLeft: 20,
@@ -591,6 +598,22 @@ var styles = _reactNative.StyleSheet.create({
     left: '5%',
     borderRadius: 20
   },
+  infoDialog: {
+    height: '90%',
+    width: '90%',
+    backgroundColor: 'rgba(255, 255, 255,1)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: '5%',
+    left: '5%',
+    borderRadius: 20
+  },
+  imageView: {
+    height: '5%',
+    width: 'undefined',
+    right: '5%',
+    left: '5%'
+  },
   bottomDialog: {
     height: 200,
     width: '100%',
@@ -602,8 +625,10 @@ var styles = _reactNative.StyleSheet.create({
   createDeckCtaButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    paddingRight: 10,
+    paddingLeft: 10,
     borderRadius: 4,
     marginTop: 10,
     marginBottom: 10,

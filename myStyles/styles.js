@@ -19,8 +19,9 @@ export const fifthColor = 'rgb(50,81,184)'; //dark-blue
 export const sixthColor = '#3251B8'; //dark-blue
 export const seventhColor = '#F08A5D'; //medium-orange
 export const lightblue = 'rgb(209,220,255)'; //light blue
+export const morelightblue = 'rgb(252,252,255)'; //even more light blue
 export const black = 'rgb(0,0,0)';
-export const white = 'rgb(255,255,255)';
+export const white = 'rgb(255,25,255)';
 
 const customFontRegular = 'Nunito-Regular';
 const customFontBold = 'Nunito-SemiBold';
@@ -38,7 +39,7 @@ export const styles = StyleSheet.create({
     dropdown: {
         margin: 16,
         height: 50,
-        backgroundColor: 'white',
+        backgroundColor: morelightblue,
         borderRadius: 12,
         padding: 12,
         shadowColor: '#000',
@@ -222,8 +223,7 @@ export const styles = StyleSheet.create({
     },
     text: {
         textAlign: 'center',
-        fontFamily: customFontRegular,
-        fontSize: 16.5
+        fontFamily: customFontRegular
     },
     boldText: {
         fontFamily: customFontBold,
@@ -236,7 +236,7 @@ export const styles = StyleSheet.create({
         fontSize: 27
     },
     smallerText: {
-        fontSize: 13
+        fontSize: 17
     },
     verySmallText: {
         fontSize: 10
@@ -466,8 +466,10 @@ export const styles = StyleSheet.create({
         fontFamily: customFontRegular
     },
     'ctaButton--smallWidth': {
-        width: '50%',
-        marginLeft: '25%'
+        alignSelf: 'center',
+        width: '30%',
+        marginTop: '5%',
+        backgroundColor: mainpink
     },
     cardsTopNav: {
         paddingLeft: 20,
@@ -579,11 +581,17 @@ export const styles = StyleSheet.create({
         height: '90%',
         width: '90%',
         backgroundColor: 'rgba(255, 255, 255,1)',
-        alignItems: 'flex-start',
-        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        justifyContent: 'center',
         right: '5%',
         left: '5%',
         borderRadius: 20
+    },
+    imageView: {
+        height: '5%',
+        width: 'undefined',
+        right: '5%',
+        left: '5%'
     },
     bottomDialog: {
         height: 200,
@@ -596,8 +604,10 @@ export const styles = StyleSheet.create({
     createDeckCtaButton: {
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: 12,
-        paddingHorizontal: 15,
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        paddingRight: 10,
+        paddingLeft: 10,
         borderRadius: 4,
         marginTop: 10,
         marginBottom: 10,

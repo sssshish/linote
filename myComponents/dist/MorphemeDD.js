@@ -5,23 +5,29 @@ var react_native_1 = require("react-native");
 var components_1 = require("@ui-kitten/components");
 var react_native_element_dropdown_1 = require("react-native-element-dropdown");
 var styles_1 = require("../myStyles/styles");
-var MyDropDown = function (props) {
+var MorphemeDD = function (props) {
     var _a = react_1.useState(null), value = _a[0], setValue = _a[1];
     var wordtypes = [
-        { label: 'Adjective', value: '1' },
-        { label: 'Adposition', value: '2' },
-        { label: 'Adverb', value: '3' },
-        { label: 'Conjunction', value: '4' },
-        { label: 'Contraction', value: '5' },
-        { label: 'Classifier', value: '6' },
-        { label: 'Clitic', value: '7' },
-        { label: 'Determiner/Article', value: '8' },
-        { label: 'Interjection', value: '9' },
-        { label: 'Noun', value: '10' },
-        { label: 'Numeral', value: '11' },
-        { label: 'Preposition', value: '12' },
-        { label: 'Pronoun', value: '13' },
-        { label: 'Verb', value: '14' }
+        { value: '1', label: '*bound root' },
+        { value: '2', label: '*bound stem' },
+        { value: '3', label: 'circumfix' },
+        { value: '4', label: 'clitic' },
+        { value: '5', label: 'discontiguous phrase' },
+        { value: '6', label: '=enclitic' },
+        { value: '7', label: '-infix-' },
+        { value: '8', label: '-infixing infix' },
+        { value: '9', label: 'particle' },
+        { value: '10', label: 'phrase' },
+        { value: '11', label: 'prefix-' },
+        { value: '12', label: 'prefixing prefix-' },
+        { value: '13', label: 'proclitic' },
+        { value: '14', label: 'root' },
+        { value: '15', label: '=simulfix=' },
+        { value: '16', label: 'stem' },
+        { value: '17', label: '-suffix' },
+        { value: '18', label: '-suffixing interfix' },
+        { value: '19', label: '~suprafix~' },
+        { label: 'None', value: '20' }
     ];
     var renderItem = function (item) {
         return (react_1["default"].createElement(react_native_1.View, { style: styles_1.styles.item },
@@ -36,4 +42,4 @@ var MyDropDown = function (props) {
         // )}
         renderItem: renderItem }));
 };
-exports["default"] = MyDropDown;
+exports["default"] = MorphemeDD;

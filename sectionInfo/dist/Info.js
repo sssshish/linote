@@ -1,7 +1,7 @@
 "use strict";
 /*View and update info on your NB*/
 var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
+    __assign = Object.assign || function (t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
             for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
@@ -26,7 +26,7 @@ var okCallback = function () {
 var errorCallback = function (error) {
     console.log('DB connection error', error);
 };
-var db = SQLite.openDatabase({ name: 'dictionary.db' }, okCallback, errorCallback);
+var db = SQLite.openDatabase({ name: 'linote.db', createFromLocation: 1 }, okCallback, errorCallback);
 var makeNotebook = function () {
     db.transaction(function (tx) {
         var test = 'tbletest';

@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* App.tsx contains two major screen components
 
 A) Homepage() contains the following:
@@ -43,7 +44,6 @@ import {
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Words } from './sectionList/Words';
 import { Category } from './sectionCategory/Category';
 import { Quiz } from './sectionQuiz/Quiz';
@@ -54,15 +54,14 @@ import AddWords from './views/AddWords';
 import { SvgXml } from 'react-native-svg';
 import { plusSvg, challengeSvgBase, walletSvgBase, infoSvgBase, getCustomSvg, cardsSvgBase, closeX } from './myUtils/customIcons';
 import SplashScreen from 'react-native-splash-screen';
-import { Alert, ImageBackground, SafeAreaView, View } from 'react-native';
+import { Alert, Image, ImageBackground, SafeAreaView, View, Linking } from 'react-native';
 import Mybutton from './myComponents/MyButton';
 import { Button, IconButton, Modal, Portal, Provider, Text, TextInput } from 'react-native-paper';
 import MyTextInput from './myComponents/MyTextInput';
 import { FlatList } from 'react-native-gesture-handler';
 import { createNavigationContainerRef } from '@react-navigation/native';
-import { enablePromise, openDatabase } from 'react-native-sqlite-storage';
 import { createStackNavigator } from '@react-navigation/stack';
-import SQLite from 'react-native-sqlite-storage';
+import { color } from 'react-native-reanimated';
 
 //Database connection starts here
 
@@ -73,7 +72,10 @@ const errorCallback = (error: any) => {
   console.log('DB connection error', error);
 };
 
-const db = openDatabase({ name: 'linote', location: 'default' }, okCallback, errorCallback);
+
+const SQLite = require('react-native-sqlite-storage');
+
+const db = SQLite.openDatabase({ name: 'linote.db', createFromLocation: 2 }, okCallback, errorCallback);
 
 
 //Function to create a Notebook (table)
@@ -106,9 +108,6 @@ export const deleteNB = (nbName: String) => {
   });
 };
 
-export const openNB = () => {
-
-};
 
 //Function to display info on App
 const AboutApp = ({ navigation }: { navigation: any }) => {
@@ -310,6 +309,7 @@ const Notebook = ({ navigation }: { navigation: any }) => {
   );
 };
 
+
 //Homepage -> openNB, createNB, AboutApp
 const Homepage = ({ navigation }: { navigation: any }) => {
 
@@ -327,6 +327,42 @@ const Homepage = ({ navigation }: { navigation: any }) => {
 
   const [nbName, setNBname] = useState('');
   const [currentNB, setcurrentNB] = useState('');
+  let [flatListItems, setFlatListItems] = useState([]);
+  const testdata = ['test', 'Other Notebooks'];
+
+  const testNB = () => {
+    const testQ = 'CREATE TABLE IF NOT EXISTS test(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL, pronounciation TEXT, description TEXT,complex TEXT, morpheme TEXT, graminfo TEXT)';
+    db.transaction((tx: any) => {
+      tx.executeSql(testQ, [], (trans: any, results: any) => {
+        console.log('Test Notebook created');
+        navigation.navigate('Notebook');
+      },
+        (error: any) => {
+          console.log('Error creating test notebook:', error);
+        }
+      );
+    });
+  };
+
+
+  // db.transaction((tx) => {
+  //   tx.executeSql(
+  //     'SELECT * FROM sqlite_master where type=\'table\'',
+  //     [],
+  //     (_tx, _results) => {
+  //       console.log('NB names loaded');
+  //       var temp: any;
+  //       for (let i = 0; i < _results.rows.length; ++i) { temp.push(_results.rows.item(i)); }
+  //       setFlatListItems(temp);
+  //       console.log(flatListItems);
+  //     },
+  //     (error: any) => {
+  //       console.log('Error loading notebooks', error);
+  //     }
+  //   );
+  // });
+
+
 
   return (
     <ImageBackground style={styles.imgBackground}
@@ -344,7 +380,7 @@ const Homepage = ({ navigation }: { navigation: any }) => {
                 onChangeText={(nbName: React.SetStateAction<string>) => setNBname(nbName)} />
               <Button mode='contained' style={styles.smallbutton} onPress={
                 () => {
-                  const query = `CREATE TABLE IF NOT EXISTS ' ${nbName} '(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL,word_type TEXT NOT NULL, morph_type TEXT NOT NULL, description TEXT NOT NULL)`;
+                  const query = `CREATE TABLE IF NOT EXISTS ' ${nbName} '(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL,complex TEXT NOT NULL, morpheme TEXT NOT NULL, graminfo TEXT NOT NULL, description TEXT NOT NULL)`;
                   db.transaction((tx: any) => {
                     tx.executeSql(query, [], (trans: any, results: any) => {
                       console.log('Notebook created - ', nbName);
@@ -367,11 +403,10 @@ const Homepage = ({ navigation }: { navigation: any }) => {
               <FlatList
                 style={styles.createDeckList}
                 contentContainerStyle={styles.createDeckListContainer}
-                data={undefined}
+                data={testdata}
                 renderItem={undefined}
               />
-              <Button mode='contained' style={styles.smallbutton} onPress={() => { currentNB ? Alert.alert('No notebook selected. Please create a Notebook first.') : navigation.navigate('Notebook'); }
-              }>
+              <Button mode='contained' style={styles.smallbutton} onPress={() => { currentNB ? Alert.alert('No notebook selected. Please create a Notebook first.') : navigation.navigate('Notebook'); }}>
                 Select
               </Button>
             </Modal>
@@ -379,17 +414,33 @@ const Homepage = ({ navigation }: { navigation: any }) => {
           <Mybutton title='About App' customClick={showC} />
           <Portal>
             <Modal visible={c} onDismiss={hideC} style={styles.infoDialog}>
-              <Text style={[styles.biggerText, styles.text, styles.pinkText]}>
-                Linote
+              <Text style={[{ fontSize: 40 }, styles.text, styles.pinkText]}>Linote</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ flex: 1, height: 1, backgroundColor: mainpink }} />
+                <View>
+                  <Text style={{ width: 50, textAlign: 'center', color: mainpink }}>***</Text>
+                </View>
+                <View style={{ flex: 1, height: 1, backgroundColor: mainpink }} />
+              </View>
+              <Text style={[styles.smallerText, styles.textWithTopMargin, styles.text, { textAlign: 'justify', paddingRight: '5%', paddingLeft: '5%' }]}> Linote is a note-taking mobile app that helps you create your own dictionaries and practice your words whenever and wherever you want. It requires no internet connection or special storage permissions. You can even create notes on languages that you have made up.</Text>
+              <View style={{ height: '4%' }} />
+              <Text style={[styles.smallerText, styles.textWithTopMargin, styles.text, { textAlign: 'justify', paddingRight: '5%', paddingLeft: '5%' }]}>
+                Project Source Code:
               </Text>
-              <Text style={[styles.smallerText, styles.leftAlignedText, styles.text]}> Linote is a note-taking mobile app that helps you create your own dictionaries and practice your words whenever and wherever you want. It requires no internet connection or special storage permissions. You can even create notes on languages that YOU have made up.</Text>
+              <Text onPress={() => Linking.openURL('https://github.com/s19036/linote')} style={[styles.smallerText, styles.textWithTopMargin, styles.text, styles.boldText, styles.linkText, styles.lightText, { textAlign: 'justify', paddingRight: '5%', paddingLeft: '5%' }]}>
+                Github
+              </Text>
             </Modal>
           </Portal>
+          <Button mode='contained' onPress={testNB}>
+            test
+          </Button>
         </View>
       </Provider>
     </ImageBackground >
   );
 };
+
 
 
 //Defaul App() containing the stack navigation for both screens
@@ -402,10 +453,9 @@ export default () => {
       <Stack.Navigator
         initialRouteName='Home'
         screenOptions={{ headerShown: false }}>
-        <Stack.Screen name='Home' component={Homepage} options={{ headerShown: false }} />
+        <Stack.Screen name='Home' component={Homepage} />
         <Stack.Screen name='Notebook' component={Notebook} />
-        <Stack.Screen name='AboutApp' component={AboutApp} />
       </Stack.Navigator>
-    </NavigationContainer>
+    </ NavigationContainer>
   );
 };

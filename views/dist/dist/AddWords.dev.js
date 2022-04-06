@@ -24,21 +24,21 @@ var Dropdown_1 = require("../../myComponents/Dropdown"); // import ViewWord from
 var SQLite = require('react-native-sqlite-storage');
 
 var db = SQLite.openDatabase({
-  name: 'dictionary.db'
+  name: 'linote.db'
 }); //{ navigation: any }
 
 var AddWords = function AddWords() {
   var _a = react_1.useState(''),
-      word = _a[0],
-      setWord = _a[1];
+    word = _a[0],
+    setWord = _a[1];
 
   var _b = react_1.useState(''),
-      translation = _b[0],
-      setTranslation = _b[1];
+    translation = _b[0],
+    setTranslation = _b[1];
 
   var _c = react_1.useState(''),
-      description = _c[0],
-      setDescription = _c[1];
+    description = _c[0],
+    setDescription = _c[1];
 
   var wordtypes = [{
     label: 'Adjective',

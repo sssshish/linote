@@ -15,13 +15,14 @@ import {
 import MyTextInput from '../myComponents/MyTextInput';
 import Mybutton from '../myComponents/MyButton';
 import { styles } from '../myStyles/styles';
-import { NavigationRouteContext } from '@react-navigation/native';
-import MyDropDown from '../myComponents/Dropdown';
-// import ViewWord from '../sectionList/ViewWord';
-
+import { onMenuClick } from '../App';
+import GramInfoDD from '../myComponents/GramInfoDD';
+import MorphemeDD from '../myComponents/MorphemeDD';
+import ComplexDD from '../myComponents/ComplexDD';
+import { Button } from 'react-native-paper';
 const SQLite = require('react-native-sqlite-storage');
 
-const db = SQLite.openDatabase({ name: 'dictionary.db' });
+const db = SQLite.openDatabase({ name: 'linote.db' });
 
 
 //{ navigation: any }
@@ -31,26 +32,12 @@ const AddWords = () => {
     let [word, setWord] = useState('');
     let [translation, setTranslation] = useState('');
     let [description, setDescription] = useState('');
-
-    const wordtypes = [
-        { label: 'Adjective', value: '1' },
-        { label: 'Adposition', value: '2' },
-        { label: 'Adverb', value: '3' },
-        { label: 'Conjunction', value: '4' },
-        { label: 'Contraction', value: '5' },
-        { label: 'Classifier', value: '6' },
-        { label: 'Clitic', value: '7' },
-        { label: 'Determiner/Article', value: '8' },
-        { label: 'Interjection', value: '9' },
-        { label: 'Noun', value: '10' },
-        { label: 'Numeral', value: '11' },
-        { label: 'Preposition', value: '12' },
-        { label: 'Pronoun', value: '13' },
-        { label: 'Verb', value: '14' }
-    ];
+    let [pronounciation, setpronoun] = useState('');
+    let [complex, setComplex] = useState('');
+    let [morpheme, setMorpheme] = useState('');
+    let [graminfo, setGramInfo] = useState('');
 
     let register_word = () => {
-        console.log(word, translation, description);
 
         if (!word) {
             Alert.alert('Word cannot be empty.');
@@ -60,24 +47,44 @@ const AddWords = () => {
             Alert.alert('Translation cannot be empty.');
             return;
         }
-        db.transaction((tx: any, nbname: String) => {
-            tx.executeSql('INSERT INTO' + nbname + '(word, translation, description) VALUES (?,?,?)',
-                [word, translation, description],
+        if (!pronounciation) {
+            Alert.alert('Pronounciation cannot be empty.');
+            return;
+        }
+        if (!description) {
+            Alert.alert('Description cannot be empty.');
+            return;
+        }
+        if (!graminfo) {
+            Alert.alert('Please select a Grammatical Info.');
+            return;
+        }
+        if (!morpheme) {
+            Alert.alert('Please select a Morpheme Type.');
+            return;
+        }
+        if (!complex) {
+            Alert.alert('Please select a Complex Form Type.');
+            return;
+        }
+        db.transaction((tx: any) => {
+            tx.executeSql('INSERT INTO test(word,translation, pronounciation, description,complex, morpheme, graminfo) VALUES (?,?,?,?,?,?,?)',
+                [word, translation, pronounciation, description, complex, morpheme, graminfo],
                 (trans: any, results: { rowsAffected: number; }) => {
                     console.log('Results', results.rowsAffected);
                     if (results.rowsAffected > 0) {
                         Alert.alert(
-                            'Success',
-                            'You word has been added successfully',
+                            'Success!',
+                            'You word has been added successfully.',
                             [
                                 {
-                                    text: 'Ok'
-                                    // onPress: () => navigation.navigate('List')
+                                    text: 'Ok',
+                                    onPress: () => { onMenuClick(0); }
                                 }
                             ],
                             { cancelable: false }
                         );
-                    } else { Alert.alert('Error: Word was not added.'); }
+                    } else { Alert.alert('Error: Word could not added.'); }
                 }
             );
         });
@@ -86,11 +93,14 @@ const AddWords = () => {
     return (
         <SafeAreaView style={styles.megaWrap}>
             <View style={styles.megaWrap}>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1, backgroundColor: 'white' }}>
                     <ScrollView keyboardShouldPersistTaps='handled'>
                         <KeyboardAvoidingView
                             behavior='padding'
-                            style={{ flex: 1, justifyContent: 'space-between' }}>
+                            style={{ flex: 1, justifyContent: 'center' }}>
+                            <ComplexDD placeholder='Select Complex form type' />
+                            <MorphemeDD placeholder='Select Morpheme type' />
+                            <GramInfoDD placeholder='Select Grammatical info' />
                             <MyTextInput
                                 label='Word'
                                 onChangeText={
@@ -105,7 +115,12 @@ const AddWords = () => {
                                 }
                             />
 
-                            <MyDropDown value={wordtypes} placeholder='Select word type' searchPlaceholder='Search' />
+                            <MyTextInput
+                                label='Pronounciation'
+                                onChangeText={
+                                    (pronounciation: React.SetStateAction<string>) => setpronoun(pronounciation)
+                                }
+                            />
 
                             <MyTextInput
                                 label='Description'
@@ -113,11 +128,13 @@ const AddWords = () => {
                                     (description: React.SetStateAction<string>) => setDescription(description)
                                 }
                                 maxLength={225}
-                                numberOfLines={5}
+                                numberOfLines={3}
                                 multiline={true}
                             />
 
-                            <Mybutton title='Submit' customClick={register_word} />
+                            <Button mode='contained' onPress={register_word} style={styles['ctaButton--smallWidth']}>
+                                ADD
+                            </Button>
                         </KeyboardAvoidingView>
                     </ScrollView>
                 </View>
