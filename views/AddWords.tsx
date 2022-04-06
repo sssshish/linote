@@ -2,7 +2,6 @@
 /*AddWords.tsx contains a form-like view to add new words in a Notebook*/
 
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import {
     View,
@@ -13,14 +12,12 @@ import {
     Text
 } from 'react-native';
 import MyTextInput from '../myComponents/MyTextInput';
-import Mybutton from '../myComponents/MyButton';
 import { styles } from '../myStyles/styles';
 import { onMenuClick } from '../App';
-import GramInfoDD from '../myComponents/GramInfoDD';
-import MorphemeDD from '../myComponents/MorphemeDD';
-import ComplexDD from '../myComponents/ComplexDD';
 import { Button } from 'react-native-paper';
 const SQLite = require('react-native-sqlite-storage');
+import { Icon } from '@ui-kitten/components';
+import { Dropdown } from 'react-native-element-dropdown';
 
 const db = SQLite.openDatabase({ name: 'linote.db' });
 
@@ -36,6 +33,108 @@ const AddWords = () => {
     let [complex, setComplex] = useState('');
     let [morpheme, setMorpheme] = useState('');
     let [graminfo, setGramInfo] = useState('');
+    const [valueC, setValueC] = useState(null);
+    const complexTypes = [
+        { label: 'Compound', value: '1' },
+        { label: 'Contraction', value: '2' },
+        { label: 'Derivative', value: '3' },
+        { label: 'Idiom', value: '4' },
+        { label: 'Phrasal Verb', value: '5' },
+        { label: 'Saying', value: '6' },
+        { label: 'None', value: '7' }
+    ];
+    const renderComplex = (item: any) => {
+        return (
+            <View style={styles.item}>
+                <Text style={styles.textItem}>{item.label}</Text>
+                {item.value === valueC && (
+                    <Icon
+                        style={styles.icon}
+                        fill='#8F9BB3'
+                        name='checkmark-circle'
+                    />
+                )}
+            </View>
+        );
+    };
+    const [valueG, setValueG] = useState(null);
+    const gramTypes = [
+        { label: 'Other', value: '0' },
+        { label: 'Adjective', value: '1' },
+        { label: 'Adposition (Postposition)', value: '2' },
+        { label: 'Adposition (Preposition)', value: '3' },
+        { label: 'Adverb', value: '4' },
+        { label: 'Classifier', value: '5' },
+        { label: 'Clitic', value: '6' },
+        { label: 'Conjunction', value: '7' },
+        { label: 'Connective', value: '8' },
+        { label: 'Contraction', value: '9' },
+        { label: 'Determiner (Article)', value: '10' },
+        { label: 'Determiner (Demonstrative)', value: '11' },
+        { label: 'Existential Marker', value: '12' },
+        { label: 'Expletive', value: '13' },
+        { label: 'Interjection', value: '14' },
+        { label: 'Noun', value: '15' },
+        { label: 'Numeral', value: '16' },
+        { label: 'Prenoun', value: '17' },
+        { label: 'Preposition', value: '18' },
+        { label: 'Preverb', value: '19' },
+        { label: 'Proform', value: '20' },
+        { label: 'Pronoun', value: '21' },
+        { label: 'Verb', value: '22' },
+        { label: 'None', value: '23' }
+    ];
+    const renderGram = (item: any) => {
+        return (
+            <View style={styles.item}>
+                <Text style={styles.textItem}>{item.label}</Text>
+                {item.value === valueG && (
+                    <Icon
+                        style={styles.icon}
+                        fill='#8F9BB3'
+                        name='checkmark-circle'
+                    />
+                )}
+            </View>
+        );
+    };
+    const [valueM, setValueM] = useState(null);
+    const morphemetypes = [
+        { value: '1', label: '*bound root' },
+        { value: '2', label: '*bound stem' },
+        { value: '3', label: 'circumfix' },
+        { value: '4', label: 'clitic' },
+        { value: '5', label: 'discontiguous phrase' },
+        { value: '6', label: '=enclitic' },
+        { value: '7', label: '-infix-' },
+        { value: '8', label: '-infixing infix' },
+        { value: '9', label: 'particle' },
+        { value: '10', label: 'phrase' },
+        { value: '11', label: 'prefix-' },
+        { value: '12', label: 'prefixing prefix-' },
+        { value: '13', label: 'proclitic' },
+        { value: '14', label: 'root' },
+        { value: '15', label: '=simulfix=' },
+        { value: '16', label: 'stem' },
+        { value: '17', label: '-suffix' },
+        { value: '18', label: '-suffixing interfix' },
+        { value: '19', label: '~suprafix~' },
+        { label: 'None', value: '20' }
+    ];
+    const renderMorph = (item: any) => {
+        return (
+            <View style={styles.item}>
+                <Text style={styles.textItem}>{item.label}</Text>
+                {item.value === valueM && (
+                    <Icon
+                        style={styles.icon}
+                        fill='#8F9BB3'
+                        name='checkmark-circle'
+                    />
+                )}
+            </View>
+        );
+    };
 
     let register_word = () => {
 
@@ -67,6 +166,7 @@ const AddWords = () => {
             Alert.alert('Please select a Complex Form Type.');
             return;
         }
+
         db.transaction((tx: any) => {
             tx.executeSql('INSERT INTO test(word,translation, pronounciation, description,complex, morpheme, graminfo) VALUES (?,?,?,?,?,?,?)',
                 [word, translation, pronounciation, description, complex, morpheme, graminfo],
@@ -74,7 +174,7 @@ const AddWords = () => {
                     console.log('Results', results.rowsAffected);
                     if (results.rowsAffected > 0) {
                         Alert.alert(
-                            'Success!',
+                            'Success',
                             'You word has been added successfully.',
                             [
                                 {
@@ -98,9 +198,75 @@ const AddWords = () => {
                         <KeyboardAvoidingView
                             behavior='padding'
                             style={{ flex: 1, justifyContent: 'center' }}>
-                            <ComplexDD placeholder='Select Complex form type' />
-                            <MorphemeDD placeholder='Select Morpheme type' />
-                            <GramInfoDD placeholder='Select Grammatical info' />
+                            <Dropdown
+                                style={styles.dropdown}
+                                placeholderStyle={styles.placeholderStyle}
+                                selectedTextStyle={styles.selectedTextStyle}
+                                inputSearchStyle={styles.inputSearchStyle}
+                                iconStyle={styles.iconStyle}
+                                data={complexTypes}
+                                search
+                                maxHeight={300}
+                                labelField='label'
+                                valueField='value'
+                                placeholder='Select Complex Form Type'
+                                searchPlaceholder='Search'
+                                value={valueC}
+                                onChange={(item: {
+                                    label: React.SetStateAction<string>;
+                                    value: React.SetStateAction<null>;
+                                }) => {
+                                    setComplex(item.label);
+                                    setValueC(item.value);
+                                }}
+                                renderItem={renderComplex}
+                            />
+                            <Dropdown
+                                style={styles.dropdown}
+                                placeholderStyle={styles.placeholderStyle}
+                                selectedTextStyle={styles.selectedTextStyle}
+                                inputSearchStyle={styles.inputSearchStyle}
+                                iconStyle={styles.iconStyle}
+                                data={morphemetypes}
+                                search
+                                maxHeight={300}
+                                labelField='label'
+                                valueField='value'
+                                placeholder='Select Morpheme Type'
+                                searchPlaceholder='Search'
+                                value={valueM}
+                                onChange={(item: {
+                                    label: React.SetStateAction<string>;
+                                    value: React.SetStateAction<null>;
+                                }) => {
+                                    setMorpheme(item.label);
+                                    setValueM(item.value);
+                                }}
+                                renderItem={renderMorph}
+                            />
+                            <Dropdown
+                                style={styles.dropdown}
+                                placeholderStyle={styles.placeholderStyle}
+                                selectedTextStyle={styles.selectedTextStyle}
+                                inputSearchStyle={styles.inputSearchStyle}
+                                iconStyle={styles.iconStyle}
+                                data={gramTypes}
+                                search
+                                maxHeight={300}
+                                labelField='label'
+                                valueField='value'
+                                placeholder='Select Grammatical Info'
+                                searchPlaceholder='Search'
+                                value={valueG}
+                                onChange={(item: {
+                                    label: React.SetStateAction<string>;
+                                    value: React.SetStateAction<null>;
+                                }) => {
+                                    setGramInfo(item.label);
+                                    setValueG(item.value);
+                                }}
+                                renderItem={renderGram}
+                            />
                             <MyTextInput
                                 label='Word'
                                 onChangeText={

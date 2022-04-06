@@ -19,7 +19,7 @@ var ComplexDD = function (props) {
     var renderItem = function (item) {
         return (react_1["default"].createElement(react_native_1.View, { style: styles_1.styles.item },
             react_1["default"].createElement(react_native_1.Text, { style: styles_1.styles.textItem }, item.label),
-            item.value === value && (react_1["default"].createElement(components_1.Icon, { style: styles_1.styles.icon, fill: '#8F9BB3', name: 'arrow-circle-down-outline' }))));
+            item.value === value && (react_1["default"].createElement(components_1.Icon, { style: styles_1.styles.icon, fill: '#8F9BB3', name: 'checkmark-circle' }))));
     };
     return (react_1["default"].createElement(react_native_element_dropdown_1.Dropdown, { style: styles_1.styles.dropdown, placeholderStyle: styles_1.styles.placeholderStyle, selectedTextStyle: styles_1.styles.selectedTextStyle, inputSearchStyle: styles_1.styles.inputSearchStyle, iconStyle: styles_1.styles.iconStyle, data: wordtypes, search: true, maxHeight: 300, labelField: 'label', valueField: 'value', placeholder: props.placeholder, searchPlaceholder: props.searchPlaceholder, value: value, onChange: function (item) {
             setValue(item.value);
