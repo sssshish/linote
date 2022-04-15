@@ -192,8 +192,7 @@ const Notebook = ({ navigation }) => {
         <components_1.Layout style={styles_1.styles.stackNavigatorWrapper}>
           <Tab.Navigator initialRouteName='Words' screenOptions={{
         tabBarActiveTintColor: styles_1.mainpink,
-        tabBarInactiveTintColor: styles_1.fifthColor,
-        tabBarShowLabel: true,
+        tabBarInactiveTintColor: styles_1.secondColor,
         tabBarStyle: { position: 'absolute', height: 50 }
     }}>
             <Tab.Screen name='Words' component={Words_1.Words} options={{
@@ -201,6 +200,7 @@ const Notebook = ({ navigation }) => {
         tabBarIcon: WordsIcon,
         tabBarAccessibilityLabel: 'Words',
         tabBarActiveBackgroundColor: styles_1.lightblue,
+        tabBarShowLabel: true,
         headerShown: false
     }}/>
             <Tab.Screen name='Wallet' component={Category_1.Category} options={{
@@ -208,9 +208,10 @@ const Notebook = ({ navigation }) => {
         tabBarIcon: CardsIcon,
         tabBarAccessibilityLabel: 'Category',
         tabBarActiveBackgroundColor: styles_1.lightblue,
+        tabBarShowLabel: true,
         headerShown: false
     }}/>
-            <Tab.Screen name='AddComp' component={AddComp_1.default} options={{
+            <Tab.Screen name='New Word' component={AddComp_1.default} options={{
         tabBarIcon: PlusIcon,
         tabBarHideOnKeyboard: true,
         tabBarShowLabel: false,
@@ -222,6 +223,7 @@ const Notebook = ({ navigation }) => {
         tabBarLabel: 'Settings',
         tabBarIcon: InfoIcon,
         tabBarAccessibilityLabel: 'Settings',
+        tabBarShowLabel: true,
         tabBarActiveBackgroundColor: styles_1.lightblue,
         headerShown: false
     }}/>
@@ -230,6 +232,7 @@ const Notebook = ({ navigation }) => {
         tabBarIcon: PlayIcon,
         tabBarAccessibilityLabel: 'Quiz',
         tabBarActiveBackgroundColor: styles_1.lightblue,
+        tabBarShowLabel: true,
         headerShown: false
     }}/>
           </Tab.Navigator>

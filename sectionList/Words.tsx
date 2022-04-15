@@ -5,12 +5,10 @@
 */
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
-import { Text, View, SafeAreaView, Alert } from 'react-native';
-import MyTextInput from '../myComponents/MyTextInput';
+import { Text, View, SafeAreaView, FlatList } from 'react-native';
 import Mybutton from '../myComponents/MyButton';
 import { styles } from '../myStyles/styles';
-import { Card } from '@ui-kitten/components';
-// import { openDatabase } from 'react-native-sqlite-storage';
+import { Layout } from '@ui-kitten/components';
 
 
 const SQLite = require('react-native-sqlite-storage');
@@ -18,54 +16,87 @@ const SQLite = require('react-native-sqlite-storage');
 const db = SQLite.openDatabase({ name: 'linote.db' });
 
 export const Words = () => {
-    let [inputWordId, setInputWordId] = useState('');
-    let [wordData, setWordData] = useState({});
 
-    let searchWord = () => {
-        console.log(inputWordId);
-        setWordData({});
+    let [flatListItems, setFlatListItems] = useState([]);
+    // let [wordData, setWordData] = useState({});
+    const query = 'SELECT * FROM test_table';
+    var len = 0;
+    const demoData = [
+        {}
+    ];
+
+    let loadWord = () => {
         db.transaction((tx: any) => {
-            tx.executeSql(
-                'SELECT * FROM test where word_id = ?',
-                [inputWordId],
-                (trans: any, results: any) => {
-                    var len = results.rows.length;
-                    console.log('len', len);
-                    if (len > 0) {
-                        setWordData(results.rows.item(0));
-                    } else {
-                        Alert.alert('No words found');
-                    }
+            tx.executeSql(query, [], (trans: any, results: any) => {
+                console.log('All words loaded');
+                len = results.rows.length;
+                var temp: any = [];
+                for (let i = 0; i < len; ++i) {
+                    temp.push(results.rows.item(i));
+                }
+                setFlatListItems(temp);
+            },
+                (error: any) => {
+                    console.log('Error loading words', error);
                 }
             );
         });
     };
 
-    return (
-        <SafeAreaView style={{ flex: 1, alignItems: 'center' }}>
-            <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-                <View style={{ flex: 1, alignItems: 'center', width: '100%' }}>
-                    <MyTextInput
-                        label='Enter Word id'
-                        placeholder='Enter Word id'
-                        onChangeText={
-                            // eslint-disable-next-line @typescript-eslint/no-shadow
-                            (inputWordId: React.SetStateAction<string>) => setInputWordId(inputWordId)
-                        }
-                        style={styles.topSearchInput}
-                    />
-                    <Mybutton title='Search Word' customClick={searchWord} styles={styles.createDeckCtaButton} />
-                    <Text style={[styles.veryBigText, styles.pinkText, styles.centeredText]}>Your word list is empty!</Text>
-                    {/* <Card style={styles.wordCard}>
-                        <Text>Word ID: </Text>
-                        <Text>Translation: </Text>
-                        <Text>Word Type: </Text>
-                        {/* {/* <Text>Word: {wordData.word}</Text> */}
-                    {/* <Text>Translation: {wordData.translation}</Text>
-                        <Text>Comments: {wordData.description}</Text> */}
-                    {/* <Text>Word Type: {wordData.word_type}</Text>*/}
+    let listViewItemSeparator = () => {
+        return (
+            <View
+                style={{
+                    height: 0.3,
+                    width: '100%',
+                    backgroundColor: '#fcfcfc'
+                }}
+            />
+        );
+    };
+
+    let listItemView = (item: any) => {
+        if (!item.word) {
+            return (
+                <View style={{ height: 0, width: 0 }} />
+            );
+        }
+        else {
+            return (
+                <View
+                    key={item.word_id}
+                    style={{ backgroundColor: '#fcfcfc', padding: 20, width: '100%' }}>
+                    <Text style={styles.titleText}>{item.word}</Text>
+                    <Text >Word Id: {item.word_id}</Text>
+                    <Text>Translation: {item.translation}</Text>
+                    <Text>Pronounciation: {item.pronounciation}</Text>
+                    <Text>Description: {item.description}</Text>
+                    <Text>Complex Form Type: {item.complex}</Text>
+                    <Text>Morpheme Type: {item.morpheme}</Text>
+                    <Text>Grammatical Info: {item.graminfo}</Text>
                 </View>
-            </View>
-        </SafeAreaView >
+            );
+        }
+    };
+
+
+    return (
+        <Layout style={styles.megaWrap} >
+            <SafeAreaView style={styles.mainViewWrapper}>
+                <Layout style={styles.listSearchWrapper} >
+                    <Mybutton title='Load Words' customClick={loadWord} />
+                    <FlatList
+                        data={flatListItems}
+                        ItemSeparatorComponent={listViewItemSeparator}
+                        renderItem={({ item }) => listItemView(item)}
+                    />
+                    <FlatList
+                        data={demoData}
+                        ItemSeparatorComponent={listViewItemSeparator}
+                        renderItem={({ item }) => listItemView(item)}
+                    />
+                </Layout>
+            </SafeAreaView >
+        </Layout>
     );
 };

@@ -49,7 +49,7 @@ import { Category } from './sectionCategory/Category';
 import { Quiz } from './sectionQuiz/Quiz';
 import { Settings as Info } from './sectionInfo/Info';
 import { customTheme } from './myUtils/customTheme';
-import { fifthColor, lightblue, mainpink, white, black, styles } from './myStyles/styles';
+import { fifthColor, lightblue, mainpink, white, black, styles, secondColor } from './myStyles/styles';
 import AddWords from './views/AddComp';
 import { SvgXml } from 'react-native-svg';
 import { plusSvg, challengeSvgBase, walletSvgBase, infoSvgBase, getCustomSvg, cardsSvgBase, closeX } from './myUtils/customIcons';
@@ -235,8 +235,7 @@ const Notebook = ({ navigation }: { navigation: any }) => {
             initialRouteName='Words'
             screenOptions={{
               tabBarActiveTintColor: mainpink,
-              tabBarInactiveTintColor: fifthColor,
-              tabBarShowLabel: true,
+              tabBarInactiveTintColor: secondColor,
               tabBarStyle: { position: 'absolute', height: 50 }
             }}
           >
@@ -248,6 +247,7 @@ const Notebook = ({ navigation }: { navigation: any }) => {
                 tabBarIcon: WordsIcon,
                 tabBarAccessibilityLabel: 'Words',
                 tabBarActiveBackgroundColor: lightblue,
+                tabBarShowLabel: true,
                 headerShown: false
               }}
             />
@@ -259,11 +259,12 @@ const Notebook = ({ navigation }: { navigation: any }) => {
                 tabBarIcon: CardsIcon,
                 tabBarAccessibilityLabel: 'Category',
                 tabBarActiveBackgroundColor: lightblue,
+                tabBarShowLabel: true,
                 headerShown: false
               }}
             />
             <Tab.Screen
-              name='AddComp'
+              name='New Word'
               component={AddComp}
               options={{
                 tabBarIcon: PlusIcon,
@@ -281,6 +282,7 @@ const Notebook = ({ navigation }: { navigation: any }) => {
                 tabBarLabel: 'Settings',
                 tabBarIcon: InfoIcon,
                 tabBarAccessibilityLabel: 'Settings',
+                tabBarShowLabel: true,
                 tabBarActiveBackgroundColor: lightblue,
                 headerShown: false
               }}
@@ -293,6 +295,7 @@ const Notebook = ({ navigation }: { navigation: any }) => {
                 tabBarIcon: PlayIcon,
                 tabBarAccessibilityLabel: 'Quiz',
                 tabBarActiveBackgroundColor: lightblue,
+                tabBarShowLabel: true,
                 headerShown: false
               }}
             />
@@ -324,7 +327,7 @@ const Homepage = ({ navigation }: { navigation: any }) => {
   let [flatListItems, setFlatListItems] = useState([]);
 
   const testNB = () => {
-    const testQ = 'CREATE TABLE IF NOT EXISTS test(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL, pronounciation TEXT, description TEXT,complex TEXT, morpheme TEXT, graminfo TEXT, infotitle TEXT info TEXT)';
+    const testQ = 'CREATE TABLE IF NOT EXISTS test_table(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT,translation TEXT, pronounciation TEXT, description TEXT,complex TEXT, morpheme TEXT, graminfo TEXT, infotitle TEXT, info TEXT)';
     db.transaction((tx: any) => {
       tx.executeSql(testQ, [], (trans: any, results: any) => {
         console.log('Test Notebook created');
@@ -372,7 +375,7 @@ const Homepage = ({ navigation }: { navigation: any }) => {
                 onChangeText={(nbName: React.SetStateAction<string>) => setNBname(nbName)} />
               <Button mode='contained' style={styles.smallbutton} onPress={
                 () => {
-                  const query = `CREATE TABLE IF NOT EXISTS ' ${nbName} '(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT NOT NULL,translation TEXT NOT NULL,complex TEXT NOT NULL, morpheme TEXT NOT NULL, graminfo TEXT NOT NULL, description TEXT NOT NULL)`;
+                  const query = `CREATE TABLE IF NOT EXISTS ' ${nbName} '(word_id INTEGER PRIMARY KEY AUTOINCREMENT,word TEXT,translation TEXT,complex TEXT, morpheme TEXT NOT NULL, graminfo TEXT NOT NULL, description TEXT NOT NULL)`;
                   db.transaction((tx: any) => {
                     tx.executeSql(query, [], (trans: any, results: any) => {
                       console.log('Notebook created - ', nbName);
@@ -438,6 +441,16 @@ const Homepage = ({ navigation }: { navigation: any }) => {
 export default () => {
 
   SplashScreen.hide();
+
+  db.transaction((tx: any) => {
+    tx.executeSql('DROP TABLE test_table', [], (trans: any, results: any) => {
+      console.log('Test Notebook refresed');
+    },
+      (error: any) => {
+        console.log('Error refreshing test notebook:', error);
+      }
+    );
+  });
 
   return (
     <NavigationContainer independent={true}>

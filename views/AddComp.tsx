@@ -143,7 +143,7 @@ const AddWords = () => {
             return;
         }
         db.transaction((tx: any) => {
-            tx.executeSql('INSERT INTO test(word,translation, pronounciation, description,complex, morpheme, graminfo) VALUES (?,?,?,?,?,?,?)',
+            tx.executeSql('INSERT INTO test_table(word,translation, pronounciation, description,complex, morpheme, graminfo) VALUES (?,?,?,?,?,?,?)',
                 [word, translation, pronounciation, description, complex, morpheme, graminfo],
                 (trans: any, results: { rowsAffected: number; }) => {
                     console.log('Results', results.rowsAffected);

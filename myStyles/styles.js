@@ -347,7 +347,7 @@ export const styles = StyleSheet.create({
     },
     megaWrap: {
         height: '100%',
-        backgroundColor: '#FFF'
+        backgroundColor: '#fcfcfc'
     },
     mainViewWrapper: {
         width: '100%'
@@ -486,7 +486,6 @@ export const styles = StyleSheet.create({
     },
     infoContainer: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center'
     },
     infoColOne: {
@@ -579,6 +578,16 @@ export const styles = StyleSheet.create({
     },
     infoDialog: {
         height: '90%',
+        width: '90%',
+        backgroundColor: 'rgba(255, 255, 255,1)',
+        alignItems: 'center',
+        justifyContent: 'center',
+        right: '5%',
+        left: '5%',
+        borderRadius: 20
+    },
+    infoNote: {
+        height: '40%',
         width: '90%',
         backgroundColor: 'rgba(255, 255, 255,1)',
         alignItems: 'center',

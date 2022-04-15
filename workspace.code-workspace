@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"name": "flippingCards",
+			"path": "..\\flippingCards"
+		},
+		{
+			"name": "linote",
+			"path": "."
+		}
+	],
+	"settings": {
+		"compile-hero.disable-compile-files-on-did-save-code": true
+	}
+}

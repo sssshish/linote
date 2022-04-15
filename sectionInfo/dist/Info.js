@@ -1,4 +1,5 @@
 "use strict";
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-shadow */
 /*View and update info on your NB*/
@@ -27,28 +28,53 @@ exports.FlexiIcon = function (settingsIconProps) { return (React.createElement(c
 var SQLite = require('react-native-sqlite-storage');
 var db = SQLite.openDatabase({ name: 'linote.db' });
 var DisplayNotes = function () {
-    var _a = react_1.useState({}), noteData = _a[0], setNoteData = _a[1];
-    var query = 'SELECT * FROM test(infotitle, info) where word_id=?';
+    var _a = react_1.useState([]), flatListItems = _a[0], setFlatListItems = _a[1];
+    var query = 'SELECT * FROM test';
+    var len;
+    var _b = react_1.useState(false), b = _b[0], setB = _b[1];
+    var showB = function () { return setB(true); };
+    var hideB = function () { return setB(false); };
     db.transaction(function (tx) {
-        tx.executeSql(query, [], function (trans, result) {
+        tx.executeSql(query, [], function (trans, results) {
             console.log('All notes loaded');
+            len = results.rows.length;
+            var temp;
+            for (var i = 0; i < len; ++i) {
+                temp.push(results.rows.item(i));
+            }
+            setFlatListItems(temp);
         }, function (error) {
             console.log('Error loading note', error);
         });
     });
-    // if (result.rows.length==0)
-    // {
-    return (React.createElement(components_1.Layout, { style: styles_1.styles.megaWrap },
-        React.createElement(react_native_1.View, { style: styles_1.styles.infoContainer },
-            React.createElement(react_native_1.Text, null, "No notes created yet."))));
+    var listViewItemSeparator = function () {
+        return (React.createElement(react_native_1.View, { style: {
+                height: 0.5,
+                width: '100%',
+                backgroundColor: '#fcfcfc'
+            } }));
+    };
+    var listItemView = function (item) {
+        return (React.createElement(react_native_paper_1.Provider, null,
+            React.createElement(react_native_paper_1.Button, { mode: 'contained', key: item.word_id, style: styles_1.styles.dropdown, onPress: showB }, item.infotitle),
+            React.createElement(react_native_paper_1.Portal, null,
+                React.createElement(react_native_paper_1.Modal, { visible: b, onDismiss: hideB, contentContainerStyle: styles_1.styles.infoDialog },
+                    React.createElement(react_native_1.Text, { style: [styles_1.styles.smallerText, styles_1.styles.textWithTopMargin, styles_1.styles.text, { textAlign: 'justify', paddingRight: '5%', paddingLeft: '5%' }] },
+                        " ",
+                        item.info)))));
+    };
+    if (len === 0) {
+        return (React.createElement(components_1.Layout, { style: styles_1.styles.megaWrap },
+            React.createElement(react_native_1.View, { style: styles_1.styles.infoContainer },
+                React.createElement(react_native_1.Text, { style: [styles_1.styles.veryBigText, styles_1.styles.pinkText, styles_1.styles.centeredText] }, "No notes created yet."))));
+    }
+    else {
+        return (React.createElement(react_native_1.FlatList, { data: flatListItems, ItemSeparatorComponent: listViewItemSeparator, keyExtractor: function (item, index) { return index.toString(); }, renderItem: function (_a) {
+                var item = _a.item;
+                return listItemView(item);
+            } }));
+    }
 };
-//     else
-//     {
-//         return (
-// <Text>Display Notes here.</Text>
-//         );
-//     }
-// };
 exports.Settings = function () {
     var _a = react_1.useState(false), a = _a[0], setA = _a[1];
     var showA = function () { return setA(true); };
@@ -61,7 +87,7 @@ exports.Settings = function () {
                 React.createElement(MyButton_1["default"], { title: 'Add New Note', customClick: showA }),
                 React.createElement(react_native_paper_1.Portal, null,
                     React.createElement(react_native_paper_1.Modal, { visible: a, onDismiss: hideA, contentContainerStyle: styles_1.styles.inputDialog },
-                        React.createElement(MyTextInput_1["default"], { label: 'Note Title', onChangeText: function (title) { return setTitle(title); } }),
+                        React.createElement(MyTextInput_1["default"], { label: 'Note Title', maxLength: 20, onChangeText: function (title) { return setTitle(title); } }),
                         React.createElement(MyTextInput_1["default"], { label: 'Note', multiline: true, maxLength: 500, numberOfLines: 5, onChangeText: function (note) { return setNote(note); } }),
                         React.createElement(react_native_paper_1.Button, { mode: 'contained', style: styles_1.styles.smallbutton, onPress: function () {
                                 var query = 'INSERT INTO test(infotitle, info) VALUES (?,?)';
