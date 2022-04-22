@@ -577,7 +577,7 @@ export const styles = StyleSheet.create({
         borderRadius: 20
     },
     infoDialog: {
-        height: '90%',
+        height: '60%',
         width: '90%',
         backgroundColor: 'rgba(255, 255, 255,1)',
         alignItems: 'center',

@@ -88,8 +88,8 @@ export const Settings = () => {
         <Layout style={styles.megaWrap}>
             <View style={styles.infoContainer}>
                 <Provider>
-                    <Mybutton title='Add New Note' customClick={showA} />
-                    <Mybutton title='Load' customClick={loadNotes} />
+                    <Mybutton title='Add New Note' customClick={showA} style={styles.smallbutton} />
+                    <Mybutton title='Update Notes' customClick={loadNotes} style={styles.smallbutton} />
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View style={{ flex: 1, height: 1, backgroundColor: mainpink }} />
                         <View>
@@ -97,6 +97,11 @@ export const Settings = () => {
                         </View>
                         <View style={{ flex: 1, height: 1, backgroundColor: mainpink }} />
                     </View>
+                    <FlatList
+                        data={flatListItems}
+                        ItemSeparatorComponent={listViewItemSeparator}
+                        renderItem={({ item }) => listItemView(item)}
+                    />
                     <Portal>
                         <Modal visible={a} onDismiss={hideA} contentContainerStyle={styles.infoNote}>
                             <MyTextInput
@@ -132,11 +137,6 @@ export const Settings = () => {
                         </Modal>
                     </Portal>
                 </Provider>
-                <FlatList
-                    data={flatListItems}
-                    ItemSeparatorComponent={listViewItemSeparator}
-                    renderItem={({ item }) => listItemView(item)}
-                />
             </View>
         </Layout>
     );

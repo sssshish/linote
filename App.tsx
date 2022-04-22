@@ -39,7 +39,7 @@ const textDB = () => {
 import React, { useContext, useState, useEffect } from 'react';
 import * as eva from '@eva-design/eva';
 import {
-  ApplicationProvider, IconRegistry, Layout, IconProps, Icon
+  ApplicationProvider, IconRegistry, Layout, IconProps, Icon, StyleService
 } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -47,7 +47,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Words } from './sectionList/Words';
 import { Category } from './sectionCategory/Category';
 import { Quiz } from './sectionQuiz/Quiz';
-import { Settings as Info } from './sectionInfo/Info';
+import { Settings as Notes } from './sectionInfo/Info';
 import { customTheme } from './myUtils/customTheme';
 import { fifthColor, lightblue, mainpink, white, black, styles, secondColor } from './myStyles/styles';
 import AddWords from './views/AddComp';
@@ -61,7 +61,6 @@ import MyTextInput from './myComponents/MyTextInput';
 import { FlatList } from 'react-native-gesture-handler';
 import { createNavigationContainerRef } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { color } from 'react-native-reanimated';
 import AddComp from './views/AddComp';
 
 //Database connection starts here
@@ -276,12 +275,12 @@ const Notebook = ({ navigation }: { navigation: any }) => {
               }}
             />
             <Tab.Screen
-              name='Info'
-              component={Info}
+              name='Notes'
+              component={Notes}
               options={{
-                tabBarLabel: 'Settings',
+                tabBarLabel: 'Notes',
                 tabBarIcon: InfoIcon,
-                tabBarAccessibilityLabel: 'Settings',
+                tabBarAccessibilityLabel: 'Notes',
                 tabBarShowLabel: true,
                 tabBarActiveBackgroundColor: lightblue,
                 headerShown: false
@@ -420,12 +419,11 @@ const Homepage = ({ navigation }: { navigation: any }) => {
               </View>
               <Text style={[styles.smallerText, styles.textWithTopMargin, styles.text, { textAlign: 'justify', paddingRight: '5%', paddingLeft: '5%' }]}> Linote is a note-taking mobile app that helps you create your own dictionaries and practice your words whenever and wherever you want. It requires no internet connection or special storage permissions. You can even create notes on languages that you have made up.</Text>
               <View style={{ height: '4%' }} />
-              <Text style={[styles.smallerText, styles.textWithTopMargin, styles.text, { textAlign: 'justify', paddingRight: '5%', paddingLeft: '5%' }]}>
-                Project Source Code:
-              </Text>
-              <Text onPress={() => Linking.openURL('https://github.com/s19036/linote')} style={[styles.smallerText, styles.textWithTopMargin, styles.text, styles.boldText, styles.linkText, styles.lightText, { textAlign: 'justify', paddingRight: '5%', paddingLeft: '5%' }]}>
-                Github
-              </Text>
+              <View style={{ flexDirection: 'row' }}>
+                <Text onPress={() => Linking.openURL('https://github.com/s19036/linote')} style={[styles.smallerText, styles.textWithTopMargin, styles.text, styles.linkText, { textAlign: 'justify', paddingRight: '5%', paddingLeft: '5%' }]}>
+                  Github Source Code
+                </Text>
+              </View>
             </Modal>
           </Portal>
           <Mybutton title='Open Demo Notebook' customClick={testNB} />

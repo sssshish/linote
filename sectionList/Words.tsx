@@ -5,7 +5,7 @@
 */
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
-import { Text, View, SafeAreaView, FlatList } from 'react-native';
+import { Text, View, FlatList } from 'react-native';
 import Mybutton from '../myComponents/MyButton';
 import { styles } from '../myStyles/styles';
 import { Layout } from '@ui-kitten/components';
@@ -82,21 +82,19 @@ export const Words = () => {
 
     return (
         <Layout style={styles.megaWrap} >
-            <SafeAreaView style={styles.mainViewWrapper}>
-                <Layout style={styles.listSearchWrapper} >
-                    <Mybutton title='Load Words' customClick={loadWord} />
-                    <FlatList
-                        data={flatListItems}
-                        ItemSeparatorComponent={listViewItemSeparator}
-                        renderItem={({ item }) => listItemView(item)}
-                    />
-                    <FlatList
-                        data={demoData}
-                        ItemSeparatorComponent={listViewItemSeparator}
-                        renderItem={({ item }) => listItemView(item)}
-                    />
-                </Layout>
-            </SafeAreaView >
+            <View style={styles.infoContainer} >
+                <Mybutton title='Update Words' customClick={loadWord} styles={styles.createDeckCtaButton} />
+                <FlatList
+                    data={flatListItems}
+                    ItemSeparatorComponent={listViewItemSeparator}
+                    renderItem={({ item }) => listItemView(item)}
+                />
+                <FlatList
+                    data={demoData}
+                    ItemSeparatorComponent={listViewItemSeparator}
+                    renderItem={({ item }) => listItemView(item)}
+                />
+            </View>
         </Layout>
     );
 };
